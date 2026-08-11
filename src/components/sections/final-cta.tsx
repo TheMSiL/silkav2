@@ -1,0 +1,86 @@
+"use client";
+
+import Link from "next/link";
+import { useRef } from "react";
+import { motion, useMotionTemplate, useMotionValue, useReducedMotion, useSpring } from "motion/react";
+import { Container } from "@/components/ui/container";
+import { Magnetic } from "@/components/ui/magnetic";
+import { TextReveal } from "@/components/motion/text-reveal";
+import { ArrowUpRight } from "@/components/ui/icons";
+import { site } from "@/lib/site";
+import { localizeHref, type Locale } from "@/lib/i18n/config";
+import type { Dictionary } from "@/lib/i18n/dictionaries";
+import { EVENTS, track } from "@/lib/analytics";
+
+/**
+ * §Final CTA — the background reacts to the pointer. Subtle, and completely
+ * absent under reduced motion or on touch.
+ */
+export function FinalCta({ locale, dict }: { locale: Locale; dict: Dictionary }) {
+  const ref = useRef<HTMLElement>(null);
+  const reduced = useReducedMotion();
+
+  const x = useMotionValue(50);
+  const y = useMotionValue(50);
+  const springX = useSpring(x, { stiffness: 60, damping: 20 });
+  const springY = useSpring(y, { stiffness: 60, damping: 20 });
+
+  const glow = useMotionTemplate`radial-gradient(38rem 38rem at ${springX}% ${springY}%, rgb(255 74 28 / 0.16), transparent 70%)`;
+
+  const onPointerMove = (event: React.PointerEvent<HTMLElement>) => {
+    if (reduced || event.pointerType !== "mouse") return;
+    const rect = ref.current?.getBoundingClientRect();
+    if (!rect) return;
+    x.set(((event.clientX - rect.left) / rect.width) * 100);
+    y.set(((event.clientY - rect.top) / rect.height) * 100);
+  };
+
+  return (
+    <section
+      ref={ref}
+      onPointerMove={onPointerMove}
+      data-theme="dark"
+      aria-label={dict.cta.start}
+      className="noise relative isolate overflow-hidden bg-surface py-[clamp(6rem,12vw,11rem)]"
+    >
+      <div aria-hidden className="dot-bg pointer-events-none absolute inset-0 opacity-60" />
+      {!reduced ? (
+        <motion.div
+          aria-hidden
+          className="pointer-events-none absolute inset-0"
+          style={{ background: glow }}
+        />
+      ) : null}
+
+      <Container className="relative">
+        <h2 className="font-display max-w-4xl text-5xl sm:text-6xl">
+          <TextReveal as="span" text={dict.home.ctaTitleA} className="block" />
+          <TextReveal as="span" text={dict.home.ctaTitleB} className="block" accent={dict.home.ctaAccent} delay={0.1} />
+        </h2>
+
+        <p className="mt-8 max-w-xl text-lg text-muted">{dict.home.ctaIntro}</p>
+
+        <div className="mt-12 flex flex-wrap items-center gap-6">
+          <Magnetic strength={0.4}>
+            <Link
+              href={localizeHref("/contact", locale)}
+              onClick={() => track(EVENTS.heroCtaClick, { location: "final_cta" })}
+              data-cursor="explore"
+              className="group inline-flex h-16 items-center gap-3 bg-fg px-10 text-lg font-medium text-surface transition-colors hover:bg-accent hover:text-accent-fg"
+            >
+              {dict.cta.start}
+              <ArrowUpRight className="transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
+            </Link>
+          </Magnetic>
+          <a
+            href={`mailto:${site.email}`}
+            onClick={() => track(EVENTS.emailClick, { location: "final_cta" })}
+            className="link-underline text-lg text-muted hover:text-fg"
+          >
+            {site.email}
+          </a>
+        </div>
+      </Container>
+    </section>
+  );
+}

@@ -1,26 +1,449 @@
 @import "tailwindcss";
 
+/* ============================================================
+   KEEL — Design System
+   All primitives live here as CSS variables. Never hardcode
+   colours, spacing, easing or durations elsewhere.
+   ============================================================ */
+
+@custom-variant pointer-fine (@media (hover: hover) and (pointer: fine));
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* ---------- Palette (raw) ---------- */
+  --ink-900: #08090a;
+  --ink-800: #0d0f11;
+  --ink-700: #131619;
+  --ink-600: #1b1f23;
+  --ink-500: #262b30;
+
+  --bone-100: #f4f2ec;
+  --bone-200: #eceade;
+  --bone-300: #ded9ca;
+  --bone-400: #c3bdac;
+
+  --ember-500: #ff4a1c;
+  --ember-400: #ff6a44;
+  --ember-600: #d63a12;
+
+  --signal-blue: #4d7cff;
+  --signal-green: #46d39a;
+  --signal-amber: #ffb020;
+
+  /* ---------- Semantic (dark is the default surface) ---------- */
+  --surface: var(--ink-900);
+  --surface-2: var(--ink-800);
+  --surface-3: var(--ink-700);
+  --fg: #eeece6;
+  --fg-muted: #8b9199;
+  --fg-faint: #565d64;
+  --line: rgb(255 255 255 / 0.10);
+  --line-strong: rgb(255 255 255 / 0.20);
+  --accent: var(--ember-500);
+  --accent-fg: #ffffff;
+  --selection: rgb(255 74 28 / 0.28);
+  --grid-line: rgb(255 255 255 / 0.045);
+
+  /* ---------- Type scale (fluid, 320 → 1440) ---------- */
+  --step--2: clamp(0.63rem, 0.61rem + 0.09vw, 0.69rem);
+  --step--1: clamp(0.75rem, 0.72rem + 0.14vw, 0.83rem);
+  --step-0: clamp(0.9rem, 0.86rem + 0.2vw, 1rem);
+  --step-1: clamp(1.08rem, 1rem + 0.38vw, 1.33rem);
+  --step-2: clamp(1.3rem, 1.17rem + 0.64vw, 1.78rem);
+  --step-3: clamp(1.56rem, 1.35rem + 1.03vw, 2.37rem);
+  --step-4: clamp(1.87rem, 1.55rem + 1.6vw, 3.16rem);
+  --step-5: clamp(2.24rem, 1.76rem + 2.42vw, 4.21rem);
+  --step-6: clamp(2.69rem, 1.98rem + 3.57vw, 5.61rem);
+  --step-7: clamp(3.23rem, 2.2rem + 5.15vw, 7.48rem);
+  --step-8: clamp(3.88rem, 2.4rem + 7.38vw, 9.98rem);
+
+  /* ---------- Spacing ---------- */
+  --space-3xs: 0.25rem;
+  --space-2xs: 0.5rem;
+  --space-xs: 0.75rem;
+  --space-s: 1rem;
+  --space-m: 1.5rem;
+  --space-l: 2rem;
+  --space-xl: 3rem;
+  --space-2xl: 4rem;
+  --space-3xl: 6rem;
+  --space-4xl: 8rem;
+  --section-y: clamp(4.5rem, 3rem + 7vw, 9rem);
+
+  /* ---------- Layout ---------- */
+  --container-max: 90rem; /* 1440 */
+  --container-pad: clamp(1.25rem, 0.6rem + 3vw, 3.5rem);
+  --header-h: 4.5rem;
+  --header-h-compact: 3.5rem;
+
+  /* ---------- Radius ---------- */
+  --radius-xs: 2px;
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 16px;
+  --radius-full: 999px;
+
+  /* ---------- Elevation ---------- */
+  --shadow-sm: 0 1px 2px rgb(0 0 0 / 0.3);
+  --shadow-md: 0 8px 30px rgb(0 0 0 / 0.35);
+  --shadow-lg: 0 30px 80px -20px rgb(0 0 0 / 0.55);
+  --glow-accent: 0 0 0 1px rgb(255 74 28 / 0.4), 0 12px 40px -12px rgb(255 74 28 / 0.5);
+
+  /* ---------- Motion ---------- */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-instant: 120ms;
+  --dur-fast: 220ms;
+  --dur-base: 380ms;
+  --dur-slow: 640ms;
+  --dur-reveal: 900ms;
+
+  /* ---------- Z ---------- */
+  --z-base: 1;
+  --z-sticky: 40;
+  --z-header: 50;
+  --z-menu: 60;
+  --z-cursor: 90;
+
+  color-scheme: dark;
 }
 
+/* Light surface — applied per-section via data-theme, never a global toggle. */
+[data-theme="light"] {
+  --surface: var(--bone-100);
+  --surface-2: var(--bone-200);
+  --surface-3: var(--bone-300);
+  --fg: #101315;
+  --fg-muted: #5a6067;
+  --fg-faint: #8a9098;
+  --line: rgb(16 19 21 / 0.12);
+  --line-strong: rgb(16 19 21 / 0.28);
+  --grid-line: rgb(16 19 21 / 0.05);
+  --accent-fg: #ffffff;
+  color-scheme: light;
+}
+
+[data-theme="dark"] {
+  --surface: var(--ink-900);
+  --surface-2: var(--ink-800);
+  --surface-3: var(--ink-700);
+  --fg: #eeece6;
+  --fg-muted: #8b9199;
+  --fg-faint: #565d64;
+  --line: rgb(255 255 255 / 0.10);
+  --line-strong: rgb(255 255 255 / 0.20);
+  --grid-line: rgb(255 255 255 / 0.045);
+  color-scheme: dark;
+}
+
+/* ---------- Tailwind theme bridge ---------- */
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-surface-3: var(--surface-3);
+  --color-fg: var(--fg);
+  --color-muted: var(--fg-muted);
+  --color-faint: var(--fg-faint);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-accent: var(--accent);
+  --color-accent-fg: var(--accent-fg);
+  --color-ink: var(--ink-900);
+  --color-bone: var(--bone-100);
+  --color-signal-blue: var(--signal-blue);
+  --color-signal-green: var(--signal-green);
+  --color-signal-amber: var(--signal-amber);
+
+  --font-sans: var(--font-sans-brand), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-mono-jb), ui-monospace, "SF Mono", monospace;
+
+  --text-2xs: var(--step--2);
+  --text-xs: var(--step--1);
+  --text-base: var(--step-0);
+  --text-lg: var(--step-1);
+  --text-xl: var(--step-2);
+  --text-2xl: var(--step-3);
+  --text-3xl: var(--step-4);
+  --text-4xl: var(--step-5);
+  --text-5xl: var(--step-6);
+  --text-6xl: var(--step-7);
+  --text-7xl: var(--step-8);
+
+  --radius-xs: var(--radius-xs);
+  --radius-sm: var(--radius-sm);
+  --radius-md: var(--radius-md);
+  --radius-lg: var(--radius-lg);
+
+  --ease-expo: var(--ease-out-expo);
+  --ease-quart: var(--ease-out-quart);
+
+  --breakpoint-xs: 25rem;
+  --breakpoint-3xl: 100rem;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* ============================================================
+   Base
+
+   These MUST live in @layer base. Unlayered rules beat every layered
+   rule regardless of specificity, so an unlayered `a { color: inherit }`
+   silently overrides every Tailwind `text-*` utility on a link — which
+   renders link-styled buttons with invisible text.
+   ============================================================ */
+
+@layer base {
+  * {
+    border-color: var(--line);
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    /* Anchor targets must clear the fixed header. */
+    scroll-padding-top: calc(var(--header-h) + 1rem);
+  }
+
+  /*
+   * Smooth scrolling only for in-page anchor navigation. Applying it globally
+   * also animates focus restoration and find-in-page, and makes any programmatic
+   * scroll land late — which is disorienting for users and unreliable for tests.
+   */
+  @media (prefers-reduced-motion: no-preference) {
+    html:has(:target) {
+      scroll-behavior: smooth;
+    }
+  }
+
+  body {
+    background-color: var(--surface);
+    color: var(--fg);
+    font-family: var(--font-sans-brand), ui-sans-serif, system-ui, sans-serif;
+    font-size: var(--step-0);
+    line-height: 1.55;
+    font-synthesis-weight: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    /*
+     * `clip`, not `hidden`: `overflow-x: hidden` turns body into a scroll
+     * container, which affects how descendants scroll and anchor. `clip`
+     * contains the horizontal overflow without that side effect.
+     */
+    overflow-x: clip;
+  }
+
+  ::selection {
+    background: var(--selection);
+    color: var(--fg);
+  }
+
+  h1, h2, h3, h4 {
+    font-weight: 500;
+    letter-spacing: -0.03em;
+    line-height: 0.98;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  button {
+    cursor: pointer;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: var(--radius-xs);
+  }
+
+  /* Keep focus rings for keyboard users only, never suppress them entirely. */
+  :focus:not(:focus-visible) {
+    outline: none;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* ============================================================
+   Utilities
+   ============================================================ */
+
+.font-display {
+  font-family: var(--font-sans-brand), ui-sans-serif, system-ui, sans-serif;
+  font-weight: 500;
+  letter-spacing: -0.035em;
+  line-height: 0.92;
+}
+
+/* Extra-tight variant for very large display type. */
+.font-display-tight {
+  letter-spacing: -0.05em;
+}
+
+.mono {
+  font-family: var(--font-mono-jb), ui-monospace, "SF Mono", monospace;
+  font-size: var(--step--1);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+.mono-sm {
+  font-family: var(--font-mono-jb), ui-monospace, "SF Mono", monospace;
+  font-size: var(--step--2);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+.hairline {
+  border-top: 1px solid var(--line);
+}
+
+.grid-bg {
+  background-image:
+    linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
+  background-size: 4rem 4rem;
+}
+
+.dot-bg {
+  background-image: radial-gradient(var(--grid-line) 1px, transparent 1px);
+  background-size: 1.5rem 1.5rem;
+}
+
+.noise::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.035;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+.edge-fade-x {
+  mask-image: linear-gradient(to right, transparent, black 6%, black 94%, transparent);
+}
+
+.hide-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.link-underline {
+  background-image: linear-gradient(currentColor, currentColor);
+  background-size: 0% 1px;
+  background-position: 0 100%;
+  background-repeat: no-repeat;
+  transition: background-size var(--dur-base) var(--ease-out-expo);
+}
+.link-underline:hover,
+.link-underline:focus-visible {
+  background-size: 100% 1px;
+}
+
+/* Hide the native cursor only where our custom one is active. */
+html[data-cursor="custom"],
+html[data-cursor="custom"] * {
+  cursor: none !important;
+}
+
+/* Range input styled as a technical track. Keeps native semantics. */
+.complexity-range {
+  appearance: none;
+  height: 2.5rem;
+  background: transparent;
+}
+.complexity-range::-webkit-slider-runnable-track {
+  height: 2px;
+  background: linear-gradient(
+    to right,
+    var(--accent) 0%,
+    var(--accent) var(--progress, 0%),
+    var(--line-strong) var(--progress, 0%),
+    var(--line-strong) 100%
+  );
+}
+.complexity-range::-moz-range-track {
+  height: 2px;
+  background: var(--line-strong);
+}
+.complexity-range::-moz-range-progress {
+  height: 2px;
+  background: var(--accent);
+}
+.complexity-range::-webkit-slider-thumb {
+  appearance: none;
+  width: 1.25rem;
+  height: 1.25rem;
+  margin-top: -0.6rem;
+  border-radius: 999px;
+  background: var(--accent);
+  border: 3px solid var(--surface);
+  box-shadow: 0 0 0 1px var(--accent);
+  transition: transform var(--dur-fast) var(--ease-out-expo);
+}
+.complexity-range::-moz-range-thumb {
+  width: 1.25rem;
+  height: 1.25rem;
+  border-radius: 999px;
+  background: var(--accent);
+  border: 3px solid var(--surface);
+  box-shadow: 0 0 0 1px var(--accent);
+}
+.complexity-range:active::-webkit-slider-thumb {
+  transform: scale(1.15);
+}
+
+/* Only animate when motion is welcome; otherwise the track would end
+   translated fully off-screen and the strip would read as empty. */
+.marquee-track {
+  will-change: transform;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .marquee-track {
+    animation: marquee 38s linear infinite;
+  }
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+@keyframes flow-dash {
+  to {
+    stroke-dashoffset: -24;
+  }
+}
+
+/* ============================================================
+   Reduced motion — kill sequences, keep state changes legible
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .reduced-motion-hide {
+    display: none !important;
+  }
 }

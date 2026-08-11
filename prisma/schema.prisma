@@ -1,0 +1,77 @@
+// Lead storage.
+//
+// The app talks to `LeadRepository` (src/server/services/lead-repository.ts),
+// not to Prisma directly. To move from the file-backed default to Postgres:
+//
+//   1. npm i prisma @prisma/client && npx prisma migrate dev
+//   2. add a PrismaLeadRepository implementing the same interface
+//   3. return it from getLeadRepository() when DATABASE_URL is set
+//
+// Nothing above that file changes.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum ProjectType {
+  WEBSITE
+  WEB_APP
+  MOBILE_APP
+  SAAS
+  CRM
+  AI
+  AUTOMATION
+  ECOMMERCE
+  OTHER
+}
+
+enum BudgetRange {
+  UNDER_5K
+  FROM_5K_TO_15K
+  FROM_15K_TO_30K
+  FROM_30K_TO_50K
+  OVER_50K
+  NOT_SURE
+}
+
+enum LeadStatus {
+  NEW
+  CONTACTED
+  QUALIFIED
+  PROPOSAL
+  WON
+  LOST
+  SPAM
+}
+
+model Lead {
+  id          String       @id @default(uuid())
+  name        String
+  email       String
+  company     String?
+  projectType ProjectType
+  budget      BudgetRange?
+  message     String       @db.Text
+
+  // Attribution — captured by the client, never typed by the visitor.
+  source      String?
+  pageUrl     String?
+  utmSource   String?
+  utmMedium   String?
+  utmCampaign String?
+
+  status    LeadStatus @default(NEW)
+  notes     String?    @db.Text
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+
+  @@index([createdAt])
+  @@index([status])
+  @@index([email])
+  @@map("leads")
+}
