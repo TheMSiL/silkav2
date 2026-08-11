@@ -16,8 +16,8 @@ export function Footer({ locale, dict }: { locale: Locale; dict: Dictionary }) {
     <footer data-theme="dark" className="relative isolate overflow-hidden bg-surface text-fg">
       <div className="grid-bg pointer-events-none absolute inset-0 opacity-70" aria-hidden />
 
-      <div className="relative mx-auto w-full max-w-[var(--container-max)] px-[var(--container-pad)]">
-        <div className="grid gap-12 border-b border-line py-[var(--space-3xl)] lg:grid-cols-[1.4fr_1fr_1fr]">
+      <div className="relative mx-auto w-full max-w-(--container-max) px-(--container-pad)">
+        <div className="grid gap-12 border-b border-line py-(--space-3xl) lg:grid-cols-[1.4fr_1fr_1fr]">
           <div>
             <Link
               href={localizeHref("/", locale)}
@@ -83,7 +83,7 @@ export function Footer({ locale, dict }: { locale: Locale; dict: Dictionary }) {
 
         {/* Wordmark — the footer's visual anchor. */}
         <div className="relative py-10" aria-hidden>
-          <span className="font-display block w-full select-none text-center text-[clamp(4rem,19vw,17rem)] leading-[0.8] tracking-[-0.05em] text-white/[0.06]">
+          <span className="font-display block w-full select-none text-center text-[clamp(4rem,19vw,17rem)] leading-[0.8] tracking-tighter text-white/6">
             {site.name.toUpperCase()}
           </span>
         </div>

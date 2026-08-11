@@ -17,6 +17,12 @@ export default defineConfig({
   projects: [
     { name: "desktop", use: { ...devices["Desktop Chrome"] } },
     { name: "mobile", use: { ...devices["Pixel 7"] } },
+    /*
+     * WebKit, not another Chromium phone. Chrome propagates `overflow-x: clip`
+     * from body to the viewport and WebKit does not, so layout that pans
+     * sideways on a real iPhone measures perfectly clean on Pixel 7.
+     */
+    { name: "ios", use: { ...devices["iPhone SE"] } },
   ],
   webServer: {
     // Runs against a production build: the thing users actually get.

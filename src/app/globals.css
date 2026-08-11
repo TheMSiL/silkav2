@@ -199,6 +199,14 @@
     -webkit-text-size-adjust: 100%;
     /* Anchor targets must clear the fixed header. */
     scroll-padding-top: calc(var(--header-h) + 1rem);
+    /*
+     * Also on html, not only on body. Overflow set on body is meant to
+     * propagate to the viewport, but WebKit does not propagate `clip` — so on
+     * iOS a single stray wide element pans the entire page sideways while
+     * Chrome and its device emulation look perfectly fine. Setting it here
+     * takes propagation out of the picture.
+     */
+    overflow-x: clip;
   }
 
   /*
@@ -255,6 +263,19 @@
     cursor: pointer;
   }
 
+  /* Removes the double-tap-to-zoom gesture on things meant to be tapped. */
+  a,
+  button,
+  label,
+  summary,
+  input,
+  select,
+  textarea,
+  [role="button"],
+  [role="tab"] {
+    touch-action: manipulation;
+  }
+
   :focus-visible {
     outline: 2px solid var(--accent);
     outline-offset: 3px;
@@ -264,6 +285,21 @@
   /* Keep focus rings for keyboard users only, never suppress them entirely. */
   :focus:not(:focus-visible) {
     outline: none;
+  }
+}
+
+/*
+ * A 16px floor on form controls, deliberately outside @layer so that it beats
+ * the `text-*` utility sitting on the control itself. Below 16px, iOS Safari
+ * zooms the whole page the instant a field is focused, and the page then pans
+ * sideways. The type scale only drops under 16px on narrow screens, so this
+ * changes nothing above 480px.
+ */
+@media (max-width: 30rem) {
+  input,
+  select,
+  textarea {
+    font-size: 1rem;
   }
 }
 
@@ -427,6 +463,38 @@ html[data-cursor-mode="custom"] * {
 @media (prefers-reduced-motion: no-preference) {
   .marquee-track {
     animation: marquee 38s linear infinite;
+  }
+}
+
+/*
+ * Above-the-fold reveals run in CSS, not JavaScript.
+ *
+ * A JS-driven reveal renders the content hidden in the server HTML and only
+ * shows it once hydration finishes — on a phone that reads as the hero
+ * arriving late, and under reduced motion it never animates at all. These
+ * rules only exist when motion is welcome, so a reduced-motion visitor gets
+ * the content visible straight out of the HTML.
+ */
+@media (prefers-reduced-motion: no-preference) {
+  .rise {
+    animation: rise-in 0.7s var(--ease-out-expo) both;
+  }
+
+  .word-rise > span > span {
+    animation: word-in 0.85s var(--ease-out-expo) both;
+  }
+}
+
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+}
+
+@keyframes word-in {
+  from {
+    transform: translateY(110%);
   }
 }
 

@@ -93,6 +93,14 @@ export const viewport: Viewport = {
   colorScheme: "dark",
   width: "device-width",
   initialScale: 1,
+  /*
+   * Pinch-zoom is turned off by request. Note that Safari on iOS has ignored
+   * both of these since iOS 10 and always allows the gesture — the fixes that
+   * actually stop unwanted zoom there are the 16px minimum on form controls
+   * and `touch-action: manipulation`, both in globals.css.
+   */
+  maximumScale: 1,
+  userScalable: false,
 };
 
 export default async function LocaleLayout({

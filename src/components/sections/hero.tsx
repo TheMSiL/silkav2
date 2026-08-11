@@ -1,8 +1,7 @@
 import Link from "next/link";
 import { HeroEcosystem, type EcosystemNode } from "@/features/hero/ecosystem";
 import { Magnetic } from "@/components/ui/magnetic";
-import { Reveal } from "@/components/motion/reveal";
-import { TextReveal } from "@/components/motion/text-reveal";
+import { Rise, TextRise } from "@/components/motion/rise";
 import { ArrowRight, ArrowUpRight } from "@/components/ui/icons";
 import { Container } from "@/components/ui/container";
 import { site } from "@/lib/site";
@@ -64,19 +63,24 @@ export function Hero({
       <Container className="relative">
         <div className="grid items-center gap-14 lg:grid-cols-[1.15fr_0.85fr] lg:gap-10">
           <div>
-            <Reveal>
-              <p className="mono-sm mb-8 flex items-center gap-3 text-muted">
-                <span aria-hidden className="relative flex size-1.5">
-                  <span className="reduced-motion-hide absolute inline-flex h-full w-full animate-ping rounded-full bg-accent opacity-70" />
-                  <span className="relative inline-flex size-1.5 rounded-full bg-accent" />
-                </span>
-                {dict.home.metaTitle} — {site.location}
-              </p>
-            </Reveal>
+            <Rise
+              as="p"
+              className="mono-sm mb-8 flex items-center gap-3 text-muted"
+            >
+              <span aria-hidden className="relative flex size-1.5">
+                <span className="reduced-motion-hide absolute inline-flex h-full w-full animate-ping rounded-full bg-accent opacity-70" />
+                <span className="relative inline-flex size-1.5 rounded-full bg-accent" />
+              </span>
+              {dict.home.metaTitle} — {site.location}
+            </Rise>
 
             <h1 className="font-display text-balance text-3xl sm:text-4xl">
-              <TextReveal as="span" text={dict.home.heroTitleA} className="block" />
-              <TextReveal
+              <TextRise
+                as="span"
+                text={dict.home.heroTitleA}
+                className="block"
+              />
+              <TextRise
                 as="span"
                 text={dict.home.heroTitleB}
                 className="block"
@@ -85,35 +89,40 @@ export function Hero({
               />
             </h1>
 
-            <Reveal delay={0.25}>
-              <p className="mt-8 max-w-xl text-lg text-muted md:text-xl">{dict.home.heroIntro}</p>
-            </Reveal>
+            <Rise
+              as="p"
+              delay={0.25}
+              className="mt-8 max-w-xl text-lg text-muted md:text-xl"
+            >
+              {dict.home.heroIntro}
+            </Rise>
 
-            <Reveal delay={0.35}>
-              <div className="mt-10 flex flex-wrap items-center gap-4">
-                <Magnetic>
-                  <Link
-                    href={localizeHref("/contact", locale)}
-                    className="group inline-flex h-14 items-center gap-3 bg-accent px-8 font-medium text-accent-fg transition-[filter] hover:brightness-110"
-                    data-cursor="explore"
-                  >
-                    {dict.cta.start}
-                    <ArrowUpRight className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-                  </Link>
-                </Magnetic>
+            <Rise
+              delay={0.35}
+              className="mt-10 flex flex-wrap items-center gap-4"
+            >
+              <Magnetic>
                 <Link
-                  href={localizeHref("/work", locale)}
-                  className="group inline-flex h-14 items-center gap-3 border border-line-strong px-8 font-medium text-fg transition-colors hover:border-fg"
-                  data-cursor="view"
+                  href={localizeHref("/contact", locale)}
+                  className="group inline-flex h-14 items-center gap-3 bg-accent px-8 font-medium text-accent-fg transition-[filter] hover:brightness-110"
+                  data-cursor="explore"
                 >
-                  {dict.cta.explore}
-                  <ArrowRight className="transition-transform group-hover:translate-x-1" />
+                  {dict.cta.start}
+                  <ArrowUpRight className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                 </Link>
-              </div>
-            </Reveal>
+              </Magnetic>
+              <Link
+                href={localizeHref("/work", locale)}
+                className="group inline-flex h-14 items-center gap-3 border border-line-strong px-8 font-medium text-fg transition-colors hover:border-fg"
+                data-cursor="view"
+              >
+                {dict.cta.explore}
+                <ArrowRight className="transition-transform group-hover:translate-x-1" />
+              </Link>
+            </Rise>
           </div>
 
-          <Reveal delay={0.2} className="relative">
+          <Rise delay={0.2} className="relative">
             <HeroEcosystem
               nodes={nodes}
               groupLabel={dict.home.ecosystemLabel}
@@ -121,11 +130,14 @@ export function Hero({
               idleBody={dict.home.ecosystemIdleBody}
               detailLabel={dict.cta.seeDetail}
             />
-          </Reveal>
+          </Rise>
         </div>
       </Container>
 
-      <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-6 hidden justify-center lg:flex">
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-x-0 bottom-6 hidden justify-center lg:flex"
+      >
         <span className="mono-sm text-faint">{dict.common.scroll}</span>
       </div>
     </section>

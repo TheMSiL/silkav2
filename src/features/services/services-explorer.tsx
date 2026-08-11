@@ -42,7 +42,7 @@ export function ServicesExplorer({
         role="tablist"
         aria-label={dict.services.tablistLabel}
         aria-orientation="vertical"
-        className="flex flex-col"
+        className="flex min-w-0 flex-col"
       >
         {services.map((service) => {
           const isActive = service.key === activeKey;
@@ -101,7 +101,7 @@ export function ServicesExplorer({
         role="tabpanel"
         id={`service-panel-${active.key}`}
         aria-labelledby={`service-tab-${active.key}`}
-        className="relative min-h-[34rem] border border-line bg-surface-2 p-6 md:p-10"
+        className="relative min-w-0 min-h-[34rem] border border-line bg-surface-2 p-6 md:p-10"
       >
         <AnimatePresence mode="wait">
           <motion.div
@@ -112,7 +112,7 @@ export function ServicesExplorer({
             transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
           >
             <div className="grid gap-8 lg:grid-cols-[1fr_minmax(0,14rem)] lg:gap-12">
-              <div>
+              <div className="min-w-0">
                 <p className="mono-sm text-accent">{active.label}</p>
                 <h3 className="font-display mt-3 text-2xl md:text-3xl">{active.headline}</h3>
                 <p className="mt-5 max-w-xl text-lg text-muted">{active.description}</p>
@@ -142,8 +142,14 @@ export function ServicesExplorer({
                 </div>
               </div>
 
-              <div className="flex flex-col justify-between gap-8">
-                <div className="aspect-[4/3] border border-line bg-surface p-4">
+              <div className="flex min-w-0 flex-col justify-between gap-8">
+                {/*
+                  `w-full` is load-bearing: without a definite width, an
+                  aspect-ratio box resolves its width from its height, and that
+                  intrinsic width becomes the grid column's minimum — which
+                  blows the single-column mobile layout far past the viewport.
+                */}
+                <div className="aspect-[4/3] w-full border border-line bg-surface p-4">
                   <ServiceVisual variant={active.visual} />
                 </div>
                 <div>

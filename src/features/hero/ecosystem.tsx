@@ -65,6 +65,13 @@ export function HeroEcosystem({
   const [active, setActive] = useState<number | null>(null);
   const activeRef = useRef<number | null>(null);
   const [reduced, setReduced] = useState(false);
+  /*
+   * The nodes are laid out by the projection below, not by CSS, so before the
+   * first draw they all sit stacked in the corner. Hold the diagram hidden
+   * until it has been positioned once.
+   */
+  const [ready, setReady] = useState(false);
+  const readyRef = useRef(false);
 
   const setActiveNode = useCallback((index: number | null) => {
     activeRef.current = index;
@@ -154,6 +161,11 @@ export function HeroEcosystem({
         const touching = activeIndex === a || activeIndex === b;
         line.setAttribute("opacity", String(touching ? 0.5 : activeIndex === null ? 0.09 : 0.04));
       });
+
+      if (!readyRef.current) {
+        readyRef.current = true;
+        setReady(true);
+      }
     }
 
     if (reduced) {
@@ -206,7 +218,10 @@ export function HeroEcosystem({
         ref={wrapRef}
         role="group"
         aria-label={groupLabel}
-        className="relative aspect-square w-full select-none"
+        className={cn(
+          "relative aspect-square w-full select-none transition-opacity duration-500",
+          ready ? "opacity-100" : "opacity-0",
+        )}
       >
         <svg
           ref={svgRef}

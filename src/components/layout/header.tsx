@@ -43,7 +43,7 @@ export function Header({ locale, dict }: { locale: Locale; dict: Dictionary }) {
     <>
       <a
         href="#main"
-        className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[999] focus:bg-accent focus:px-4 focus:py-2 focus:text-accent-fg"
+        className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-999 focus:bg-accent focus:px-4 focus:py-2 focus:text-accent-fg"
       >
         {dict.common.skipToContent}
       </a>
@@ -51,8 +51,8 @@ export function Header({ locale, dict }: { locale: Locale; dict: Dictionary }) {
       <header
         data-theme="dark"
         className={cn(
-          "fixed inset-x-0 top-0 transition-[background-color,backdrop-filter,border-color] duration-[var(--dur-base)] ease-[var(--ease-out-expo)]",
-          menuOpen ? "z-[calc(var(--z-menu)+1)]" : "z-[var(--z-header)]",
+          "fixed inset-x-0 top-0 transition-[background-color,backdrop-filter,border-color] duration-(--dur-base) ease-(--ease-out-expo)",
+          menuOpen ? "z-[calc(var(--z-menu)+1)]" : "z-(--z-header)",
           scrolled && !menuOpen
             ? "border-b border-white/10 bg-[rgb(8_9_10/0.72)] backdrop-blur-xl"
             : "border-b border-transparent bg-transparent",
@@ -60,8 +60,8 @@ export function Header({ locale, dict }: { locale: Locale; dict: Dictionary }) {
       >
         <div
           className={cn(
-            "mx-auto flex w-full max-w-[var(--container-max)] items-center justify-between px-[var(--container-pad)] transition-[height] duration-[var(--dur-base)] ease-[var(--ease-out-expo)]",
-            scrolled ? "h-[var(--header-h-compact)]" : "h-[var(--header-h)]",
+            "mx-auto flex w-full max-w-(--container-max) items-center justify-between px-(--container-pad) transition-[height] duration-(--dur-base) ease-(--ease-out-expo)",
+            scrolled ? "h-(--header-h-compact)" : "h-(--header-h)",
           )}
         >
           <Link
@@ -69,7 +69,7 @@ export function Header({ locale, dict }: { locale: Locale; dict: Dictionary }) {
             aria-label={`${site.name} — ${dict.common.home}`}
             className="group flex items-center gap-2.5 text-white"
           >
-            <Logomark className={cn("transition-all duration-[var(--dur-base)]", scrolled ? "size-5" : "size-6")} />
+            <Logomark className={cn("transition-all duration-(--dur-base)", scrolled ? "size-5" : "size-6")} />
             <span className="font-display text-lg tracking-[-0.02em] text-white">{site.name}</span>
           </Link>
 
@@ -80,7 +80,7 @@ export function Header({ locale, dict }: { locale: Locale; dict: Dictionary }) {
                 href={localizeHref(item.href, locale)}
                 aria-current={isActive(item.href) ? "page" : undefined}
                 className={cn(
-                  "relative px-3.5 py-2 text-xs tracking-[-0.01em] transition-colors duration-[var(--dur-fast)]",
+                  "relative px-3.5 py-2 text-xs tracking-[-0.01em] transition-colors duration-(--dur-fast)",
                   isActive(item.href) ? "text-white" : "text-white/60 hover:text-white",
                 )}
               >
@@ -88,7 +88,7 @@ export function Header({ locale, dict }: { locale: Locale; dict: Dictionary }) {
                 <span
                   aria-hidden
                   className={cn(
-                    "absolute inset-x-3.5 bottom-1 h-px origin-left bg-accent transition-transform duration-[var(--dur-base)] ease-[var(--ease-out-expo)]",
+                    "absolute inset-x-3.5 bottom-1 h-px origin-left bg-accent transition-transform duration-(--dur-base) ease-(--ease-out-expo)",
                     isActive(item.href) ? "scale-x-100" : "scale-x-0",
                   )}
                 />
@@ -106,7 +106,7 @@ export function Header({ locale, dict }: { locale: Locale; dict: Dictionary }) {
             <Magnetic className="hidden lg:inline-block">
               <Link
                 href={localizeHref("/contact", locale)}
-                className="inline-flex h-10 items-center gap-2 border border-white/25 px-5 text-xs text-white transition-colors duration-[var(--dur-fast)] hover:border-accent hover:bg-accent hover:text-accent-fg"
+                className="inline-flex h-10 items-center gap-2 border border-white/25 px-5 text-xs text-white transition-colors duration-(--dur-fast) hover:border-accent hover:bg-accent hover:text-accent-fg"
               >
                 {dict.cta.start}
               </Link>

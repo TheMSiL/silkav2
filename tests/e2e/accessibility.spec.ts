@@ -37,7 +37,11 @@ test.describe("Accessibility basics", () => {
     expect(missing).toBe(0);
   });
 
-  test("the skip link is reachable as the first tab stop", async ({ page }) => {
+  test("the skip link is reachable as the first tab stop", async ({ page, browserName }) => {
+    // Safari does not put links in the Tab order unless the user turns on
+    // "Press Tab to highlight each item" — a browser preference, not something
+    // the page controls, so there is nothing here for WebKit to assert.
+    test.skip(browserName === "webkit", "Safari excludes links from tab order by default");
     await page.goto("/");
     await page.keyboard.press("Tab");
     await expect(page.locator(":focus")).toHaveText(/skip to content|перейти до вмісту/i);

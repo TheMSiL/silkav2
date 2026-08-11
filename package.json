@@ -13,7 +13,7 @@
     "test:e2e": "playwright test",
     "capture:work": "node scripts/capture-work.mjs",
     "verify": "npm run typecheck && npm run lint && npm run test && npm run build",
-    "check:mobile": "node scripts/check-mobile-overflow.mjs"
+    "check:mobile": "node scripts/check-mobile.mjs"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.7.1",
