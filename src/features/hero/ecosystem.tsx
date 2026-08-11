@@ -29,7 +29,40 @@ const CHORDS: [number, number][] = [
   [2, 4],
 ];
 
-const FOCAL = 900;
+/**
+ * Perspective strength, as a multiple of the ring radius rather than a pixel
+ * distance. Being unitless is what lets the server and the script agree
+ * exactly, and it also means the depth effect no longer gets stronger as the
+ * container gets wider.
+ */
+const FOCAL = 7;
+
+/**
+ * The ring projection expressed as fractions of the box rather than pixels.
+ *
+ * The diagram is laid out by script, which used to mean it was a blank square
+ * until the bundle arrived and hydrated — several seconds on a phone, and the
+ * single slowest thing on the page. The same maths runs here at render time,
+ * so the server HTML already contains the diagram in its rest position and the
+ * script only takes over to spin it.
+ *
+ * Everything is a percentage of a square box, so it is correct at any size.
+ */
+export function projectFraction(node: { angle: number; lift: number }, rotation = 0) {
+  const theta = node.angle * Math.PI * 2 + rotation;
+  const radius = 0.38;
+  const x = Math.sin(theta) * radius;
+  const z = Math.cos(theta) * radius;
+  const y = node.lift * radius * 0.35 - z * 0.6;
+  const scale = FOCAL / (FOCAL - Math.cos(theta));
+  return {
+    left: (0.5 + x * scale) * 100,
+    top: (0.5 + y * scale) * 100,
+    scale,
+    depth: Math.cos(theta),
+    opacity: Math.max(0.42, Math.min(1, 0.5 + scale * 0.55)),
+  };
+}
 
 interface Projected {
   x: number;
@@ -65,13 +98,6 @@ export function HeroEcosystem({
   const [active, setActive] = useState<number | null>(null);
   const activeRef = useRef<number | null>(null);
   const [reduced, setReduced] = useState(false);
-  /*
-   * The nodes are laid out by the projection below, not by CSS, so before the
-   * first draw they all sit stacked in the corner. Hold the diagram hidden
-   * until it has been positioned once.
-   */
-  const [ready, setReady] = useState(false);
-  const readyRef = useRef(false);
 
   const setActiveNode = useCallback((index: number | null) => {
     activeRef.current = index;
@@ -109,33 +135,34 @@ export function HeroEcosystem({
     });
     observer.observe(wrap);
 
-    const project = (node: EcosystemNode, rotation: number, radius: number, cx: number, cy: number): Projected => {
-      const theta = node.angle * Math.PI * 2 + rotation;
-      const x = Math.sin(theta) * radius;
-      const z = Math.cos(theta) * radius;
-      // Tilt the ring so it reads as a disc seen from slightly above.
-      const y = node.lift * radius * 0.35 - z * 0.6;
-      const scale = FOCAL / (FOCAL - z);
-      return { x: cx + x * scale, y: cy + y * scale, scale, depth: z / radius };
+    const project = (node: EcosystemNode, rotation: number): Projected => {
+      const f = projectFraction(node, rotation);
+      return {
+        x: (f.left / 100) * width,
+        y: (f.top / 100) * height,
+        scale: f.scale,
+        depth: f.depth,
+      };
     };
 
     function draw(rotation: number) {
       const cx = width / 2;
       const cy = height / 2;
-      const radius = Math.min(width, height) * 0.38;
-      const points = NODES.map((node) => project(node, rotation, radius, cx, cy));
+      const points = NODES.map((node) => project(node, rotation));
       const activeIndex = activeRef.current;
 
-      if (coreRef.current) {
-        coreRef.current.style.transform = `translate(${cx}px, ${cy}px) translate(-50%, -50%)`;
-      }
+      /* The core is always dead centre, so CSS already has it right. */
 
       points.forEach((point, i) => {
         const el = nodeRefs.current[i];
         if (el) {
           const isActive = activeIndex === i;
           const depthScale = 0.82 + point.scale * 0.16;
-          el.style.transform = `translate(${point.x}px, ${point.y}px) translate(-50%, -50%) scale(${isActive ? depthScale * 1.06 : depthScale})`;
+          /* Percentages, matching the server render — mixing px offsets with
+             the percentage left/top below would double the displacement. */
+          el.style.left = `${(point.x / width) * 100}%`;
+          el.style.top = `${(point.y / height) * 100}%`;
+          el.style.transform = `translate(-50%, -50%) scale(${isActive ? depthScale * 1.06 : depthScale})`;
           el.style.opacity = String(Math.max(0.42, Math.min(1, 0.5 + point.scale * 0.55)));
           el.style.zIndex = String(Math.round(point.scale * 100));
         }
@@ -161,11 +188,6 @@ export function HeroEcosystem({
         const touching = activeIndex === a || activeIndex === b;
         line.setAttribute("opacity", String(touching ? 0.5 : activeIndex === null ? 0.09 : 0.04));
       });
-
-      if (!readyRef.current) {
-        readyRef.current = true;
-        setReady(true);
-      }
     }
 
     if (reduced) {
@@ -212,21 +234,26 @@ export function HeroEcosystem({
 
   const activeNode = active === null ? null : NODES[active];
 
+  /*
+   * Rest-position geometry for the server render. The effect above overwrites
+   * all of it on mount — in the same units, so there is no jump — but until
+   * then this is what a visitor sees instead of an empty square.
+   */
+  const rest = NODES.map((node) => projectFraction(node));
+
   return (
     <div className={cn("flex flex-col gap-6", className)}>
       <div
         ref={wrapRef}
         role="group"
         aria-label={groupLabel}
-        className={cn(
-          "relative aspect-square w-full select-none transition-opacity duration-500",
-          ready ? "opacity-100" : "opacity-0",
-        )}
+        className="relative aspect-square w-full select-none"
       >
         <svg
           ref={svgRef}
           className="absolute inset-0 h-full w-full overflow-visible"
           aria-hidden
+          viewBox="0 0 100 100"
           preserveAspectRatio="none"
         >
           {CHORDS.map(([a, b], i) => (
@@ -235,6 +262,10 @@ export function HeroEcosystem({
               ref={(el) => {
                 chordRefs.current[i] = el;
               }}
+              x1={rest[a].left}
+              y1={rest[a].top}
+              x2={rest[b].left}
+              y2={rest[b].top}
               stroke="currentColor"
               strokeWidth="1"
               className="text-fg"
@@ -247,6 +278,10 @@ export function HeroEcosystem({
               ref={(el) => {
                 spokeRefs.current[i] = el;
               }}
+              x1={50}
+              y1={50}
+              x2={rest[i].left}
+              y2={rest[i].top}
               stroke="currentColor"
               strokeWidth="1"
               className={active === i ? "text-accent" : "text-fg"}
@@ -259,7 +294,8 @@ export function HeroEcosystem({
         <div
           ref={coreRef}
           aria-hidden
-          className="absolute left-0 top-0 flex size-24 items-center justify-center sm:size-28"
+          className="absolute flex size-24 items-center justify-center sm:size-28"
+          style={{ left: "50%", top: "50%", transform: "translate(-50%, -50%)" }}
         >
           <span className="absolute inset-0 rounded-full border border-line" />
           <span className="absolute inset-[18%] rounded-full border border-line-strong" />
@@ -287,8 +323,14 @@ export function HeroEcosystem({
             aria-pressed={active === i}
             aria-describedby="ecosystem-detail"
             data-cursor="explore"
+            style={{
+              left: `${rest[i].left}%`,
+              top: `${rest[i].top}%`,
+              transform: `translate(-50%, -50%) scale(${0.82 + rest[i].scale * 0.16})`,
+              opacity: rest[i].opacity,
+            }}
             className={cn(
-              "absolute left-0 top-0 whitespace-nowrap border px-3 py-1.5 text-xs tracking-[-0.01em] transition-colors duration-200 will-change-transform",
+              "absolute whitespace-nowrap border px-3 py-1.5 text-xs tracking-[-0.01em] transition-colors duration-200 will-change-transform",
               active === i
                 ? "border-accent bg-accent text-accent-fg"
                 : "border-line-strong bg-surface/70 text-fg backdrop-blur-sm hover:border-fg",

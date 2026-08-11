@@ -40,7 +40,7 @@ export function ComplexitySlider({
   return (
     <div className="mt-14">
       <div className="grid gap-12 lg:grid-cols-[1fr_minmax(0,26rem)] lg:gap-16">
-        <div className="order-2 lg:order-1">
+        <div className="order-2 min-w-0 lg:order-1">
           <AnimatePresence mode="wait">
             <motion.div
               key={level.label}
@@ -75,7 +75,9 @@ export function ComplexitySlider({
           </AnimatePresence>
         </div>
 
-        <div className="order-1 aspect-square border border-line bg-surface-2 p-6 lg:order-2">
+        {/* `w-full` keeps the aspect box from resolving its width from its
+            height and forcing the mobile grid column wider than the screen. */}
+        <div className="order-1 aspect-square w-full min-w-0 border border-line bg-surface-2 p-6 lg:order-2">
           <ComplexityDiagram steps={index} />
         </div>
       </div>
@@ -97,14 +99,25 @@ export function ComplexitySlider({
           className="complexity-range w-full"
           style={{ ["--progress" as string]: `${(index / max) * 100}%` }}
         />
-        <ol className="mt-4 hidden justify-between md:flex">
+        {/*
+          Every level is a tap target on every screen. This list used to be
+          `hidden md:flex`, which left the range handle as the only way to
+          change level on a phone — a drag, on a control 6px tall. It wraps on
+          mobile rather than scrolling sideways, so nothing needs swiping to
+          be reachable.
+        */}
+        <ol className="mt-4 flex flex-wrap gap-x-4 gap-y-1 md:flex-nowrap md:justify-between md:gap-0">
           {complexityLevels.map((item, i) => (
-            <li key={item.label} className="flex-1 text-center first:text-left last:text-right">
+            <li
+              key={item.label}
+              className="md:flex-1 md:text-center md:first:text-left md:last:text-right"
+            >
               <button
                 type="button"
                 onClick={() => handleChange(i)}
+                aria-current={i === index ? "true" : undefined}
                 className={cn(
-                  "mono-sm transition-colors",
+                  "mono-sm py-1.5 transition-colors",
                   i === index ? "text-accent" : "text-faint hover:text-muted",
                 )}
               >
@@ -116,10 +129,7 @@ export function ComplexitySlider({
       </div>
 
       <div className="mt-12 flex flex-wrap items-center gap-6 border-t border-line pt-8">
-        <p className="max-w-xl text-lg text-muted">
-          The interesting question is never whether we can build it. It is what it should cost and
-          how long it should take.
-        </p>
+        <p className="max-w-xl text-lg text-muted">{dict.complexity.outro}</p>
         <Link
           href={localizeHref("/contact", locale)}
           data-cursor="explore"

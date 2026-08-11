@@ -49,7 +49,7 @@ export function Hero({
   return (
     <section
       data-theme="dark"
-      className="noise relative isolate flex min-h-[100svh] flex-col justify-center overflow-hidden bg-surface pt-[calc(var(--header-h)+2rem)] pb-16"
+      className="noise relative isolate flex min-h-[100lvh] flex-col justify-center overflow-hidden bg-surface pt-[calc(var(--header-h)+2rem)] pb-16"
       aria-label={dict.home.metaTitle}
     >
       <div

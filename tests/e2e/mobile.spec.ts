@@ -138,3 +138,46 @@ test.describe("Reveal engine", () => {
     await context.close();
   });
 });
+
+test.describe("Hero ecosystem", () => {
+  /*
+   * The diagram is positioned by script. That used to mean an empty black
+   * square until the bundle downloaded and hydrated — on a phone, the single
+   * slowest thing on the page. The geometry is now computed at render time in
+   * the same units, so it is in the HTML and the script only spins it.
+   */
+  test("is laid out in the HTML, before any JavaScript runs", async ({ browser }, testInfo) => {
+    const context = await browser.newContext({ ...testInfo.project.use, javaScriptEnabled: false });
+    const page = await context.newPage();
+    await page.goto(`${testInfo.project.use.baseURL ?? "http://localhost:3210"}/`);
+
+    const placed = await page.evaluate(() => {
+      const group = document.querySelector('[role="group"]');
+      if (!group) return null;
+      const nodes = [...group.querySelectorAll("button")];
+      return {
+        nodes: nodes.length,
+        positioned: nodes.filter((n) => n.style.left && n.style.left !== "0px").length,
+        spokes: [...group.querySelectorAll("svg line")].filter((l) => l.getAttribute("x2")).length,
+      };
+    });
+
+    expect(placed).not.toBeNull();
+    expect(placed!.nodes).toBeGreaterThan(0);
+    expect(placed!.positioned, "nodes left stacked in the corner").toBe(placed!.nodes);
+    expect(placed!.spokes, "connecting lines undrawn").toBeGreaterThan(0);
+
+    await context.close();
+  });
+});
+
+test.describe("Localisation", () => {
+  test("no English copy leaks onto the Ukrainian page", async ({ page }) => {
+    await page.goto("/");
+    const text = await page.locator("main").innerText();
+    // Product names and stack labels are legitimately Latin; prose is not.
+    for (const phrase of ["The interesting question", "In our stack and part of what we scope"]) {
+      expect(text, `untranslated string on the uk page: ${phrase}`).not.toContain(phrase);
+    }
+  });
+});

@@ -193,10 +193,12 @@ export function ServicesExplorer({
                 </ul>
               ) : (
                 <p className="max-w-xl text-base text-muted">
-                  In our stack and part of what we scope, but not yet represented by a published
-                  case. Ask us about it directly —{" "}
-                  <Link href="/contact" className="link-underline text-fg">
-                    we will tell you plainly what we have shipped
+                  {dict.services.noProofBody}{" "}
+                  <Link
+                    href={localizeHref("/contact", locale)}
+                    className="link-underline text-fg"
+                  >
+                    {dict.services.noProofLink}
                   </Link>
                   .
                 </p>
