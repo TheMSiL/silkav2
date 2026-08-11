@@ -69,3 +69,43 @@ test.describe("Accessibility basics", () => {
     await context.close();
   });
 });
+
+/**
+ * Reduce Motion is common on phones, and branching markup on it used to break
+ * hydration: React discarded the server HTML, so the hero rendered from its
+ * hidden initial state and the menu button had no handler attached.
+ */
+test.describe("Reduced motion hydration", () => {
+  test("hydrates cleanly and stays interactive with Reduce Motion on", async ({ browser }) => {
+    const context = await browser.newContext({
+      reducedMotion: "reduce",
+      viewport: { width: 390, height: 844 },
+      hasTouch: true,
+      isMobile: true,
+    });
+    const page = await context.newPage();
+
+    const errors: string[] = [];
+    page.on("pageerror", (e) => errors.push(e.message));
+    page.on("console", (m) => {
+      if (m.type() === "error") errors.push(m.text());
+    });
+
+    await page.goto("/");
+    await page.waitForTimeout(1500);
+
+    // No hydration mismatch (React error #418/#423 and friends).
+    expect(errors.filter((e) => /Minified React error|Hydration/i.test(e))).toEqual([]);
+
+    // The hero must be rendered, not stuck at its animation start state.
+    const h1 = page.getByRole("heading", { level: 1 });
+    await expect(h1).toBeVisible();
+    expect((await h1.boundingBox())!.height).toBeGreaterThan(20);
+
+    // And the menu button must actually respond to a tap.
+    await page.getByRole("button", { name: /open menu|відкрити меню|открыть меню/i }).tap();
+    await expect(page.getByRole("dialog")).toBeVisible();
+
+    await context.close();
+  });
+});

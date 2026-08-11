@@ -1,10 +1,11 @@
 "use client";
 
 import { useMemo } from "react";
-import { motion, useReducedMotion } from "motion/react";
+import { motion } from "motion/react";
 import type { ArchitectureDiagram as Diagram } from "@/types";
 import { cn } from "@/lib/cn";
 import type { Dictionary } from "@/lib/i18n/dictionaries";
+import { useReducedMotionSafe } from "@/lib/use-reduced-motion-safe";
 
 const kindStyles: Record<string, string> = {
   client: "border-fg/40 text-fg",
@@ -24,7 +25,7 @@ const kindStyles: Record<string, string> = {
  * screen, where the edges are hidden and the layers stack.
  */
 export function ArchitectureDiagram({ diagram, dict }: { diagram: Diagram; dict: Dictionary }) {
-  const reduced = useReducedMotion();
+  const reduced = useReducedMotionSafe();
 
   const layers = useMemo(() => {
     const grouped = new Map<number, typeof diagram.nodes>();

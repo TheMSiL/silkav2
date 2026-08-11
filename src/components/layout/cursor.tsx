@@ -91,7 +91,7 @@ export function Cursor() {
   return (
     <div
       aria-hidden
-      className="pointer-events-none fixed inset-0 z-[var(--z-cursor)] hidden pointer-fine:block"
+      className="pointer-events-none fixed inset-0 z-(--z-cursor) hidden pointer-fine:block"
     >
       <motion.div
         style={{ x: springX, y: springY }}

@@ -1,8 +1,9 @@
 "use client";
 
 import Image from "next/image";
-import { motion, useReducedMotion } from "motion/react";
+import { motion } from "motion/react";
 import { cn } from "@/lib/cn";
+import { useReducedMotionSafe } from "@/lib/use-reduced-motion-safe";
 
 interface ImageRevealProps {
   src: string;
@@ -36,7 +37,7 @@ export function ImageReveal({
   scaleFrom = 1.08,
   delay = 0,
 }: ImageRevealProps) {
-  const reduced = useReducedMotion();
+  const reduced = useReducedMotionSafe();
   // Reserve the box before the image loads. Without this the lazy gallery
   // images shift everything below them as they arrive.
   const ratio = { aspectRatio: `${width} / ${height}` };

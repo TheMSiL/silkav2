@@ -2,13 +2,14 @@
 
 import Link from "next/link";
 import { useMemo, useState } from "react";
-import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import { AnimatePresence, motion } from "motion/react";
 import type { BuilderModule } from "@/types";
 import { localizeHref, type Locale } from "@/lib/i18n/config";
 import type { Dictionary } from "@/lib/i18n/dictionaries";
 import { cn } from "@/lib/cn";
 import { ArrowUpRight, Check, Plus } from "@/components/ui/icons";
 import { EVENTS, track } from "@/lib/analytics";
+import { useReducedMotionSafe } from "@/lib/use-reduced-motion-safe";
 
 /**
  * §Tell us what you need.
@@ -39,7 +40,7 @@ export function ProductBuilder({
   dict: Dictionary;
 }) {
   const [selected, setSelected] = useState<string[]>(["web"]);
-  const reduced = useReducedMotion();
+  const reduced = useReducedMotionSafe();
 
   const toggle = (key: string) => {
     setSelected((current) => {

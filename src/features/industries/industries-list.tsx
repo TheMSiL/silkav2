@@ -2,13 +2,14 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import { AnimatePresence, motion } from "motion/react";
 import type { Industry, Project } from "@/types";
 import { cn } from "@/lib/cn";
 import { pluralize } from "@/lib/i18n/dictionaries";
 import { ArrowUpRight } from "@/components/ui/icons";
 import { localizeHref, type Locale } from "@/lib/i18n/config";
 import type { Dictionary } from "@/lib/i18n/dictionaries";
+import { useReducedMotionSafe } from "@/lib/use-reduced-motion-safe";
 
 type IndustryWithWork = Industry & { projects: Pick<Project, "slug" | "name" | "summary">[] };
 
@@ -26,7 +27,7 @@ export function IndustriesList({
   dict: Dictionary;
 }) {
   const [open, setOpen] = useState<string | null>(industries[0]?.key ?? null);
-  const reduced = useReducedMotion();
+  const reduced = useReducedMotionSafe();
 
   return (
     <ul className="mt-12 border-t border-line">

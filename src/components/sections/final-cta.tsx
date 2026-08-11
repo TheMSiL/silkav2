@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useRef } from "react";
-import { motion, useMotionTemplate, useMotionValue, useReducedMotion, useSpring } from "motion/react";
+import { motion, useMotionTemplate, useMotionValue, useSpring } from "motion/react";
 import { Container } from "@/components/ui/container";
 import { Magnetic } from "@/components/ui/magnetic";
 import { TextReveal } from "@/components/motion/text-reveal";
@@ -11,6 +11,7 @@ import { site } from "@/lib/site";
 import { localizeHref, type Locale } from "@/lib/i18n/config";
 import type { Dictionary } from "@/lib/i18n/dictionaries";
 import { EVENTS, track } from "@/lib/analytics";
+import { useReducedMotionSafe } from "@/lib/use-reduced-motion-safe";
 
 /**
  * §Final CTA — the background reacts to the pointer. Subtle, and completely
@@ -18,7 +19,7 @@ import { EVENTS, track } from "@/lib/analytics";
  */
 export function FinalCta({ locale, dict }: { locale: Locale; dict: Dictionary }) {
   const ref = useRef<HTMLElement>(null);
-  const reduced = useReducedMotion();
+  const reduced = useReducedMotionSafe();
 
   const x = useMotionValue(50);
   const y = useMotionValue(50);

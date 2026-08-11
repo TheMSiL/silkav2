@@ -3,7 +3,7 @@
 import { useEffect, useId, useMemo, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import { AnimatePresence, motion } from "motion/react";
 import { useSearchParams } from "next/navigation";
 
 import {
@@ -21,6 +21,7 @@ import { ArrowUpRight, Check } from "@/components/ui/icons";
 import { site } from "@/lib/site";
 import type { Locale } from "@/lib/i18n/config";
 import type { Dictionary } from "@/lib/i18n/dictionaries";
+import { useReducedMotionSafe } from "@/lib/use-reduced-motion-safe";
 
 type Status = "idle" | "submitting" | "success" | "error";
 
@@ -38,7 +39,7 @@ export function LeadForm({
   const [status, setStatus] = useState<Status>("idle");
   const [serverMessage, setServerMessage] = useState("");
   const startedRef = useRef(false);
-  const reduced = useReducedMotion();
+  const reduced = useReducedMotionSafe();
 
   /* Validation messages come from the dictionary, so errors are translated. */
   const schema = useMemo(() => createLeadSchema(dict.form.errors), [dict]);

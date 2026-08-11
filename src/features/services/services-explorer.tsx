@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import { AnimatePresence, motion } from "motion/react";
 import type { Project, Service } from "@/types";
 import { cn } from "@/lib/cn";
 import { ArrowRight, ArrowUpRight } from "@/components/ui/icons";
@@ -10,6 +10,7 @@ import { ServiceVisual } from "./service-visual";
 import { EVENTS, track } from "@/lib/analytics";
 import { localizeHref, type Locale } from "@/lib/i18n/config";
 import type { Dictionary } from "@/lib/i18n/dictionaries";
+import { useReducedMotionSafe } from "@/lib/use-reduced-motion-safe";
 
 interface ServicesExplorerProps {
   services: Service[];
@@ -26,7 +27,7 @@ export function ServicesExplorer({
   dict,
 }: ServicesExplorerProps) {
   const [activeKey, setActiveKey] = useState(services[0].key);
-  const reduced = useReducedMotion();
+  const reduced = useReducedMotionSafe();
   const active = services.find((s) => s.key === activeKey) ?? services[0];
 
   const select = (key: Service["key"]) => {

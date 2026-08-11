@@ -1,8 +1,9 @@
 "use client";
 
-import { motion, useReducedMotion } from "motion/react";
+import { motion } from "motion/react";
 import { cn } from "@/lib/cn";
 import type { Dictionary } from "@/lib/i18n/dictionaries";
+import { useReducedMotionSafe } from "@/lib/use-reduced-motion-safe";
 
 export interface FlowStep {
   readonly id: string;
@@ -34,7 +35,7 @@ export function FlowDiagram({
   dict: Dictionary;
   className?: string;
 }) {
-  const reduced = useReducedMotion();
+  const reduced = useReducedMotionSafe();
 
   return (
     <ol className={cn("relative", className)}>

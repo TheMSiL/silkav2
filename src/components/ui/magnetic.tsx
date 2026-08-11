@@ -1,8 +1,9 @@
 "use client";
 
 import { useRef, type ReactNode } from "react";
-import { motion, useMotionValue, useReducedMotion, useSpring } from "motion/react";
+import { motion, useMotionValue, useSpring } from "motion/react";
 import { cn } from "@/lib/cn";
+import { useReducedMotionSafe } from "@/lib/use-reduced-motion-safe";
 
 interface MagneticProps {
   children: ReactNode;
@@ -20,7 +21,7 @@ interface MagneticProps {
  */
 export function Magnetic({ children, radius = 24, strength = 0.32, className }: MagneticProps) {
   const ref = useRef<HTMLSpanElement>(null);
-  const reduced = useReducedMotion();
+  const reduced = useReducedMotionSafe();
 
   const x = useMotionValue(0);
   const y = useMotionValue(0);

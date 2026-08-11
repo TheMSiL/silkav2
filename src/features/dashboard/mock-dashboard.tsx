@@ -1,10 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import { AnimatePresence, motion } from "motion/react";
 import type { DashboardTab } from "@/types";
 import type { Dictionary } from "@/lib/i18n/dictionaries";
 import { cn } from "@/lib/cn";
+import { useReducedMotionSafe } from "@/lib/use-reduced-motion-safe";
 
 /**
  * §CRM / ERP — a working miniature of the kind of console we build.
@@ -20,7 +21,7 @@ export function MockDashboard({
   dict: Dictionary;
 }) {
   const [activeKey, setActiveKey] = useState<string>(dashboardTabs[0].key);
-  const reduced = useReducedMotion();
+  const reduced = useReducedMotionSafe();
   const active = dashboardTabs.find((t) => t.key === activeKey) ?? dashboardTabs[0];
   const peak = Math.max(...active.chart);
 

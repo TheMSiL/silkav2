@@ -1,14 +1,15 @@
 "use client";
 
-import { motion, useReducedMotion } from "motion/react";
+import { motion } from "motion/react";
 import type { Service } from "@/types";
+import { useReducedMotionSafe } from "@/lib/use-reduced-motion-safe";
 
 /**
  * Abstract line diagrams, one per service family. They are schematic on
  * purpose — a diagram of the shape of the work, not an illustration of it.
  */
 export function ServiceVisual({ variant }: { variant: Service["visual"] }) {
-  const reduced = useReducedMotion();
+  const reduced = useReducedMotionSafe();
 
   const draw = reduced
     ? {}

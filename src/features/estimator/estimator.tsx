@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import { AnimatePresence, motion } from "motion/react";
 import type { EstimatorStep } from "@/types";
 import { localizeHref, type Locale } from "@/lib/i18n/config";
 import type { Dictionary } from "@/lib/i18n/dictionaries";
@@ -9,6 +9,7 @@ import { cn } from "@/lib/cn";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "@/components/ui/icons";
 import { EVENTS, track } from "@/lib/analytics";
+import { useReducedMotionSafe } from "@/lib/use-reduced-motion-safe";
 
 type Answers = Record<string, string>;
 
@@ -60,7 +61,7 @@ export function Estimator({
 }) {
   const [step, setStep] = useState(0);
   const [answers, setAnswers] = useState<Answers>({});
-  const reduced = useReducedMotion();
+  const reduced = useReducedMotionSafe();
 
   const total = estimatorSteps.length;
   const isComplete = step >= total;

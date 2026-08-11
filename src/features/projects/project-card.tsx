@@ -2,12 +2,13 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { motion, useReducedMotion } from "motion/react";
+import { motion } from "motion/react";
 import type { Project } from "@/types";
 import { cn } from "@/lib/cn";
 import { ArrowUpRight } from "@/components/ui/icons";
 import { EVENTS, track } from "@/lib/analytics";
 import { localizeHref, type Locale } from "@/lib/i18n/config";
+import { useReducedMotionSafe } from "@/lib/use-reduced-motion-safe";
 
 interface ProjectCardProps {
   project: Project;
@@ -25,7 +26,7 @@ export function ProjectCard({
   index = 0,
   priority = false,
 }: ProjectCardProps) {
-  const reduced = useReducedMotion();
+  const reduced = useReducedMotionSafe();
   const isFeature = layout === "feature";
 
   return (

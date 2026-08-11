@@ -1,13 +1,14 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import { AnimatePresence, motion } from "motion/react";
 import type { Project, ServiceKey } from "@/types";
 import { filterProjects } from "@/data";
 import type { Locale } from "@/lib/i18n/config";
 import { pluralize, type Dictionary } from "@/lib/i18n/dictionaries";
 import { cn } from "@/lib/cn";
 import { ProjectCard } from "./project-card";
+import { useReducedMotionSafe } from "@/lib/use-reduced-motion-safe";
 
 interface ProjectGridProps {
   projects: Project[];
@@ -18,7 +19,7 @@ interface ProjectGridProps {
 
 export function ProjectGrid({ projects, filters, locale, dict }: ProjectGridProps) {
   const [active, setActive] = useState<ServiceKey | "all">("all");
-  const reduced = useReducedMotion();
+  const reduced = useReducedMotionSafe();
 
   const visible = useMemo(() => filterProjects(projects, active), [projects, active]);
 

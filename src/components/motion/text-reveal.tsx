@@ -1,8 +1,9 @@
 "use client";
 
 import { Fragment } from "react";
-import { motion, useReducedMotion, type Variants } from "motion/react";
+import { motion, type Variants } from "motion/react";
 import { cn } from "@/lib/cn";
+import { useReducedMotionSafe } from "@/lib/use-reduced-motion-safe";
 
 type Tag = "span" | "h1" | "h2" | "h3" | "p";
 
@@ -39,7 +40,7 @@ export function TextReveal({
   stagger = 0.035,
   accent,
 }: TextRevealProps) {
-  const reduced = useReducedMotion();
+  const reduced = useReducedMotionSafe();
   const words = text.split(" ");
   const accentWords = accent ? accent.split(" ") : [];
   const isAccent = (word: string) => accentWords.includes(word.replace(/[.,]/g, ""));

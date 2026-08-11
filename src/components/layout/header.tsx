@@ -120,16 +120,23 @@ export function Header({ locale, dict }: { locale: Locale; dict: Dictionary }) {
               className="relative z-[calc(var(--z-menu)+1)] -mr-2 flex size-11 items-center justify-center text-white lg:hidden"
             >
               <span className="sr-only">{menuOpen ? dict.menu.close : dict.menu.open}</span>
-              <span aria-hidden className="relative block h-3 w-6">
+              {/* Three bars; the middle one fades out as the outer two cross. */}
+              <span aria-hidden className="pointer-events-none relative block h-3.5 w-6">
                 <span
                   className={cn(
-                    "absolute left-0 block h-px w-6 bg-current transition-transform duration-[var(--dur-base)] ease-[var(--ease-out-expo)]",
+                    "absolute left-0 block h-px w-6 bg-current transition-all duration-[var(--dur-base)] ease-[var(--ease-out-expo)]",
                     menuOpen ? "top-1.5 rotate-45" : "top-0",
                   )}
                 />
                 <span
                   className={cn(
-                    "absolute left-0 block h-px w-6 bg-current transition-transform duration-[var(--dur-base)] ease-[var(--ease-out-expo)]",
+                    "absolute left-0 top-1.5 block h-px w-6 bg-current transition-opacity duration-[var(--dur-fast)]",
+                    menuOpen ? "opacity-0" : "opacity-100",
+                  )}
+                />
+                <span
+                  className={cn(
+                    "absolute left-0 block h-px w-6 bg-current transition-all duration-[var(--dur-base)] ease-[var(--ease-out-expo)]",
                     menuOpen ? "top-1.5 -rotate-45" : "top-3",
                   )}
                 />

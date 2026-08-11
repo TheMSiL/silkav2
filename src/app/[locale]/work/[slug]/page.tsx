@@ -87,11 +87,11 @@ export default async function CaseStudyPage({
       {/* 1 — Hero */}
       <section
         data-theme="dark"
-        className="noise relative isolate overflow-hidden bg-surface pb-[var(--space-2xl)] pt-[calc(var(--header-h)+clamp(3rem,7vw,6rem))]"
+        className="noise relative isolate overflow-hidden bg-surface pb-(--space-2xl) pt-[calc(var(--header-h)+clamp(3rem,7vw,6rem))]"
       >
         <div
           aria-hidden
-          className="grid-bg pointer-events-none absolute inset-0 [mask-image:linear-gradient(to_bottom,black,transparent_80%)]"
+          className="grid-bg pointer-events-none absolute inset-0 mask-[linear-gradient(to_bottom,black,transparent_80%)]"
         />
         <Container className="relative">
           <nav aria-label="Breadcrumb" className="mb-10">

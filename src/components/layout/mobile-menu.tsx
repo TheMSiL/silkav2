@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useRef } from "react";
-import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import { AnimatePresence, motion } from "motion/react";
 import { site, socialLabels, type SocialKey } from "@/lib/site";
 import { legalNav, mainNav } from "@/lib/nav";
 import { ArrowUpRight } from "@/components/ui/icons";
@@ -10,6 +10,7 @@ import { track, EVENTS } from "@/lib/analytics";
 import { localizeHref, type Locale } from "@/lib/i18n/config";
 import type { Dictionary } from "@/lib/i18n/dictionaries";
 import { LanguageSwitcher } from "./language-switcher";
+import { useReducedMotionSafe } from "@/lib/use-reduced-motion-safe";
 
 interface MobileMenuProps {
   open: boolean;
@@ -23,7 +24,7 @@ const FOCUSABLE = 'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1
 export function MobileMenu({ open, onClose, locale, dict }: MobileMenuProps) {
   const panelRef = useRef<HTMLDivElement>(null);
   const restoreRef = useRef<HTMLElement | null>(null);
-  const reduced = useReducedMotion();
+  const reduced = useReducedMotionSafe();
 
   /* Scroll lock + focus trap + Escape. */
   useEffect(() => {

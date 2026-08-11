@@ -1,10 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import { AnimatePresence, motion } from "motion/react";
 import type { Dictionary } from "@/lib/i18n/dictionaries";
 import type { TechCategory } from "@/types";
 import { cn } from "@/lib/cn";
+import { useReducedMotionSafe } from "@/lib/use-reduced-motion-safe";
 
 /**
  * §Technology — a stack you can read rather than a wall of logos. Every entry
@@ -18,7 +19,7 @@ export function TechExplorer({
   dict: Dictionary;
 }) {
   const [activeKey, setActiveKey] = useState(techCategories[0].key);
-  const reduced = useReducedMotion();
+  const reduced = useReducedMotionSafe();
   const active = techCategories.find((c) => c.key === activeKey) ?? techCategories[0];
 
   return (

@@ -126,7 +126,7 @@ function FormSkeleton() {
     <div className="flex flex-col gap-6" aria-hidden>
       <div className="grid gap-6 sm:grid-cols-2">
         {[0, 1, 2, 3].map((i) => (
-          <div key={i} className="h-[4.75rem] animate-pulse bg-surface-2" />
+          <div key={i} className="h-19 animate-pulse bg-surface-2" />
         ))}
       </div>
       <div className="h-24 animate-pulse bg-surface-2" />

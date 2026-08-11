@@ -1,7 +1,7 @@
 "use client";
 
 import { useId, useState } from "react";
-import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import { AnimatePresence, motion } from "motion/react";
 import Link from "next/link";
 import type { ComplexityLevel } from "@/types";
 import { localizeHref, type Locale } from "@/lib/i18n/config";
@@ -9,6 +9,7 @@ import type { Dictionary } from "@/lib/i18n/dictionaries";
 import { cn } from "@/lib/cn";
 import { ArrowUpRight } from "@/components/ui/icons";
 import { EVENTS, track } from "@/lib/analytics";
+import { useReducedMotionSafe } from "@/lib/use-reduced-motion-safe";
 
 /**
  * §From simple to insanely complex.
@@ -26,7 +27,7 @@ export function ComplexitySlider({
   dict: Dictionary;
 }) {
   const [index, setIndex] = useState(3);
-  const reduced = useReducedMotion();
+  const reduced = useReducedMotionSafe();
   const id = useId();
   const level = complexityLevels[index];
   const max = complexityLevels.length - 1;
@@ -134,7 +135,7 @@ export function ComplexitySlider({
 
 /** Modules multiply and interconnect as the scale increases. */
 function ComplexityDiagram({ steps }: { steps: number }) {
-  const reduced = useReducedMotion();
+  const reduced = useReducedMotionSafe();
   const columns = 4;
   const total = 2 + steps * 2;
   const rows = Math.ceil(total / columns);

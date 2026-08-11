@@ -1,8 +1,9 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { useInView, useReducedMotion } from "motion/react";
+import { useInView } from "motion/react";
 import { cn } from "@/lib/cn";
+import { useReducedMotionSafe } from "@/lib/use-reduced-motion-safe";
 
 interface CounterProps {
   /** Accepts "12", "18,243", "98.2%", "∞" or "End to end". */
@@ -36,13 +37,15 @@ function format(value: number, decimals: number, grouped: boolean) {
 export function Counter({ value, className, duration = 1400 }: CounterProps) {
   const ref = useRef<HTMLSpanElement>(null);
   const inView = useInView(ref, { once: true, margin: "0px 0px -15% 0px" });
-  const reduced = useReducedMotion();
+  const reduced = useReducedMotionSafe();
   const { prefix, number, suffix, decimals } = parseCountable(value);
   const grouped = value.includes(",");
   /* Non-numeric values and reduced motion bypass the animation entirely, so
      the effect below never has to set state just to reach a static result. */
   const animates = number !== null && !reduced;
-  const [display, setDisplay] = useState(`${prefix}${format(0, decimals, grouped)}${suffix}`);
+  /* Starts at the final value so the server HTML shows the real figure — a
+     visitor without JavaScript would otherwise be told every stat is zero. */
+  const [display, setDisplay] = useState(value);
 
   useEffect(() => {
     if (!animates || number === null || !inView) return;

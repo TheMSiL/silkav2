@@ -1,9 +1,10 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { motion, useReducedMotion, useScroll, useSpring, useTransform } from "motion/react";
+import { motion, useScroll, useSpring, useTransform } from "motion/react";
 import type { Dictionary } from "@/lib/i18n/dictionaries";
 import type { ProcessStep } from "@/types";
+import { useReducedMotionSafe } from "@/lib/use-reduced-motion-safe";
 
 /**
  * §Process — a horizontal timeline driven by vertical scroll.
@@ -20,7 +21,7 @@ export function ProcessTimeline({
 }) {
   const sectionRef = useRef<HTMLDivElement>(null);
   const railRef = useRef<HTMLOListElement>(null);
-  const reduced = useReducedMotion();
+  const reduced = useReducedMotionSafe();
   /*
    * Measured, not guessed. A hardcoded percentage stops short of the last card
    * as soon as a card's height, the gap or the viewport width changes.
