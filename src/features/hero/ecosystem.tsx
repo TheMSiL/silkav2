@@ -268,6 +268,7 @@ export function HeroEcosystem({
               y2={rest[b].top}
               stroke="currentColor"
               strokeWidth="1"
+              vectorEffect="non-scaling-stroke"
               className="text-fg"
               opacity="0.09"
             />
@@ -284,6 +285,7 @@ export function HeroEcosystem({
               y2={rest[i].top}
               stroke="currentColor"
               strokeWidth="1"
+              vectorEffect="non-scaling-stroke"
               className={active === i ? "text-accent" : "text-fg"}
               opacity="0.14"
             />
