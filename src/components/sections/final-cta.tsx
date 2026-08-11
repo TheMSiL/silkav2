@@ -43,11 +43,19 @@ export function FinalCta({ locale, dict }: { locale: Locale; dict: Dictionary })
       aria-label={dict.cta.start}
       className="noise relative isolate overflow-hidden bg-surface py-[clamp(6rem,12vw,11rem)]"
     >
-      <div aria-hidden className="dot-bg pointer-events-none absolute inset-0 opacity-60" />
+      <div
+        aria-hidden
+        className="dot-bg pointer-events-none absolute inset-0 opacity-60 [mask-image:radial-gradient(ellipse_80%_80%_at_50%_50%,black_25%,transparent_100%)]"
+      />
       {!reduced ? (
         <motion.div
           aria-hidden
-          className="pointer-events-none absolute inset-0"
+          /*
+           * The glow is larger than the section, so without a mask it ends in a
+           * hard rectangular edge where the section box clips it. The mask fades
+           * it out before it ever reaches a boundary.
+           */
+          className="pointer-events-none absolute inset-0 [mask-image:radial-gradient(ellipse_75%_75%_at_50%_50%,black_20%,transparent_100%)]"
           style={{ background: glow }}
         />
       ) : null}

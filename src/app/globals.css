@@ -350,8 +350,8 @@
 }
 
 /* Hide the native cursor only where our custom one is active. */
-html[data-cursor="custom"],
-html[data-cursor="custom"] * {
+html[data-cursor-mode="custom"],
+html[data-cursor-mode="custom"] * {
   cursor: none !important;
 }
 

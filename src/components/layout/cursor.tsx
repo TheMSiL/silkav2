@@ -46,10 +46,10 @@ export function Cursor() {
 
   useEffect(() => {
     if (!enabled) {
-      document.documentElement.removeAttribute("data-cursor");
+      document.documentElement.removeAttribute("data-cursor-mode");
       return;
     }
-    document.documentElement.setAttribute("data-cursor", "custom");
+    document.documentElement.setAttribute("data-cursor-mode", "custom");
 
     const isInteractive = (target: EventTarget | null) =>
       target instanceof Element &&
@@ -77,7 +77,7 @@ export function Cursor() {
     window.addEventListener("blur", onLeave);
 
     return () => {
-      document.documentElement.removeAttribute("data-cursor");
+      document.documentElement.removeAttribute("data-cursor-mode");
       window.removeEventListener("pointermove", onMove);
       document.removeEventListener("pointerleave", onLeave);
       window.removeEventListener("pointerdown", onDown);
@@ -103,12 +103,12 @@ export function Cursor() {
           className="block rounded-full border"
           style={{ translateX: "-50%", translateY: "-50%" }}
           animate={{
-            width: hovering ? 28 : 6,
-            height: hovering ? 28 : 6,
+            width: hovering ? 28 : 3,
+            height: hovering ? 28 : 3,
             scale: pressed ? 0.82 : 1,
             // Hollow over interactive targets, so the ring never covers the
             // label you are about to click.
-            backgroundColor: hovering ? tint(onLight, 0) : tint(onLight, 0.85),
+            backgroundColor: hovering ? tint(onLight, 0) : tint(onLight, 1),
             borderColor: hovering ? tint(onLight, 0.85) : tint(onLight, 0),
           }}
           transition={{ type: "spring", stiffness: 480, damping: 30, mass: 0.4 }}
