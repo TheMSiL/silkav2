@@ -45,7 +45,7 @@ export function FinalCta({ locale, dict }: { locale: Locale; dict: Dictionary })
     >
       <div
         aria-hidden
-        className="dot-bg pointer-events-none absolute inset-0 opacity-60 [mask-image:radial-gradient(ellipse_80%_80%_at_50%_50%,black_25%,transparent_100%)]"
+        className="dot-bg edge-fade-all pointer-events-none absolute inset-0 opacity-60"
       />
       {!reduced ? (
         <motion.div
@@ -55,7 +55,7 @@ export function FinalCta({ locale, dict }: { locale: Locale; dict: Dictionary })
            * hard rectangular edge where the section box clips it. The mask fades
            * it out before it ever reaches a boundary.
            */
-          className="pointer-events-none absolute inset-0 [mask-image:radial-gradient(ellipse_75%_75%_at_50%_50%,black_20%,transparent_100%)]"
+          className="edge-fade-all pointer-events-none absolute inset-0"
           style={{ background: glow }}
         />
       ) : null}

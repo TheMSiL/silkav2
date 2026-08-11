@@ -103,8 +103,8 @@ export function Cursor() {
           className="block rounded-full border"
           style={{ translateX: "-50%", translateY: "-50%" }}
           animate={{
-            width: hovering ? 28 : 3,
-            height: hovering ? 28 : 3,
+            width: hovering ? 28 : 8,
+            height: hovering ? 28 : 8,
             scale: pressed ? 0.82 : 1,
             // Hollow over interactive targets, so the ring never covers the
             // label you are about to click.

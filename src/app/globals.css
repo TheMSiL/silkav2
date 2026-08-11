@@ -329,6 +329,23 @@
   mask-image: linear-gradient(to right, transparent, black 6%, black 94%, transparent);
 }
 
+/*
+ * Fades a full-bleed layer out on all four sides.
+ *
+ * A single radial mask is not enough: an ellipse sized to the box is still
+ * ~50% opaque where it meets the edge, so an oversized background (the CTA
+ * glow) still ends in a visible straight cut. Intersecting a vertical and a
+ * horizontal linear fade guarantees zero alpha at every boundary.
+ */
+.edge-fade-all {
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 32%, black 68%, transparent 100%),
+    linear-gradient(to right, transparent 0%, black 24%, black 76%, transparent 100%);
+  -webkit-mask-composite: source-in;
+  mask-image: linear-gradient(to bottom, transparent 0%, black 32%, black 68%, transparent 100%),
+    linear-gradient(to right, transparent 0%, black 24%, black 76%, transparent 100%);
+  mask-composite: intersect;
+}
+
 .hide-scrollbar {
   scrollbar-width: none;
   -ms-overflow-style: none;
