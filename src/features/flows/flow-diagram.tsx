@@ -1,9 +1,7 @@
-"use client";
+import type { CSSProperties } from "react";
 
-import { motion } from "motion/react";
 import { cn } from "@/lib/cn";
 import type { Dictionary } from "@/lib/i18n/dictionaries";
-import { useReducedMotionSafe } from "@/lib/use-reduced-motion-safe";
 
 export interface FlowStep {
   readonly id: string;
@@ -35,7 +33,6 @@ export function FlowDiagram({
   dict: Dictionary;
   className?: string;
 }) {
-  const reduced = useReducedMotionSafe();
 
   return (
     <ol className={cn("relative", className)}>
@@ -43,13 +40,11 @@ export function FlowDiagram({
       {steps.map((step, i) => {
         const style = kindStyles[step.kind];
         return (
-          <motion.li
+          <li
             key={step.id}
-            initial={reduced ? false : { opacity: 0, x: -10 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: "0px 0px -12% 0px" }}
-            transition={{ duration: 0.5, delay: i * 0.06, ease: [0.16, 1, 0.3, 1] }}
             className="relative flex gap-5 pb-8 last:pb-0"
+            data-reveal="rise"
+            style={{ "--reveal-delay": `${i * 0.06}s` } as CSSProperties}
           >
             <span className="relative z-10 mt-1 flex size-6 shrink-0 items-center justify-center rounded-full border border-line bg-surface">
               <span aria-hidden className={cn("size-2 rounded-full", style.ring)} />
@@ -63,7 +58,7 @@ export function FlowDiagram({
               </div>
               <p className="mt-1.5 text-base text-muted">{step.detail}</p>
             </div>
-          </motion.li>
+          </li>
         );
       })}
     </ol>

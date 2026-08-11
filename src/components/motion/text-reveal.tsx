@@ -1,99 +1,66 @@
 "use client";
 
-import { Fragment } from "react";
-import { motion, type Variants } from "motion/react";
+import { Fragment, type CSSProperties } from "react";
 import { cn } from "@/lib/cn";
-import { useReducedMotionSafe } from "@/lib/use-reduced-motion-safe";
-
-type Tag = "span" | "h1" | "h2" | "h3" | "p";
 
 interface TextRevealProps {
   text: string;
   className?: string;
-  as?: Tag;
+  as?: "span" | "h1" | "h2" | "h3" | "p";
   delay?: number;
   /** Seconds between words. */
   stagger?: number;
   /** Words inside `text` rendered in the accent colour. */
   accent?: string;
+  /** `load` plays immediately — the right choice above the fold. */
+  on?: "view" | "load";
 }
 
-const ease = [0.16, 1, 0.3, 1] as const;
-
 /**
- * Word-by-word rise.
+ * Word-by-word rise, driven by CSS. See `Reveal` for why the animation is not
+ * JavaScript.
  *
- * The trigger lives on the container, not on the moving words. Each word sits
- * inside an `overflow: hidden` wrapper, and a translated child of a clipping
- * parent has an empty intersection rectangle — so observing the word itself
- * would mean it never reports as visible and the heading never appears.
- * The container orchestrates via variants instead.
+ * This one *is* a client component, despite having no hooks and no event
+ * handlers. The reason is payload: as a server component the expanded per-word
+ * spans get serialised into the RSC flight data as well as the HTML, which cost
+ * ~35KB across the site. As a client component the flight carries only the
+ * original string and the spans exist once, in the markup.
  *
- * The full string stays in the DOM as ordinary text, and reduced motion
- * renders it flat.
+ * Each word sits in an `overflow: hidden` wrapper and slides up out of it. Note
+ * that this shape rules out observing the words themselves: a translated child
+ * of a clipping parent has an empty intersection rectangle, so it would never
+ * report as visible. The observer watches the container instead.
  */
 export function TextReveal({
   text,
   className,
-  as = "span",
+  as: Tag = "span",
   delay = 0,
   stagger = 0.035,
   accent,
+  on = "view",
 }: TextRevealProps) {
-  const reduced = useReducedMotionSafe();
   const words = text.split(" ");
   const accentWords = accent ? accent.split(" ") : [];
   const isAccent = (word: string) => accentWords.includes(word.replace(/[.,]/g, ""));
 
-  if (reduced) {
-    const Static = as;
-    return (
-      <Static className={className}>
-        {words.map((word, i) => (
-          <span key={`${word}-${i}`} className={isAccent(word) ? "text-accent" : undefined}>
-            {word}
-            {i < words.length - 1 ? " " : ""}
-          </span>
-        ))}
-      </Static>
-    );
-  }
-
-  const MotionTag = motion[as];
-
-  const container: Variants = {
-    hidden: {},
-    visible: { transition: { staggerChildren: stagger, delayChildren: delay } },
-  };
-
-  const word: Variants = {
-    hidden: { y: "110%" },
-    visible: { y: 0, transition: { duration: 0.85, ease } },
-  };
-
   return (
-    <MotionTag
-      className={cn(className)}
-      variants={container}
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, margin: "0px 0px -10% 0px" }}
-    >
-      {words.map((w, i) => (
+    <Tag className={className} data-reveal="words" data-reveal-on={on === "load" ? "load" : undefined}>
+      {words.map((word, i) => (
         // The space must sit between the wrappers: trailing whitespace inside
         // an inline-block collapses, which would run the words together.
-        <Fragment key={`${w}-${i}`}>
+        <Fragment key={`${word}-${i}`}>
           <span className="inline-block overflow-hidden align-bottom">
-            <motion.span
-              variants={word}
-              className={cn("inline-block", isAccent(w) && "text-accent")}
+            <span
+              className={cn("inline-block", isAccent(word) && "text-accent")}
+              style={{ "--reveal-delay": `${delay + i * stagger}s` } as CSSProperties}
             >
-              {w}
-            </motion.span>
+              {word}
+            </span>
           </span>
           {i < words.length - 1 ? " " : null}
         </Fragment>
       ))}
-    </MotionTag>
+    </Tag>
   );
 }

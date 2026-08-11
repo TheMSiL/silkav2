@@ -1,8 +1,8 @@
 "use client";
 
 import Image from "next/image";
+import type { CSSProperties } from "react";
 import Link from "next/link";
-import { motion } from "motion/react";
 import type { Project } from "@/types";
 import { cn } from "@/lib/cn";
 import { ArrowUpRight } from "@/components/ui/icons";
@@ -30,12 +30,10 @@ export function ProjectCard({
   const isFeature = layout === "feature";
 
   return (
-    <motion.article
-      initial={reduced ? false : { opacity: 0, y: 28 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "0px 0px -8% 0px" }}
-      transition={{ duration: 0.7, delay: (index % 3) * 0.08, ease: [0.16, 1, 0.3, 1] }}
+    <article
       className="group relative"
+      data-reveal="rise"
+      style={{ "--reveal-delay": `${(index % 3) * 0.08}s` } as CSSProperties}
     >
       <Link
         href={localizeHref(`/work/${project.slug}`, locale)}
@@ -108,6 +106,6 @@ export function ProjectCard({
           </div>
         </div>
       </Link>
-    </motion.article>
+    </article>
   );
 }

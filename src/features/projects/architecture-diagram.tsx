@@ -1,11 +1,9 @@
-"use client";
+import type { CSSProperties } from "react";
 
 import { useMemo } from "react";
-import { motion } from "motion/react";
 import type { ArchitectureDiagram as Diagram } from "@/types";
 import { cn } from "@/lib/cn";
 import type { Dictionary } from "@/lib/i18n/dictionaries";
-import { useReducedMotionSafe } from "@/lib/use-reduced-motion-safe";
 
 const kindStyles: Record<string, string> = {
   client: "border-fg/40 text-fg",
@@ -25,7 +23,6 @@ const kindStyles: Record<string, string> = {
  * screen, where the edges are hidden and the layers stack.
  */
 export function ArchitectureDiagram({ diagram, dict }: { diagram: Diagram; dict: Dictionary }) {
-  const reduced = useReducedMotionSafe();
 
   const layers = useMemo(() => {
     const grouped = new Map<number, typeof diagram.nodes>();
@@ -46,12 +43,10 @@ export function ArchitectureDiagram({ diagram, dict }: { diagram: Diagram; dict:
             <li key={layer} className="flex flex-1 flex-col gap-3">
               <span className="mono-sm text-faint">L{layer}</span>
               {nodes.map((node, i) => (
-                <motion.div
+                <div
                   key={node.id}
-                  initial={reduced ? false : { opacity: 0, y: 10 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: "0px 0px -10% 0px" }}
-                  transition={{ duration: 0.4, delay: (layerIndex * 3 + i) * 0.04 }}
+                  data-reveal="rise"
+                  style={{ "--reveal-delay": `${(layerIndex * 3 + i) * 0.04}s` } as CSSProperties}
                   className={cn(
                     "flex flex-col gap-1 border bg-surface p-3",
                     kindStyles[node.kind] ?? kindStyles.external,
@@ -61,7 +56,7 @@ export function ArchitectureDiagram({ diagram, dict }: { diagram: Diagram; dict:
                   <span className="mono-sm text-faint">
                     {node.detail ?? dict.diagram[node.kind]}
                   </span>
-                </motion.div>
+                </div>
               ))}
               {layerIndex < layers.length - 1 ? (
                 <span aria-hidden className="mt-auto pt-2 text-center text-faint">

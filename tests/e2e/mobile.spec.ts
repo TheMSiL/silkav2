@@ -82,3 +82,59 @@ test.describe("Hero paints without JavaScript", () => {
     });
   }
 });
+
+test.describe("Reveal engine", () => {
+  /*
+   * Entrance animations must never be able to strand content. The failure mode
+   * is silent and total — an element that misses its trigger stays at opacity 0
+   * for the life of the page — so this exercises the cases that break an
+   * IntersectionObserver: teleport scrolling, and a straight jump to the end.
+   */
+  const tally = async (page: import("@playwright/test").Page) =>
+    page.evaluate(() => {
+      const all = [...document.querySelectorAll("[data-reveal]")];
+      return {
+        total: all.length,
+        stuck: all.filter((el) => parseFloat(getComputedStyle(el).opacity) < 0.9).length,
+      };
+    });
+
+  for (const route of ["/", "/about", "/work/aera"]) {
+    test(`${route} reveals everything under teleport scrolling`, async ({ page }) => {
+      await page.goto(route);
+      await page.evaluate(async () => {
+        for (let y = 0; y < document.body.scrollHeight; y += 1200) {
+          window.scrollTo(0, y);
+          await new Promise((resolve) => setTimeout(resolve, 50));
+        }
+        window.scrollTo(0, document.body.scrollHeight);
+        await new Promise((resolve) => setTimeout(resolve, 800));
+      });
+
+      const { total, stuck } = await tally(page);
+      expect(total).toBeGreaterThan(0);
+      expect(stuck, "elements left invisible").toBe(0);
+    });
+  }
+
+  test("a jump straight to the bottom reveals everything above it", async ({ page }) => {
+    await page.goto("/");
+    await page.evaluate(async () => {
+      window.scrollTo(0, document.body.scrollHeight);
+      await new Promise((resolve) => setTimeout(resolve, 1200));
+    });
+
+    expect((await tally(page)).stuck).toBe(0);
+  });
+
+  test("nothing is hidden at all under reduced motion", async ({ browser }, testInfo) => {
+    const context = await browser.newContext({ ...testInfo.project.use, reducedMotion: "reduce" });
+    const page = await context.newPage();
+    await page.goto(`${testInfo.project.use.baseURL ?? "http://localhost:3210"}/`);
+
+    expect(await page.evaluate(() => document.documentElement.getAttribute("data-motion"))).toBeNull();
+    expect((await tally(page)).stuck).toBe(0);
+
+    await context.close();
+  });
+});

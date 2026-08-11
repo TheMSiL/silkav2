@@ -7,6 +7,7 @@ import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { Cursor } from "@/components/layout/cursor";
 import { Konami } from "@/components/layout/konami";
+import { RevealBoot } from "@/components/motion/reveal-boot";
 import { JsonLd } from "@/components/seo/json-ld";
 import { site } from "@/lib/site";
 import { titleTemplate } from "@/lib/seo/metadata";
@@ -121,6 +122,9 @@ export default async function LocaleLayout({
       className={`${sans.variable} ${jetbrains.variable}`}
       suppressHydrationWarning
     >
+      <head>
+        <RevealBoot />
+      </head>
       <body className="min-h-dvh bg-surface text-fg antialiased">
         <JsonLd data={[organizationSchema(), websiteSchema(locale)]} />
         <Cursor />

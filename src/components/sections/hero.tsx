@@ -1,7 +1,8 @@
 import Link from "next/link";
 import { HeroEcosystem, type EcosystemNode } from "@/features/hero/ecosystem";
 import { Magnetic } from "@/components/ui/magnetic";
-import { Rise, TextRise } from "@/components/motion/rise";
+import { Reveal } from "@/components/motion/reveal";
+import { TextReveal } from "@/components/motion/text-reveal";
 import { ArrowRight, ArrowUpRight } from "@/components/ui/icons";
 import { Container } from "@/components/ui/container";
 import { site } from "@/lib/site";
@@ -63,7 +64,7 @@ export function Hero({
       <Container className="relative">
         <div className="grid items-center gap-14 lg:grid-cols-[1.15fr_0.85fr] lg:gap-10">
           <div>
-            <Rise
+            <Reveal on="load"
               as="p"
               className="mono-sm mb-8 flex items-center gap-3 text-muted"
             >
@@ -72,15 +73,15 @@ export function Hero({
                 <span className="relative inline-flex size-1.5 rounded-full bg-accent" />
               </span>
               {dict.home.metaTitle} — {site.location}
-            </Rise>
+            </Reveal>
 
             <h1 className="font-display text-balance text-3xl sm:text-4xl">
-              <TextRise
+              <TextReveal on="load"
                 as="span"
                 text={dict.home.heroTitleA}
                 className="block"
               />
-              <TextRise
+              <TextReveal on="load"
                 as="span"
                 text={dict.home.heroTitleB}
                 className="block"
@@ -89,15 +90,15 @@ export function Hero({
               />
             </h1>
 
-            <Rise
+            <Reveal on="load"
               as="p"
               delay={0.25}
               className="mt-8 max-w-xl text-lg text-muted md:text-xl"
             >
               {dict.home.heroIntro}
-            </Rise>
+            </Reveal>
 
-            <Rise
+            <Reveal on="load"
               delay={0.35}
               className="mt-10 flex flex-wrap items-center gap-4"
             >
@@ -119,10 +120,10 @@ export function Hero({
                 {dict.cta.explore}
                 <ArrowRight className="transition-transform group-hover:translate-x-1" />
               </Link>
-            </Rise>
+            </Reveal>
           </div>
 
-          <Rise delay={0.2} className="relative">
+          <Reveal on="load" delay={0.2} className="relative">
             <HeroEcosystem
               nodes={nodes}
               groupLabel={dict.home.ecosystemLabel}
@@ -130,7 +131,7 @@ export function Hero({
               idleBody={dict.home.ecosystemIdleBody}
               detailLabel={dict.cta.seeDetail}
             />
-          </Rise>
+          </Reveal>
         </div>
       </Container>
 

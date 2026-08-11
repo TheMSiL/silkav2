@@ -1,9 +1,4 @@
-"use client";
-
-import { motion } from "motion/react";
-import type { ReactNode } from "react";
-import { cn } from "@/lib/cn";
-import { useReducedMotionSafe } from "@/lib/use-reduced-motion-safe";
+import type { CSSProperties, ReactNode } from "react";
 
 interface RevealProps {
   children: ReactNode;
@@ -11,41 +6,49 @@ interface RevealProps {
   /** Stagger offset in seconds when several reveals share a group. */
   delay?: number;
   direction?: "up" | "down" | "none";
-  as?: "div" | "li" | "span" | "section" | "article";
+  as?: "div" | "li" | "span" | "section" | "article" | "p";
+  /**
+   * `view` waits until the element is scrolled into view; `load` plays once,
+   * immediately. Use `load` above the fold — waiting to be "scrolled into" a
+   * region that is already on screen only adds latency.
+   */
+  on?: "view" | "load";
 }
 
-const distance = 18;
-
 /**
- * The single entry animation used across the site: a short rise + fade on first
- * view. One primitive keeps timing consistent; reduced motion renders instantly.
+ * The single entry animation used across the site: a short rise and fade.
+ *
+ * This is a server component on purpose. The obvious implementation — a client
+ * component with `whileInView` — writes the hidden `initial` state into the
+ * server HTML as inline styles, so every element it wraps ships invisible and
+ * stays that way until the JavaScript bundle has downloaded, hydrated and run
+ * an observer. On this site that meant 86 invisible elements in the shipped
+ * HTML, which on a phone reads as the page arriving all at once, late.
+ *
+ * Here the markup carries only a `data-reveal` attribute. The hidden state and
+ * the transition live in CSS, and an inline script in the document head starts
+ * observing elements as the parser produces them — so content fades in while
+ * the page is still streaming, and never waits on React. If that script is
+ * blocked or fails, nothing is ever hidden and the page is simply readable.
  */
 export function Reveal({
   children,
   className,
   delay = 0,
   direction = "up",
-  as = "div",
+  as: Tag = "div",
+  on = "view",
 }: RevealProps) {
-  const reduced = useReducedMotionSafe();
-  const MotionTag = motion[as];
-
-  if (reduced) {
-    const Tag = as;
-    return <Tag className={className}>{children}</Tag>;
-  }
-
-  const offset = direction === "none" ? 0 : direction === "up" ? distance : -distance;
+  const variant = direction === "none" ? "fade" : direction === "down" ? "fall" : "rise";
 
   return (
-    <MotionTag
-      className={cn(className)}
-      initial={{ opacity: 0, y: offset }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "0px 0px -12% 0px" }}
-      transition={{ duration: 0.65, delay, ease: [0.16, 1, 0.3, 1] }}
+    <Tag
+      className={className}
+      data-reveal={variant}
+      data-reveal-on={on === "load" ? "load" : undefined}
+      style={delay ? ({ "--reveal-delay": `${delay}s` } as CSSProperties) : undefined}
     >
       {children}
-    </MotionTag>
+    </Tag>
   );
 }
