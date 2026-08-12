@@ -126,14 +126,28 @@ export function HeroEcosystem({
     let spin = 0;
     let last = performance.now();
     let paused = false;
+    /* The server positions the nodes with percentage left/top; the loop below
+       positions them with a transform alone. Handing over means zeroing those
+       offsets exactly once, on the first frame that has real pixels. */
+    let handedOver = false;
+
+    /* Last value written to each element, so a frame only touches the DOM
+       where something actually changed. Depth opacity in particular settles
+       for long stretches at this rotation speed. */
+    const lastOpacity = new Float32Array(NODES.length).fill(-1);
+    const lastLayer = new Int16Array(NODES.length).fill(-1);
+    const lastSpokeAlpha = new Float32Array(NODES.length).fill(-1);
+    const lastChordAlpha = new Float32Array(CHORDS.length).fill(-1);
 
     const observer = new ResizeObserver(([entry]) => {
       width = entry.contentRect.width;
       height = entry.contentRect.height;
       svg.setAttribute("viewBox", `0 0 ${width} ${height}`);
-      if (reduced) draw(0);
+      /* Redraw immediately, not on the next tick. The viewBox and the line
+         coordinates are two halves of one coordinate system, and a frame that
+         paints between them collapses every line into the top-left corner. */
+      draw(spin);
     });
-    observer.observe(wrap);
 
     const project = (node: EcosystemNode, rotation: number): Projected => {
       const f = projectFraction(node, rotation);
@@ -146,62 +160,104 @@ export function HeroEcosystem({
     };
 
     function draw(rotation: number) {
+      if (!width || !height) return;
       const cx = width / 2;
       const cy = height / 2;
-      const points = NODES.map((node) => project(node, rotation));
       const activeIndex = activeRef.current;
 
-      /* The core is always dead centre, so CSS already has it right. */
+      if (!handedOver) {
+        handedOver = true;
+        for (const el of nodeRefs.current) {
+          if (!el) continue;
+          el.style.left = "0px";
+          el.style.top = "0px";
+        }
+        for (const spoke of spokeRefs.current) {
+          if (!spoke) continue;
+          spoke.setAttribute("x1", String(cx));
+          spoke.setAttribute("y1", String(cy));
+        }
+      }
 
-      points.forEach((point, i) => {
+      const points: Projected[] = [];
+
+      for (let i = 0; i < NODES.length; i++) {
+        const point = project(NODES[i], rotation);
+        points[i] = point;
+
         const el = nodeRefs.current[i];
         if (el) {
-          const isActive = activeIndex === i;
           const depthScale = 0.82 + point.scale * 0.16;
-          /* Percentages, matching the server render — mixing px offsets with
-             the percentage left/top below would double the displacement. */
-          el.style.left = `${(point.x / width) * 100}%`;
-          el.style.top = `${(point.y / height) * 100}%`;
-          el.style.transform = `translate(-50%, -50%) scale(${isActive ? depthScale * 1.06 : depthScale})`;
-          el.style.opacity = String(Math.max(0.42, Math.min(1, 0.5 + point.scale * 0.55)));
-          el.style.zIndex = String(Math.round(point.scale * 100));
+          const scale = activeIndex === i ? depthScale * 1.06 : depthScale;
+          /* One compositor-only write per node per frame. Writing left/top
+             instead would put a layout pass in the middle of every frame. */
+          el.style.transform = `translate3d(${point.x}px, ${point.y}px, 0) translate(-50%, -50%) scale(${scale})`;
+
+          const opacity = Math.max(0.42, Math.min(1, 0.5 + point.scale * 0.55));
+          if (Math.abs(opacity - lastOpacity[i]) > 0.004) {
+            el.style.opacity = opacity.toFixed(3);
+            lastOpacity[i] = opacity;
+          }
+          const layer = Math.round(point.scale * 100);
+          if (layer !== lastLayer[i]) {
+            el.style.zIndex = String(layer);
+            lastLayer[i] = layer;
+          }
         }
 
         const spoke = spokeRefs.current[i];
         if (spoke) {
-          spoke.setAttribute("x1", String(cx));
-          spoke.setAttribute("y1", String(cy));
-          spoke.setAttribute("x2", String(point.x));
-          spoke.setAttribute("y2", String(point.y));
+          spoke.setAttribute("x2", point.x.toFixed(1));
+          spoke.setAttribute("y2", point.y.toFixed(1));
           const base = 0.1 + Math.max(0, point.depth) * 0.16;
-          spoke.setAttribute("opacity", String(activeIndex === i ? 0.85 : activeIndex === null ? base : base * 0.4));
+          const alpha = activeIndex === i ? 0.85 : activeIndex === null ? base : base * 0.4;
+          if (Math.abs(alpha - lastSpokeAlpha[i]) > 0.004) {
+            spoke.setAttribute("opacity", alpha.toFixed(3));
+            lastSpokeAlpha[i] = alpha;
+          }
         }
-      });
+      }
 
-      CHORDS.forEach(([a, b], i) => {
+      for (let i = 0; i < CHORDS.length; i++) {
         const line = chordRefs.current[i];
-        if (!line) return;
-        line.setAttribute("x1", String(points[a].x));
-        line.setAttribute("y1", String(points[a].y));
-        line.setAttribute("x2", String(points[b].x));
-        line.setAttribute("y2", String(points[b].y));
+        if (!line) continue;
+        const [a, b] = CHORDS[i];
+        line.setAttribute("x1", points[a].x.toFixed(1));
+        line.setAttribute("y1", points[a].y.toFixed(1));
+        line.setAttribute("x2", points[b].x.toFixed(1));
+        line.setAttribute("y2", points[b].y.toFixed(1));
         const touching = activeIndex === a || activeIndex === b;
-        line.setAttribute("opacity", String(touching ? 0.5 : activeIndex === null ? 0.09 : 0.04));
-      });
+        const alpha = touching ? 0.5 : activeIndex === null ? 0.09 : 0.04;
+        if (alpha !== lastChordAlpha[i]) {
+          line.setAttribute("opacity", String(alpha));
+          lastChordAlpha[i] = alpha;
+        }
+      }
     }
 
-    if (reduced) {
-      draw(0);
-      return () => observer.disconnect();
-    }
+    /* Observed only now that `draw` and everything it closes over exist. */
+    observer.observe(wrap);
+
+    if (reduced) return () => observer.disconnect();
+
+    /*
+     * Capped at ~30fps. A full revolution takes about ninety seconds, so the
+     * frames in between are indistinguishable — but on a mid-range phone the
+     * uncapped loop was spending every frame it had on a rotation nobody could
+     * see move, and stealing them from scrolling.
+     */
+    const FRAME_MS = 32;
+    let drawnAt = 0;
 
     const tick = (now: number) => {
+      raf = requestAnimationFrame(tick);
       const delta = Math.min(64, now - last);
       last = now;
       if (!paused) spin += delta * 0.00007;
       else spin += delta * 0.00002; // slow, don't freeze — a dead visual reads as broken
+      if (now - drawnAt < FRAME_MS) return;
+      drawnAt = now;
       draw(spin);
-      raf = requestAnimationFrame(tick);
     };
     raf = requestAnimationFrame(tick);
 
@@ -331,11 +387,20 @@ export function HeroEcosystem({
               transform: `translate(-50%, -50%) scale(${0.82 + rest[i].scale * 0.16})`,
               opacity: rest[i].opacity,
             }}
+            /*
+              No backdrop blur here. These eight boxes move every frame, and a
+              backdrop filter makes each one re-sample the layers beneath it on
+              every one of those frames — together with the blurred bloom it
+              replaced, that held the hero at 22fps on a throttled phone where
+              it now runs at 50+. What sits behind them is a near-black panel
+              and some hairlines, so an opaque-enough background is visually
+              indistinguishable and free.
+            */
             className={cn(
               "absolute whitespace-nowrap border px-3 py-1.5 text-xs tracking-[-0.01em] transition-colors duration-200 will-change-transform",
               active === i
                 ? "border-accent bg-accent text-accent-fg"
-                : "border-line-strong bg-surface/70 text-fg backdrop-blur-sm hover:border-fg",
+                : "border-line-strong bg-surface/90 text-fg hover:border-fg",
             )}
           >
             {node.label}
@@ -351,7 +416,7 @@ export function HeroEcosystem({
       <div
         id="ecosystem-detail"
         aria-live="polite"
-        className="grid border-t border-line pt-5 [&>*]:col-start-1 [&>*]:row-start-1"
+        className="grid border-t border-line pt-5 *:col-start-1 *:row-start-1"
       >
         <div
           className={cn(

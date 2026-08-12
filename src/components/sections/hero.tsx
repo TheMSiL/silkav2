@@ -49,16 +49,16 @@ export function Hero({
   return (
     <section
       data-theme="dark"
-      className="noise relative isolate flex min-h-[100lvh] flex-col justify-center overflow-hidden bg-surface pt-[calc(var(--header-h)+2rem)] pb-16"
+      className="noise relative isolate flex min-h-lvh flex-col justify-center overflow-hidden bg-surface pt-[calc(var(--header-h)+2rem)] pb-16"
       aria-label={dict.home.metaTitle}
     >
       <div
         aria-hidden
-        className="grid-bg pointer-events-none absolute inset-0 [mask-image:radial-gradient(ellipse_at_50%_40%,black,transparent_78%)]"
+        className="grid-bg pointer-events-none absolute inset-0 mask-[radial-gradient(ellipse_at_50%_40%,black,transparent_78%)]"
       />
       <div
         aria-hidden
-        className="pointer-events-none absolute left-1/2 top-1/3 -z-10 h-[36rem] w-[36rem] -translate-x-1/2 rounded-full bg-accent/10 blur-[140px]"
+        className="hero-glow pointer-events-none absolute left-1/2 top-1/3 -z-10 h-192 w-[min(52rem,150vw)] -translate-x-1/2 -translate-y-24"
       />
 
       <Container className="relative">
@@ -98,14 +98,19 @@ export function Hero({
               {dict.home.heroIntro}
             </Reveal>
 
+            {/*
+              Full-bleed on a phone, shrink-to-fit from `sm` up. Two buttons at
+              their natural width leave a ragged gap down the right of a narrow
+              screen and give the thumb a smaller target than it deserves.
+            */}
             <Reveal on="load"
               delay={0.35}
-              className="mt-10 flex flex-wrap items-center gap-4"
+              className="mt-10 flex flex-col gap-4 sm:flex-row sm:flex-wrap sm:items-center"
             >
-              <Magnetic>
+              <Magnetic className="w-full sm:w-auto">
                 <Link
                   href={localizeHref("/contact", locale)}
-                  className="group inline-flex h-14 items-center gap-3 bg-accent px-8 font-medium text-accent-fg transition-[filter] hover:brightness-110"
+                  className="group flex h-14 w-full items-center justify-center gap-3 bg-accent px-8 font-medium text-accent-fg transition-[filter] hover:brightness-110 sm:inline-flex sm:w-auto sm:justify-start"
                   data-cursor="explore"
                 >
                   {dict.cta.start}
@@ -114,7 +119,7 @@ export function Hero({
               </Magnetic>
               <Link
                 href={localizeHref("/work", locale)}
-                className="group inline-flex h-14 items-center gap-3 border border-line-strong px-8 font-medium text-fg transition-colors hover:border-fg"
+                className="group flex h-14 w-full items-center justify-center gap-3 border border-line-strong px-8 font-medium text-fg transition-colors hover:border-fg sm:inline-flex sm:w-auto sm:justify-start"
                 data-cursor="view"
               >
                 {dict.cta.explore}
