@@ -1,5 +1,13 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32">
-  <rect width="32" height="32" fill="#08090a"/>
-  <path d="M25.5 8.5A7.5 7.5 0 1 0 16 16" fill="none" stroke="#ff4a1c" stroke-width="3.4" stroke-linecap="square"/>
-  <path d="M6.5 23.5A7.5 7.5 0 1 0 16 16" fill="none" stroke="#eeece6" stroke-width="3.4" stroke-linecap="square" opacity="0.6"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="32" height="32">
+  <!--
+    Favicon lockup: the mark reversed out of a solid accent tile.
+
+    A tab strip gives every favicon the same square, so the tile is free
+    presence — the stroke-only mark floats in it and reads as noise at 16px.
+    The openings are widened from 1.7u to 2.2u here because at 16px the 1.7u
+    gap closes to under a pixel and the detail is lost rather than softened.
+  -->
+  <rect width="24" height="24" fill="#2119f0"/>
+  <path d="M21 5H11A3.5 3.5 0 0 0 7.86 6.954M7.551 9.095A3.5 3.5 0 0 0 11 12H13A3.5 3.5 0 0 1 16.449 14.905M16.14 17.046A3.5 3.5 0 0 1 13 19H3"
+        fill="none" stroke="#f4f2ec" stroke-width="2.6" stroke-linecap="butt"/>
 </svg>

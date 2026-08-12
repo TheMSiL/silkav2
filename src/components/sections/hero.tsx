@@ -139,13 +139,6 @@ export function Hero({
           </Reveal>
         </div>
       </Container>
-
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-x-0 bottom-6 hidden justify-center lg:flex"
-      >
-        <span className="mono-sm text-faint">{dict.common.scroll}</span>
-      </div>
     </section>
   );
 }

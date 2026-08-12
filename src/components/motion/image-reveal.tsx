@@ -1,6 +1,7 @@
 import Image from "next/image";
 import type { CSSProperties } from "react";
 import { cn } from "@/lib/cn";
+import { revealedByScript } from "./reveal";
 
 interface ImageRevealProps {
   src: string;
@@ -35,6 +36,7 @@ export function ImageReveal({
     <div
       className={cn("overflow-hidden", className)}
       data-reveal="image"
+      {...revealedByScript}
       // Reserve the box before the image loads. Without this the lazy gallery
       // images shift everything below them as they arrive.
       style={{ aspectRatio: `${width} / ${height}`, "--reveal-delay": `${delay}s` } as CSSProperties}

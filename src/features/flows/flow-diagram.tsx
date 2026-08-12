@@ -2,6 +2,7 @@ import type { CSSProperties } from "react";
 
 import { cn } from "@/lib/cn";
 import type { Dictionary } from "@/lib/i18n/dictionaries";
+import { revealedByScript } from "@/components/motion/reveal";
 
 export interface FlowStep {
   readonly id: string;
@@ -45,6 +46,7 @@ export function FlowDiagram({
             className="relative flex gap-5 pb-8 last:pb-0"
             data-reveal="rise"
             style={{ "--reveal-delay": `${i * 0.06}s` } as CSSProperties}
+            {...revealedByScript}
           >
             <span className="relative z-10 mt-1 flex size-6 shrink-0 items-center justify-center rounded-full border border-line bg-surface">
               <span aria-hidden className={cn("size-2 rounded-full", style.ring)} />

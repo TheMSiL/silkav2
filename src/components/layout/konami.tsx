@@ -37,7 +37,7 @@ export function Konami() {
           index = 0;
           console.log(
             `%c${site.name} — we build things.%c\n${site.tagline}\nHiring engineers who read the console: ${site.email}`,
-            "font-size:16px;font-weight:600;color:#ff4a1c",
+            "font-size:16px;font-weight:600;color:#5a52ff",
             "font-size:12px;color:#8b9199",
           );
           const root = document.documentElement;

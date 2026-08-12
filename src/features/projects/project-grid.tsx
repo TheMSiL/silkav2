@@ -61,7 +61,7 @@ export function ProjectGrid({ projects, filters, locale, dict }: ProjectGridProp
 
       {/*
         Filtering cross-fades rather than layout-animating. A `layout` prop
-        across twelve image cards keeps the grid in motion for hundreds of
+        across a grid of image cards keeps it in motion for hundreds of
         milliseconds, which is both expensive and hostile to a click landing
         where the user aimed it.
       */}

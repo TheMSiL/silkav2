@@ -2,6 +2,7 @@
 
 import type { CSSProperties } from "react";
 import type { Service } from "@/types";
+import { revealedByScript } from "@/components/motion/reveal";
 
 /**
  * Abstract line diagrams, one per service family. They are schematic on
@@ -24,6 +25,7 @@ export function ServiceVisual({ variant }: { variant: Service["visual"] }) {
   const step = (index: number) => ({
     "data-reveal": "fade",
     "data-reveal-on": "load",
+    ...revealedByScript,
     style: { "--reveal-delay": `${index * 0.05}s` } as CSSProperties,
   });
 

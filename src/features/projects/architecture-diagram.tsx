@@ -4,6 +4,7 @@ import { useMemo } from "react";
 import type { ArchitectureDiagram as Diagram } from "@/types";
 import { cn } from "@/lib/cn";
 import type { Dictionary } from "@/lib/i18n/dictionaries";
+import { revealedByScript } from "@/components/motion/reveal";
 
 const kindStyles: Record<string, string> = {
   client: "border-fg/40 text-fg",
@@ -47,6 +48,7 @@ export function ArchitectureDiagram({ diagram, dict }: { diagram: Diagram; dict:
                   key={node.id}
                   data-reveal="rise"
                   style={{ "--reveal-delay": `${(layerIndex * 3 + i) * 0.04}s` } as CSSProperties}
+                  {...revealedByScript}
                   className={cn(
                     "flex flex-col gap-1 border bg-surface p-3",
                     kindStyles[node.kind] ?? kindStyles.external,

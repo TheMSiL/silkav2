@@ -95,17 +95,51 @@ export function HeroEcosystem({
   const chordRefs = useRef<(SVGLineElement | null)[]>([]);
   const coreRef = useRef<HTMLDivElement>(null);
 
-  const [active, setActive] = useState<number | null>(null);
+  /*
+   * Two inputs, because the two devices want different things.
+   *
+   * On a pointer that can hover, this stays exactly what it was: hovering a
+   * node opens it, leaving closes it, and nothing sticks. That is `hovered`.
+   *
+   * Touch has no hover, and driving it from the same state is what made this
+   * hold-to-read on a phone — a tap fires pointerenter on touchstart and
+   * pointerleave on lift, so the node lit up and went dark inside one gesture
+   * and only a held finger kept it open. So touch sets `pinned` instead, which
+   * survives the finger leaving and is cleared by a second tap.
+   */
+  const [pinned, setPinned] = useState<number | null>(null);
+  const [hovered, setHovered] = useState<number | null>(null);
+  const active = hovered ?? pinned;
+
   const activeRef = useRef<number | null>(null);
+  const pinnedRef = useRef<number | null>(null);
   const [reduced, setReduced] = useState(false);
 
-  const setActiveNode = useCallback((index: number | null) => {
-    activeRef.current = index;
-    setActive(index);
-    if (index !== null) {
-      track(EVENTS.serviceView, { service: NODES[index].id, location: "hero_ecosystem" });
-    }
-  }, [NODES]);
+  /* The draw loop reads these every frame rather than re-subscribing. */
+  useEffect(() => {
+    activeRef.current = active;
+    pinnedRef.current = pinned;
+  }, [active, pinned]);
+
+  useEffect(() => {
+    if (active === null) return;
+    track(EVENTS.serviceView, { service: NODES[active].id, location: "hero_ecosystem" });
+  }, [active, NODES]);
+
+  /** Touch only. A second tap on the open node closes it. */
+  const tap = useCallback(
+    (index: number) => setPinned((current) => (current === index ? null : index)),
+    [],
+  );
+
+  useEffect(() => {
+    if (pinned === null) return;
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setPinned(null);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [pinned]);
 
   useEffect(() => {
     const query = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -253,7 +287,9 @@ export function HeroEcosystem({
       raf = requestAnimationFrame(tick);
       const delta = Math.min(64, now - last);
       last = now;
-      if (!paused) spin += delta * 0.00007;
+      /* A pinned node counts as paused: it has a link under it, and chasing a
+         moving target to reach that link is the whole problem with a carousel. */
+      if (!paused && pinnedRef.current === null) spin += delta * 0.00007;
       else spin += delta * 0.00002; // slow, don't freeze — a dead visual reads as broken
       if (now - drawnAt < FRAME_MS) return;
       drawnAt = now;
@@ -373,11 +409,25 @@ export function HeroEcosystem({
             ref={(el) => {
               nodeRefs.current[i] = el;
             }}
-            onPointerEnter={() => setActiveNode(i)}
-            onFocus={() => setActiveNode(i)}
-            onPointerLeave={() => setActiveNode(null)}
-            onBlur={() => setActiveNode(null)}
-            onClick={() => setActiveNode(i)}
+            /* Hover drives everything on a pointer that has one; touch is
+               excluded from both so its synthetic enter/leave cannot fight the
+               tap below. */
+            onPointerEnter={(event) => {
+              if (event.pointerType !== "touch") setHovered(i);
+            }}
+            onPointerLeave={(event) => {
+              if (event.pointerType !== "touch") setHovered(null);
+            }}
+            /* Keyboard focus previews; a tap must not. Tapping also focuses the
+               button, and letting that set `hovered` pinned the node open
+               against the second tap that was trying to close it. */
+            onFocus={(event) => {
+              if (event.currentTarget.matches(":focus-visible")) setHovered(i);
+            }}
+            onBlur={() => setHovered(null)}
+            onPointerUp={(event) => {
+              if (event.pointerType === "touch") tap(i);
+            }}
             aria-pressed={active === i}
             aria-describedby="ecosystem-detail"
             data-cursor="explore"

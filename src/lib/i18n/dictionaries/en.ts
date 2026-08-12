@@ -32,7 +32,6 @@ export const en: Dictionary = {
     discussIt: "Let's discuss it",
   },
   common: {
-    scroll: "Scroll",
     skipToContent: "Skip to content",
     home: "Home",
     loading: "Loading",
@@ -149,7 +148,7 @@ export const en: Dictionary = {
     ecosystemLabel: "What we build — an interactive map of the studio's capabilities",
     ecosystemIdleTitle: "The system",
     ecosystemIdleBody:
-      "Eight things we build, and the connections between them. Most products need more than one — hover a node.",
+      "Eight things we build, and the connections between them. Most products need more than one — pick any node.",
     workEyebrow: "Selected work",
     workTitle: "Products that shipped, and what it took.",
     workAccent: "shipped,",
@@ -186,8 +185,8 @@ export const en: Dictionary = {
     processIntro:
       "You always know what is happening this week, what is happening next, and what would have to change for the date to move.",
     industriesEyebrow: "Industries",
-    industriesTitle: "Twelve products. Twelve different businesses.",
-    industriesAccent: "Twelve different",
+    industriesTitle: "Fourteen products. Fourteen different businesses.",
+    industriesAccent: "Fourteen different",
     industriesIntro:
       "We are not a vertical studio. What transfers between an aviation archive and a dental clinic is the engineering, not the domain — but we learn the domain anyway.",
     principlesEyebrow: "What we care about",
@@ -206,8 +205,8 @@ export const en: Dictionary = {
   work: {
     metaTitle: "Work",
     metaDescription:
-      "Twelve shipped products — SaaS platforms, data products, e-commerce, logistics, real estate and AI automation. Every case study links to the live build.",
-    title: "Twelve products, and what each one had to solve.",
+      "Fourteen shipped products — SaaS platforms, data products, e-commerce, logistics, real estate, mobility and AI automation. Every case study links to the live build.",
+    title: "Fourteen products, and what each one had to solve.",
     accent: "had to solve.",
     intro:
       "Every case study links to the running build. Where a number appears, it comes from the product itself — not from a marketing deck.",

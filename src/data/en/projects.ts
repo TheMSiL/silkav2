@@ -3,8 +3,8 @@ import type { Project } from "@/types";
 /**
  * PORTFOLIO
  * ---------
- * Twelve shipped products. Every entry links to the live build, and the
- * screenshots in `public/work/<slug>/` are captured from it
+ * Fourteen shipped products, newest first. Every entry links to the live build,
+ * and the screenshots in `public/work/<slug>/` are captured from it
  * (`node scripts/capture-work.mjs`).
  *
  * Editorial rule: describe what was built and what the system does. No
@@ -15,6 +15,267 @@ import type { Project } from "@/types";
  * `data/index.ts` against the CMS client. The `Project` type is the contract.
  */
 export const projects: Project[] = [
+  {
+    slug: "noir",
+    name: "NOIR X1",
+    url: "https://noir-electric.vercel.app/",
+    summary: "Product site and configurator for a premium electric bicycle",
+    industry: "Electric mobility",
+    industryKey: "mobility",
+    year: "2026",
+    scope: ["Website", "Product", "Configurator", "Editorial"],
+    services: ["web", "ecommerce"],
+    disciplines: ["Strategy", "UX", "UI", "Frontend"],
+    featured: true,
+    accent: "#c2703f",
+    strapline:
+      "Eleven sections, one machine, and a configurator that has to name a price — on a page whose entire argument is restraint.",
+    duration: "9 weeks",
+    team: "1 designer · 2 engineers",
+    platforms: ["Marketing site", "Interactive configurator", "Specification surfaces"],
+    locales: ["EN"],
+    cover: { src: "/work/noir/cover.jpg", alt: "NOIR X1 homepage with the bicycle in profile" },
+    challenge: {
+      heading: "Challenge",
+      body: [
+        "NOIR's entire claim is subtraction: every part that did not earn its place was removed rather than styled. A site for that product cannot sell with ornament, because the ornament would contradict the thing it is selling.",
+        "The commercial problem sits underneath it. Electric bicycles are bought on three numbers — range, power, weight — and every competitor prints the same three. Repeating them proves nothing; the site had to make them mean something, and then quote a real price without turning into a shop.",
+      ],
+      items: [
+        { label: "Product", value: "140 km · 750 W · 19.8 kg" },
+        { label: "Range", value: "X1 · X1 S · X1 Carbon, €3,490 – €5,490" },
+        { label: "Core difficulty", value: "Restraint that still has to sell" },
+      ],
+    },
+    solution: {
+      heading: "Solution",
+      body: [
+        "The page is eleven numbered sections read as one continuous argument, each doing exactly one job: what the object is for, what was removed, what the numbers mean, how it behaves, what it costs.",
+        "Specifications are presented one at a time rather than as a table. Choosing 'range' fills the screen with 140 km and the conditions it was measured under — mixed urban loop, Tour mode, 75 kg rider, 18 °C. A number with its conditions attached is a different claim from a number on its own.",
+        "The configurator is four decisions — model, finish, accessories, extras — with the total recalculating as each is made, and it ends in a configuration request rather than a checkout, because this is a bike that gets delivered and assembled per city.",
+      ],
+      items: [
+        { label: "Narrative", value: "Eleven sections, one argument" },
+        { label: "Specifications", value: "One metric at a time, with its conditions" },
+        { label: "Configurator", value: "Four decisions, live total" },
+      ],
+    },
+    architecture: {
+      caption:
+        "A static shell with interactive islands. Model, finish and accessory pricing live in one module that both the models section and the configurator read.",
+      nodes: [
+        { id: "site", label: "Next.js App Router", layer: 0, kind: "client", detail: "Static shell" },
+        { id: "sections", label: "Section islands", layer: 1, kind: "client", detail: "Scroll-linked" },
+        { id: "config", label: "Configurator", layer: 1, kind: "client", detail: "Four steps" },
+        { id: "catalog", label: "Product model", layer: 2, kind: "data", detail: "Models, finishes, extras" },
+        { id: "pricing", label: "Pricing module", layer: 2, kind: "service", detail: "Running total" },
+        { id: "request", label: "Configuration request", layer: 3, kind: "service", detail: "Server action" },
+        { id: "crm", label: "CRM / email", layer: 4, kind: "external" },
+        { id: "analytics", label: "Analytics", layer: 4, kind: "external" },
+      ],
+      edges: [
+        { from: "site", to: "sections" },
+        { from: "site", to: "config" },
+        { from: "sections", to: "catalog" },
+        { from: "config", to: "catalog" },
+        { from: "config", to: "pricing", label: "recalculate" },
+        { from: "config", to: "request", label: "with the build attached" },
+        { from: "request", to: "crm" },
+        { from: "site", to: "analytics" },
+      ],
+    },
+    ux: {
+      heading: "UX",
+      body: [
+        "The reading order is the buying order: what this is for, what was taken out, what the numbers mean, how it rides, what it costs. Someone who only wants the price can reach the configurator from the header in one click and skip the argument entirely.",
+        "Every interactive block — the specification switcher, the riding modes, the configurator — has a readable static state, so the whole page still makes its case without JavaScript and under reduced motion.",
+      ],
+      items: [
+        { label: "Reading order", value: "Purpose → subtraction → numbers → price" },
+        { label: "Shortcut", value: "Configurator reachable from the header" },
+        { label: "Fallback", value: "Every island degrades to static text" },
+      ],
+    },
+    ui: {
+      heading: "UI",
+      body: [
+        "Near-monochrome, with a single copper accent that appears once per section — on the section number and nowhere else. When the accent is that scarce, it works as punctuation instead of decoration.",
+        "Display type is set very large and very tight, and every measurement uses tabular figures with the unit typeset smaller alongside it, so 140 KM and 19.8 KG align down a column without the units competing with the numbers.",
+      ],
+    },
+    development: {
+      heading: "Development",
+      body: [
+        "Prices exist once. The models section and the configurator both read the same pricing module, so a surcharge cannot be right in one place and stale in the other.",
+        "Twenty viewports of scroll-linked motion run off a single shared observer rather than per-section listeners, and the entire choreography collapses to instant state changes under prefers-reduced-motion.",
+        "The bicycle is vector rather than photography — it stays sharp at any density, recolours with the finish selection, and costs a fraction of the weight a hero photograph would.",
+      ],
+    },
+    features: [
+      { title: "Eleven-section narrative", description: "Philosophy, object, technology, specifications, modes, app, performance, sustainability, models, gallery, configurator." },
+      { title: "Specification switcher", description: "Range, power, weight, top speed and charge shown one at a time, each with its measurement conditions." },
+      { title: "Riding modes", description: "City, Tour and Sport compared on range, power, acceleration and assisted top speed." },
+      { title: "Model comparison", description: "X1, X1 S and X1 Carbon with three finishes and per-model figures." },
+      { title: "Four-step configurator", description: "Model, finish, accessories and range extender, with the total updating as you decide." },
+      { title: "Connected-ride section", description: "Dashboard, ride statistics, navigation and bike settings shown as the app surfaces them." },
+      { title: "Sustainability facts", description: "91% drive efficiency, 1,200 cycles to 80% capacity, single-material recycling streams." },
+      { title: "Configuration request", description: "The finished build submitted through a server action rather than a cart." },
+    ],
+    integrations: ["Configuration request routing", "Email notifications", "Analytics"],
+    stack: [
+      { group: "Frontend", items: ["Next.js", "React", "TypeScript", "Tailwind CSS", "Motion"] },
+      { group: "Platform", items: ["Static generation", "Server actions", "Vercel"] },
+    ],
+    results: [
+      { label: "Sections", value: "11", note: "One argument, not a brochure" },
+      { label: "Specifications", value: "One at a time", note: "Each with its measurement conditions" },
+      { label: "Pricing", value: "On the page", note: "From €3,490, VAT included" },
+      { label: "Hero imagery", value: "Vector", note: "Recolours with the finish, weighs nothing" },
+    ],
+    outcome:
+      "A product page that practises what the product claims. Nothing on it is decoration, and the price is reached by argument rather than by a button.",
+    gallery: [
+      { src: "/work/noir/01.jpg", alt: "NOIR X1 specifications section showing range", caption: "Specifications, one at a time", device: "desktop" },
+      { src: "/work/noir/02.jpg", alt: "NOIR X1 model comparison with finishes", caption: "Three models", device: "desktop" },
+      { src: "/work/noir/03.jpg", alt: "NOIR X1 configurator with a running total", caption: "The configurator", device: "desktop" },
+      { src: "/work/noir/mobile.jpg", alt: "NOIR X1 on mobile", caption: "Mobile", device: "mobile" },
+    ],
+  },
+
+  {
+    slug: "pulse",
+    name: "PULSE",
+    url: "https://pulse-rose-one.vercel.app/",
+    summary: "A business intelligence workspace for revenue, cash flow, projects and goals",
+    industry: "Business intelligence",
+    industryKey: "saas",
+    year: "2026",
+    scope: ["SaaS", "Product UI", "Web App", "Design system"],
+    services: ["saas", "web", "backend"],
+    disciplines: ["Strategy", "UX", "UI", "Frontend", "Backend"],
+    featured: true,
+    accent: "#6b62e8",
+    strapline:
+      "Eight workspaces over one ledger — so revenue on the overview and revenue in the analytics breakdown are the same number, computed once.",
+    duration: "12 weeks",
+    team: "1 designer · 2 engineers",
+    platforms: ["Web application", "Analytics workspace", "Transaction ledger"],
+    locales: ["EN"],
+    cover: { src: "/work/pulse/cover.jpg", alt: "PULSE overview workspace with revenue and cash flow" },
+    challenge: {
+      heading: "Challenge",
+      body: [
+        "Business intelligence tools split into two useless halves: a chart library with a login, which asks you to build the report yourself, and a fixed report pack, which answers a question you did not have. The person in the middle — an owner who wants to know how the month is actually going — is served by neither.",
+        "The hard engineering problem is agreement. Revenue appears on the overview tile, in the revenue chart, in the by-customer breakdown, in the month-over-month series and as progress against a goal. If those are five calculations, they will disagree, and the first disagreement a user notices ends their trust in the whole product.",
+      ],
+      items: [
+        { label: "Surfaces", value: "8 workspaces over one ledger" },
+        { label: "Ledger", value: "168 transactions, filtered and paginated" },
+        { label: "Core difficulty", value: "One number, five places, no drift" },
+      ],
+    },
+    solution: {
+      heading: "Solution",
+      body: [
+        "A single derived-metrics layer computes every figure once from the ledger, and every surface reads it. A KPI tile and the chart beside it are not two implementations of the same idea — they are one result rendered twice.",
+        "The transaction table is the primitive the rest of the product is built from: search, filters, column control, sorting and pagination. Every aggregate elsewhere is a view over it, and every aggregate links back to the rows that produced it, so a surprising number is one click from its explanation.",
+        "Charts use a fixed six-series palette applied identically everywhere, so a category is the same colour on every surface, and status is always carried by a label as well as a colour rather than by colour alone.",
+      ],
+      items: [
+        { label: "Metrics", value: "Derived once, read everywhere" },
+        { label: "Primitive", value: "The ledger; everything else is a view" },
+        { label: "Encoding", value: "Status by label, not by colour alone" },
+      ],
+    },
+    architecture: {
+      caption:
+        "Every surface reads the derived-metrics layer rather than the tables directly, which is what keeps a tile and a chart from disagreeing.",
+      nodes: [
+        { id: "app", label: "Next.js App Router", layer: 0, kind: "client", detail: "Workspace shell" },
+        { id: "surfaces", label: "Eight workspaces", layer: 1, kind: "client", detail: "Overview → settings" },
+        { id: "charts", label: "SVG charts", layer: 1, kind: "client", detail: "No chart library" },
+        { id: "api", label: "API layer", layer: 2, kind: "service" },
+        { id: "metrics", label: "Derived metrics", layer: 3, kind: "service", detail: "Computed once" },
+        { id: "ledger", label: "Transaction ledger", layer: 4, kind: "data" },
+        { id: "entities", label: "Customers · projects · team", layer: 4, kind: "data" },
+        { id: "db", label: "PostgreSQL", layer: 5, kind: "data" },
+        { id: "auth", label: "Auth & seats", layer: 5, kind: "external", detail: "Plan limits" },
+        { id: "export", label: "CSV export", layer: 5, kind: "external" },
+      ],
+      edges: [
+        { from: "app", to: "surfaces" },
+        { from: "surfaces", to: "charts" },
+        { from: "surfaces", to: "api" },
+        { from: "api", to: "metrics" },
+        { from: "metrics", to: "ledger" },
+        { from: "metrics", to: "entities" },
+        { from: "ledger", to: "db" },
+        { from: "entities", to: "db" },
+        { from: "api", to: "auth", label: "seats & roles" },
+        { from: "api", to: "export", label: "filtered rows" },
+      ],
+    },
+    ux: {
+      heading: "UX",
+      body: [
+        "The workspace opens on the question people actually arrive with — how is this period going — and everything else is one move away: a command palette for people who know what they want, a sidebar for people who are browsing.",
+        "Every total is a link. A cash-flow figure goes to the transactions that produced it with the filter already applied, which turns the dashboard from something you read into something you can interrogate.",
+        "Nothing is encoded by colour alone. 'At risk' says at risk, deltas carry a direction arrow, and an increase in expenses is styled as bad even though it is an increase.",
+      ],
+      items: [
+        { label: "Entry", value: "How is this period going" },
+        { label: "Every aggregate", value: "Links to the rows behind it" },
+        { label: "Accessibility", value: "Status by label, direction by glyph" },
+      ],
+    },
+    ui: {
+      heading: "UI",
+      body: [
+        "Light and dark are both designed rather than one derived from the other — the palettes are paired token for token, including the chart series, so neither theme is the compromise.",
+        "Money is typeset as data: tabular figures, right-aligned, consistent precision, and a sign that never has to be inferred from a colour.",
+        "Density is deliberate. Four KPI tiles, the revenue chart and the start of cash flow all sit above the fold on a laptop, because scrolling to compare two numbers is how a dashboard fails.",
+      ],
+    },
+    development: {
+      heading: "Development",
+      body: [
+        "Metrics are computed server-side from the ledger and cached per period, so a tile and a chart physically cannot take different code paths to the same figure.",
+        "Charts are hand-rendered SVG with no charting dependency. That keeps the bundle small, makes both themes a pure token swap, and means the axis and grid respect the same line tokens as the rest of the interface.",
+        "Filtering, sorting and pagination happen server-side against indexed columns, so the ledger behaves the same at a hundred and sixty-eight rows as it will at a hundred and sixty-eight thousand.",
+      ],
+    },
+    features: [
+      { title: "Overview workspace", description: "Revenue, expenses, net profit and cash flow with sparklines and period-over-period comparison." },
+      { title: "Analytics", description: "Revenue by month and by customer, expense categories, customer growth, profit margin against target." },
+      { title: "Conversion funnel", description: "Visitors through signups, activation and trials to paying customers, with the drop-off at each stage." },
+      { title: "Transaction ledger", description: "Search, filters, column control, sorting, server-side pagination and export." },
+      { title: "Projects", description: "Delivery status, budget burn and deadlines, as a board or a table, with at-risk projects surfaced." },
+      { title: "Goals", description: "Quarterly targets with progress and an honest on-track or behind status." },
+      { title: "Command palette", description: "⌘K navigation and search across every workspace." },
+      { title: "Light and dark themes", description: "Paired token for token, chart series included." },
+    ],
+    integrations: ["Payment and payroll feeds", "CSV export", "Email notifications", "Analytics"],
+    stack: [
+      { group: "Frontend", items: ["Next.js", "React", "TypeScript", "Tailwind CSS", "SVG charts"] },
+      { group: "Backend", items: ["Node.js", "PostgreSQL", "Derived-metrics layer"] },
+      { group: "Platform", items: ["Auth & seats", "Role-based access", "CDN"] },
+    ],
+    results: [
+      { label: "Workspaces", value: "8", note: "One ledger underneath all of them" },
+      { label: "Figures", value: "Derived once", note: "A tile and a chart share the code path" },
+      { label: "Charts", value: "No library", note: "SVG, themed by token" },
+      { label: "Themes", value: "Light + dark", note: "Paired, neither one derived" },
+    ],
+    outcome:
+      "A dashboard you can argue with. Every number on it is one click from the rows that produced it, which is the difference between a report and a tool.",
+    gallery: [
+      { src: "/work/pulse/01.jpg", alt: "PULSE analytics workspace with revenue breakdowns", caption: "Analytics", device: "desktop" },
+      { src: "/work/pulse/02.jpg", alt: "PULSE transaction ledger with filters", caption: "The transaction ledger", device: "desktop" },
+      { src: "/work/pulse/03.jpg", alt: "PULSE projects board with budget and deadlines", caption: "Projects", device: "desktop" },
+      { src: "/work/pulse/mobile.jpg", alt: "PULSE on mobile", caption: "Mobile", device: "mobile" },
+    ],
+  },
+
   {
     slug: "aera",
     name: "AERA Systems",
@@ -147,7 +408,7 @@ export const projects: Project[] = [
     services: ["saas", "web", "backend", "api"],
     disciplines: ["Strategy", "UX", "UI", "Frontend", "Backend", "DevOps"],
     featured: true,
-    accent: "#ff4a1c",
+    accent: "#2119f0",
     strapline:
       "18,243 accidents from 1919 to 2026, placed where they happened — so a century of aviation history can be read geographically instead of as a list.",
     duration: "Ongoing",
@@ -529,7 +790,7 @@ export const projects: Project[] = [
     services: ["web", "automation"],
     disciplines: ["Strategy", "UX", "UI", "Frontend"],
     featured: true,
-    accent: "#ff4a1c",
+    accent: "#2119f0",
     strapline:
       "Three ad platforms, a large case library and a hard positioning line — \"We don't buy clicks. We take minds.\"",
     duration: "8 weeks",

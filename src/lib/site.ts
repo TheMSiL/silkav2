@@ -7,8 +7,12 @@ export const site = {
   name: "Silka",
   legalName: "Silka Studio",
   /**
-   * Silk has a higher tensile strength-to-weight ratio than steel. That is the
-   * whole brand in one fact: light, precise, and load-bearing.
+   * The studio is named after its founder — Silka is a surname, not a word.
+   * Nothing in the brand should be built on a folk etymology of it; an earlier
+   * note here derived the name from silk and the first logomark followed that
+   * reading, which is why the mark is now a plain monogram (`docs/logo.md`).
+   *
+   * The tagline stands on its own as a claim about the work, not the name.
    */
   tagline: "Built to carry weight.",
   descriptor: "Digital product engineering studio",

@@ -26,7 +26,7 @@ export function FinalCta({ locale, dict }: { locale: Locale; dict: Dictionary })
   const springX = useSpring(x, { stiffness: 60, damping: 20 });
   const springY = useSpring(y, { stiffness: 60, damping: 20 });
 
-  const glow = useMotionTemplate`radial-gradient(38rem 38rem at ${springX}% ${springY}%, rgb(255 74 28 / 0.16), transparent 70%)`;
+  const glow = useMotionTemplate`radial-gradient(38rem 38rem at ${springX}% ${springY}%, rgb(90 82 255 / 0.2), transparent 70%)`;
 
   const onPointerMove = (event: React.PointerEvent<HTMLElement>) => {
     if (reduced || event.pointerType !== "mouse") return;

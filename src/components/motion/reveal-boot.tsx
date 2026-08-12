@@ -1,5 +1,13 @@
+"use client";
+
+import { useEffect, useState } from "react";
+
 /**
  * The reveal engine, inlined into the document head.
+ *
+ * This is a client component only so the component below can tell hydration
+ * apart from a later client navigation — it is still not an effect, and the
+ * script below still runs from the HTML, before any of this bundle arrives.
  *
  * It runs before the body is parsed, which is the whole point: a MutationObserver
  * picks up elements as the HTML parser produces them, so content fades in while
@@ -69,6 +77,15 @@ for(var j=0;j<added.length;j++)scan(added[j]);
 window.addEventListener("resize",schedule,{passive:true});
 window.addEventListener("load",schedule);
 
+/* Re-assert the flag if anything drops it. Switching locale re-renders the
+   root layout — and with it the <html> element this attribute lives on —
+   which strips it, silently disabling every reveal rule in the stylesheet for
+   the rest of the session. Guarding on the value means the write this
+   observer performs does not re-trigger it. */
+new MutationObserver(function(){
+if(d.getAttribute("data-motion")!=="on")d.setAttribute("data-motion","on");
+}).observe(d,{attributes:true,attributeFilter:["data-motion"]});
+
 function start(){
 scan(document.body);
 /* Images and fonts landing after the last sweep push elements around, and no
@@ -83,6 +100,38 @@ document.documentElement.removeAttribute("data-motion");
 }
 })();`;
 
+/**
+ * Emitted into the initial document exactly once, and never again.
+ *
+ * This lives in the root layout, which is `app/[locale]/layout.tsx` — so
+ * switching language re-renders it on the client. React then re-created this
+ * `<script>` on every switch, which does nothing useful (an inline script React
+ * inserts after load is never executed) and logs "Encountered a script tag
+ * while rendering React component" for it.
+ *
+ * The guard is module scope, which is a per-client singleton and exactly the
+ * lifetime we want: it is written only on the branch that cannot run on the
+ * server, so the shared server module never touches it and every request still
+ * renders the tag. The first client render is hydration, which has to emit the
+ * tag to match the HTML; every render after that returns nothing and React
+ * drops the node, by which point the script has long since run and its
+ * observers are what keep working.
+ */
+let booted = false;
+
 export function RevealBoot() {
-  return <script dangerouslySetInnerHTML={{ __html: BOOT }} />;
+  /*
+   * Decided once per instance, and never written during render — the latch is
+   * set in the effect below, which cannot run until after hydration has
+   * committed. So the hydration pass still sees `false` and emits the tag,
+   * matching the server HTML, and only the instances mounted by a later
+   * navigation see `true` and emit nothing.
+   */
+  const [emit] = useState(() => typeof window === "undefined" || !booted);
+
+  useEffect(() => {
+    booted = true;
+  }, []);
+
+  return emit ? <script dangerouslySetInnerHTML={{ __html: BOOT }} /> : null;
 }

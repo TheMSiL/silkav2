@@ -40,17 +40,39 @@ export function Proof({ stats, services }: { stats: Stat[]; services: Service[] 
   );
 }
 
+/**
+ * How many times the service list is repeated inside a single track.
+ *
+ * The strip is two identical tracks side by side, each animating left by
+ * exactly its own width. At the end of a cycle the first track has left the
+ * viewport entirely, so the second one has to cover the screen alone — and if a
+ * track is narrower than the viewport, the remainder is empty. That was the
+ * intermittent gap: one pass of the list measures ~1365px, so every display
+ * wider than that showed a hole once per loop, from 31px on a 1440 laptop to
+ * over 1100px at 2560.
+ *
+ * Three passes put a track at roughly 4090px, which covers any viewport this
+ * will realistically meet. Repeating inside the track rather than adding more
+ * tracks keeps this to two composited layers.
+ *
+ * The invariant, if the list or the type ever changes: one track must be at
+ * least as wide as the widest viewport you intend to support.
+ */
+const PASSES_PER_TRACK = 3;
+
 function Marquee({ services }: { services: Service[] }) {
   return (
     // `marquee-track` only animates when motion is allowed; under reduced
     // motion it stays put rather than ending translated off-screen.
     <ul aria-hidden className="marquee-track flex shrink-0 items-center gap-10 pr-10">
-      {services.map((service) => (
-        <li key={service.key} className="flex items-center gap-10">
-          <span className="mono whitespace-nowrap text-muted">{service.label}</span>
-          <span aria-hidden className="size-1 rounded-full bg-accent/60" />
-        </li>
-      ))}
+      {Array.from({ length: PASSES_PER_TRACK }).flatMap((_, pass) =>
+        services.map((service) => (
+          <li key={`${pass}-${service.key}`} className="flex items-center gap-10">
+            <span className="mono whitespace-nowrap text-muted">{service.label}</span>
+            <span aria-hidden className="size-1 rounded-full bg-accent/60" />
+          </li>
+        )),
+      )}
     </ul>
   );
 }

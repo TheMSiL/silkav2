@@ -16,6 +16,24 @@ interface RevealProps {
 }
 
 /**
+ * Props for any element whose reveal state is written by the boot script.
+ *
+ * The script marks elements `data-reveal-in` as soon as they are in view,
+ * which for anything above the fold happens long before React hydrates. React
+ * then finds an attribute on the node that its own render did not produce and
+ * reports a hydration mismatch on it.
+ *
+ * That race is the design working as intended — revealing without waiting for
+ * the bundle is the entire point of this file — so the attribute is declared
+ * as owned from outside React. This suppresses only the element's own
+ * attributes, never its subtree.
+ *
+ * `Reveal` applies it already. Spread it onto anything that sets `data-reveal`
+ * by hand instead of going through this component.
+ */
+export const revealedByScript = { suppressHydrationWarning: true } as const;
+
+/**
  * The single entry animation used across the site: a short rise and fade.
  *
  * This is a server component on purpose. The obvious implementation — a client
@@ -47,6 +65,7 @@ export function Reveal({
       data-reveal={variant}
       data-reveal-on={on === "load" ? "load" : undefined}
       style={delay ? ({ "--reveal-delay": `${delay}s` } as CSSProperties) : undefined}
+      {...revealedByScript}
     >
       {children}
     </Tag>

@@ -77,6 +77,12 @@ export const industries: Industry[] = [
     blurb: "Hardware, sensors and software sold as one capability to buyers who evaluate each of them differently.",
     systems: ["Product platforms", "Specification surfaces", "Related content models"],
   },
+  {
+    key: "mobility",
+    label: "Mobility",
+    blurb: "A premium object sells on restraint, and restraint is the hardest thing to hold on a page that also has to quote a price.",
+    systems: ["Product configurators", "Specification surfaces", "Long-form product narrative"],
+  },
 ];
 
 /** §What we care about — principles in place of testimonials we have not collected. */
@@ -114,8 +120,8 @@ export const principles: Principle[] = [
  * where a number would have to be invented.
  */
 export const stats: Stat[] = [
-  { value: "12", label: "Products shipped", note: "Every one live and linked" },
-  { value: "12", label: "Industries", note: "Aviation data to dentistry" },
+  { value: "14", label: "Products shipped", note: "Every one live and linked" },
+  { value: "13", label: "Industries", note: "Aviation data to dentistry" },
   { value: "End to end", label: "Strategy through infrastructure", note: "One team, no handoffs" },
   { value: "∞", label: "Complexity we can handle", note: "The constraint is scope, not capability" },
 ];

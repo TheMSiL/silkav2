@@ -21,9 +21,9 @@
   --bone-300: #ded9ca;
   --bone-400: #c3bdac;
 
-  --ember-500: #ff4a1c;
-  --ember-400: #ff6a44;
-  --ember-600: #d63a12;
+  --volt-500: #2119f0;
+  --volt-400: #5a52ff;
+  --volt-600: #170fbd;
 
   --signal-blue: #4d7cff;
   --signal-green: #46d39a;
@@ -38,9 +38,9 @@
   --fg-faint: #565d64;
   --line: rgb(255 255 255 / 0.10);
   --line-strong: rgb(255 255 255 / 0.20);
-  --accent: var(--ember-500);
+  --accent: var(--volt-500);
   --accent-fg: #ffffff;
-  --selection: rgb(255 74 28 / 0.28);
+  --selection: rgb(33 25 240 / 0.32);
   --grid-line: rgb(255 255 255 / 0.045);
 
   /* ---------- Type scale (fluid, 320 → 1440) ---------- */
@@ -70,7 +70,15 @@
   --section-y: clamp(4.5rem, 3rem + 7vw, 9rem);
 
   /* ---------- Layout ---------- */
-  --container-max: 90rem; /* 1440 */
+  /*
+   * 85% of the viewport once there is more than 1440px of it.
+   *
+   * `max()` rather than a plain `85vw` so the two ends stay sensible: below
+   * ~1695px the old 90rem cap still wins, which keeps laptops exactly as they
+   * were, and on a phone a max-width wider than the viewport is simply inert —
+   * the width there comes from `--container-pad`, not from this.
+   */
+  --container-max: max(90rem, 85vw); /* 1440, then 85vw */
   --container-pad: clamp(1.25rem, 0.6rem + 3vw, 3.5rem);
   --header-h: 4.5rem;
   --header-h-compact: 3.5rem;
@@ -86,7 +94,7 @@
   --shadow-sm: 0 1px 2px rgb(0 0 0 / 0.3);
   --shadow-md: 0 8px 30px rgb(0 0 0 / 0.35);
   --shadow-lg: 0 30px 80px -20px rgb(0 0 0 / 0.55);
-  --glow-accent: 0 0 0 1px rgb(255 74 28 / 0.4), 0 12px 40px -12px rgb(255 74 28 / 0.5);
+  --glow-accent: 0 0 0 1px rgb(33 25 240 / 0.45), 0 12px 40px -12px rgb(90 82 255 / 0.55);
 
   /* ---------- Motion ---------- */
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
@@ -362,27 +370,29 @@
 }
 
 /*
- * The warm bloom behind the hero.
+ * The bloom behind the hero.
  *
  * This used to be a solid `bg-accent/10` disc under a 140px blur. A blur only
- * softens the rim: the middle stays a flat 10% orange plateau, so on a phone
- * the hero read as black on top and washed red underneath with a seam between
- * them. It was also the most expensive layer on the page — a full-viewport
- * filter that every backdrop above it had to be resolved against.
+ * softens the rim: the middle stays a flat 10% plateau, so on a phone the hero
+ * read as black on top and washed accent underneath with a seam between them.
+ * It was also the most expensive layer on the page — a full-viewport filter
+ * that every backdrop above it had to be resolved against.
  *
  * A gradient has no plateau to begin with. The stops fall away roughly as the
  * square of the distance, which is what makes the falloff read as light rather
  * than as a shape, and the whole thing costs one paint and no filter. Values
  * are literal rather than `var(--accent)` because `color-mix` on a gradient
- * stop is still the slower path in WebKit.
+ * stop is still the slower path in WebKit. The tone is `--volt-400` rather than
+ * the accent itself: at these alphas the deeper blue carries too little
+ * luminance over `--ink-900` to read as light at all.
  */
 .hero-glow {
   background-image: radial-gradient(
     closest-side,
-    rgb(255 74 28 / 0.1) 0%,
-    rgb(255 74 28 / 0.062) 28%,
-    rgb(255 74 28 / 0.028) 52%,
-    rgb(255 74 28 / 0.008) 74%,
+    rgb(90 82 255 / 0.13) 0%,
+    rgb(90 82 255 / 0.08) 28%,
+    rgb(90 82 255 / 0.036) 52%,
+    rgb(90 82 255 / 0.01) 74%,
     transparent 100%
   );
 }

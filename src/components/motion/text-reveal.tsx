@@ -2,6 +2,7 @@
 
 import { Fragment, type CSSProperties } from "react";
 import { cn } from "@/lib/cn";
+import { revealedByScript } from "./reveal";
 
 interface TextRevealProps {
   text: string;
@@ -45,7 +46,12 @@ export function TextReveal({
   const isAccent = (word: string) => accentWords.includes(word.replace(/[.,]/g, ""));
 
   return (
-    <Tag className={className} data-reveal="words" data-reveal-on={on === "load" ? "load" : undefined}>
+    <Tag
+      className={className}
+      data-reveal="words"
+      data-reveal-on={on === "load" ? "load" : undefined}
+      {...revealedByScript}
+    >
       {words.map((word, i) => (
         // The space must sit between the wrappers: trailing whitespace inside
         // an inline-block collapses, which would run the words together.

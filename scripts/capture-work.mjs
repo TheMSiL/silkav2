@@ -13,7 +13,15 @@ import path from "node:path";
 const DESKTOP = { width: 1440, height: 900 };
 const MOBILE = { width: 390, height: 844 };
 
-/** scrollTo offsets (in viewport heights) captured for the desktop gallery. */
+/**
+ * One entry per project. The desktop gallery is driven by whichever of these a
+ * target declares:
+ *
+ *   shots   — scrollTo offsets in viewport heights
+ *   anchors — element selectors scrolled to the top of the viewport, for long
+ *             pages where a fixed offset drifts as lazy content settles
+ *   pages   — separate URLs, for products with no scroll narrative
+ */
 const targets = [
   { slug: "aera", url: "https://aera-phi.vercel.app/", shots: [0, 1.1, 2.4, 3.6] },
   { slug: "tvorivo", url: "https://tvorivo.vercel.app/", shots: [0, 1.1, 2.2, 3.2] },
@@ -38,6 +46,23 @@ const targets = [
   { slug: "oriel", url: "https://oriel-peach.vercel.app/", shots: [0, 1.2, 2.3, 3.3] },
   { slug: "glidex", url: "https://glidex-theta.vercel.app/ua", shots: [0, 1.2, 2.3, 3.3] },
   { slug: "pelagion", url: "https://deep-chi-six.vercel.app/", shots: [0, 1.2, 2.3, 3.3] },
+  {
+    slug: "noir",
+    url: "https://noir-electric.vercel.app/",
+    // Twenty viewports of scroll — anchors survive the reflow, offsets do not.
+    anchors: ["#hero", "#specifications", "#models", "#configure"],
+  },
+  {
+    slug: "pulse",
+    url: "https://pulse-rose-one.vercel.app/",
+    // A dashboard has no scroll narrative — the gallery walks the workspace instead.
+    pages: [
+      "https://pulse-rose-one.vercel.app/",
+      "https://pulse-rose-one.vercel.app/analytics",
+      "https://pulse-rose-one.vercel.app/transactions",
+      "https://pulse-rose-one.vercel.app/projects",
+    ],
+  },
 ];
 
 const only = process.argv.slice(2);
@@ -118,7 +143,10 @@ for (const target of queue) {
   }
   await settle(page, target.wait ?? 2500);
 
-  const frames = target.pages ?? target.shots.map((factor) => ({ factor }));
+  const frames =
+    target.pages ??
+    target.anchors?.map((anchor) => ({ anchor })) ??
+    target.shots.map((factor) => ({ factor }));
 
   for (const [i, frame] of frames.entries()) {
     if (typeof frame === "string") {
@@ -126,6 +154,13 @@ for (const target of queue) {
         await page.goto(frame, { waitUntil: "domcontentloaded", timeout: 60000 });
         await settle(page, target.wait ?? 2500);
       }
+    } else if (frame.anchor) {
+      await page.evaluate((selector) => {
+        const el = document.querySelector(selector);
+        if (!el) throw new Error(`anchor not found: ${selector}`);
+        window.scrollTo(0, el.getBoundingClientRect().top + window.scrollY);
+      }, frame.anchor);
+      await page.waitForTimeout(1600);
     } else {
       await page.evaluate((f) => window.scrollTo(0, window.innerHeight * f), frame.factor);
       await page.waitForTimeout(1200);
@@ -143,6 +178,9 @@ for (const target of queue) {
     isMobile: true,
     hasTouch: true,
     reducedMotion: "reduce",
+    // Match the desktop context, or a theme-aware site shoots light on mobile
+    // and dark on desktop inside the same gallery.
+    colorScheme: "dark",
   });
   const mobilePage = await mobileContext.newPage();
   try {

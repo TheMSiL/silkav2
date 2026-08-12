@@ -9,6 +9,7 @@ import { ArrowUpRight } from "@/components/ui/icons";
 import { EVENTS, track } from "@/lib/analytics";
 import { localizeHref, type Locale } from "@/lib/i18n/config";
 import { useReducedMotionSafe } from "@/lib/use-reduced-motion-safe";
+import { revealedByScript } from "@/components/motion/reveal";
 
 interface ProjectCardProps {
   project: Project;
@@ -34,6 +35,7 @@ export function ProjectCard({
       className="group relative"
       data-reveal="rise"
       style={{ "--reveal-delay": `${(index % 3) * 0.08}s` } as CSSProperties}
+      {...revealedByScript}
     >
       <Link
         href={localizeHref(`/work/${project.slug}`, locale)}

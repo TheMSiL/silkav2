@@ -42,7 +42,7 @@ export default async function CaseOgImage({
           <div style={{ display: "flex", color: "#8b9199", letterSpacing: 2, textTransform: "uppercase" }}>
             {`${site.name} — ${dict.nav.work}`}
           </div>
-          <div style={{ display: "flex", color: project?.accent ?? "#ff4a1c" }}>
+          <div style={{ display: "flex", color: project?.accent ?? "#2119f0" }}>
             {project?.industry ?? ""}
           </div>
         </div>

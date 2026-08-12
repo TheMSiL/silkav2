@@ -41,7 +41,8 @@ export type IndustryKey =
   | "ai"
   | "real-estate"
   | "logistics"
-  | "marine";
+  | "marine"
+  | "mobility";
 
 /* ------------------------------------------------------------------ */
 /* Projects                                                            */
