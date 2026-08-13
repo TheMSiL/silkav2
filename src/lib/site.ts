@@ -23,6 +23,10 @@ export const site = {
   email: "hello@silka.studio",
   founded: "2019",
   location: "Kyiv · Remote across EU",
+  /** Where the quoted client reviews are published, in full and unedited. */
+  reviews: {
+    url: "https://freelance.ua/user/msil/opinions/",
+  },
   /**
    * Messaging only — these are the channels clients actually reply on.
    * REPLACE the handles and the phone number before launch.

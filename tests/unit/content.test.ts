@@ -169,6 +169,10 @@ describe("locale parity", () => {
         base.builderModules.map((m) => m.weeks),
       );
       expect(other.estimatorSteps.map((s) => s.id)).toEqual(base.estimatorSteps.map((s) => s.id));
+      // The quote translates; who said it and when is a fact and must not.
+      expect(other.testimonials.map((t) => `${t.id}:${t.year}`)).toEqual(
+        base.testimonials.map((t) => `${t.id}:${t.year}`),
+      );
       expect(other.dashboardTabs.map((t) => t.key)).toEqual(base.dashboardTabs.map((t) => t.key));
       expect(other.automationFlow.map((s) => s.id)).toEqual(base.automationFlow.map((s) => s.id));
       expect(other.aiFlow.map((s) => s.id)).toEqual(base.aiFlow.map((s) => s.id));

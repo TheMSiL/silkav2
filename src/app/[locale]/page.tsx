@@ -4,6 +4,7 @@ import { Hero } from "@/components/sections/hero";
 import { Proof } from "@/components/sections/proof";
 import { SelectedWork } from "@/components/sections/selected-work";
 import { Philosophy } from "@/components/sections/philosophy";
+import { Testimonials } from "@/components/sections/testimonials";
 import { FinalCta } from "@/components/sections/final-cta";
 
 import { Section } from "@/components/ui/section";
@@ -154,6 +155,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
             </Reveal>
           ))}
         </ul>
+        <Testimonials testimonials={content.testimonials} dict={dict} />
       </Section>
 
       <Section id="insights" theme="dark" label={dict.home.insightsEyebrow}>

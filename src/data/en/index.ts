@@ -13,6 +13,7 @@ import {
 import { processSteps, philosophyChain } from "./process";
 import { techCategories, complexityLevels } from "./technology";
 import { industries, principles, stats } from "./industries";
+import { testimonials } from "./testimonials";
 
 const disciplines = [
   { label: "Product strategy", note: "Scoping, prioritisation, and knowing what not to build" },
@@ -125,6 +126,7 @@ export const enContent: LocaleContent = {
   complexityLevels,
   industries,
   principles,
+  testimonials,
   stats,
   disciplines,
   pricingFactors,

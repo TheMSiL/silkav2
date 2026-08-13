@@ -116,12 +116,13 @@ export const principles: Principle[] = [
 /**
  * Headline figures.
  *
- * Derived from the portfolio where possible (see `data/index.ts`), qualitative
- * where a number would have to be invented.
+ * Every one is counted from something on this site — the portfolio, the
+ * industry list, the disciplines on /about, the public review profile. Nothing
+ * here is a figure we would have to defend from memory.
  */
 export const stats: Stat[] = [
   { value: "14", label: "Products shipped", note: "Every one live and linked" },
   { value: "13", label: "Industries", note: "Aviation data to dentistry" },
-  { value: "End to end", label: "Strategy through infrastructure", note: "One team, no handoffs" },
-  { value: "∞", label: "Complexity we can handle", note: "The constraint is scope, not capability" },
+  { value: "8", label: "Disciplines in-house", note: "Strategy through infrastructure" },
+  { value: "34", label: "Client reviews", note: "Public, since 2023" },
 ];

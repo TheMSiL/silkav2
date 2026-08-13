@@ -12,9 +12,9 @@ export const en: Dictionary = {
   },
   cta: {
     start: "Start a project",
-    explore: "Explore our work",
+    explore: "See the work",
     discuss: "Discuss your project",
-    send: "Send project inquiry",
+    send: "Send it over",
     build: "Let's build it",
     talk: "Let's talk",
     viewAll: "All projects",
@@ -185,22 +185,22 @@ export const en: Dictionary = {
     processIntro:
       "You always know what is happening this week, what is happening next, and what would have to change for the date to move.",
     industriesEyebrow: "Industries",
-    industriesTitle: "Fourteen products. Fourteen different businesses.",
-    industriesAccent: "Fourteen different",
+    industriesTitle: "Thirteen industries. None of them our niche.",
+    industriesAccent: "our niche.",
     industriesIntro:
-      "We are not a vertical studio. What transfers between an aviation archive and a dental clinic is the engineering, not the domain — but we learn the domain anyway.",
+      "What transfers between an aviation archive and a dental clinic is the engineering, not the domain. We learn the domain anyway.",
     principlesEyebrow: "What we care about",
-    principlesTitle: "Small enough to care. Senior enough to deliver.",
-    principlesAccent: "Senior enough",
+    principlesTitle: "Six commitments. No adjectives.",
+    principlesAccent: "Six commitments.",
     principlesIntro:
-      "We have not collected testimonials yet, so here is something more useful: the things we will actually do, which you can hold us to.",
+      "The reviews below say we are professional and on time. Pleasant, and not information. These are the specifics you can hold us to instead.",
     insightsEyebrow: "Insights",
     insightsTitle: "What we have learned building this stuff.",
     ctaTitleA: "Have a complex idea?",
     ctaTitleB: "Let's build it.",
     ctaAccent: "build",
     ctaIntro:
-      "Tell us what the business needs to do differently. We will tell you what it takes to get there — including when the answer is smaller than you expected.",
+      "Tell us what the business needs to do differently. We will tell you what it takes — including when it takes less than you think.",
   },
   work: {
     metaTitle: "Work",
@@ -210,7 +210,7 @@ export const en: Dictionary = {
     accent: "had to solve.",
     intro:
       "Every case study links to the running build. Where a number appears, it comes from the product itself — not from a marketing deck.",
-    filterLabel: "Filter projects by discipline",
+    filterLabel: "Filter projects by service",
     empty:
       "Nothing published in that discipline yet — which is not the same as nothing built. Ask us.",
   },
@@ -243,13 +243,13 @@ export const en: Dictionary = {
     proofTitle: "Work that shows it",
     noProofTitle: "Capability",
     noProofBody:
-      "In our stack and part of what we scope, but not yet represented by a published case. Ask us about it directly —",
-    noProofLink: "we will tell you plainly what we have shipped",
+      "It is in our stack and in everything we scope — there is simply no published case for it yet. Ask us directly and",
+    noProofLink: "we will tell you exactly what we have shipped",
     areas: "areas",
     builderTitle: "Assemble the product.",
     builderAccent: "Assemble",
     builderIntro:
-      "Pick the parts you think you need. The right-hand column is what we would actually have to build, and roughly how long that takes.",
+      "Pick the parts. The right-hand column is what that turns into on our side, and roughly how long it runs.",
     estimatorEyebrow: "Estimator",
     estimatorTitle: "Four questions, then a real conversation.",
     estimatorAccent: "a real conversation.",
@@ -293,8 +293,8 @@ export const en: Dictionary = {
     metaTitle: "About",
     metaDescription:
       "A small senior team that designs and builds digital products end to end — strategy, UX, engineering and the infrastructure underneath.",
-    title: "Small enough to care. Senior enough to deliver.",
-    accent: "Senior enough",
+    title: "We learn the detail. We see it through.",
+    accent: "see it through.",
     intro:
       "There is no layer of juniors behind the people you meet. The engineer in the kickoff call is the engineer writing the code, and they are still there at launch.",
     story1:
@@ -315,7 +315,7 @@ export const en: Dictionary = {
     principlesTitle: "Things you can hold us to.",
     principlesAccent: "hold us to.",
     principlesIntro:
-      "We have not collected testimonials yet. Rather than borrow someone else's credibility, here is what we commit to — say it back to us if we drift.",
+      "Praise is easy to collect and hard to act on. These are the commitments underneath it — say them back to us if we drift.",
     principlesLink: "See what that produced",
   },
   insights: {
@@ -327,10 +327,10 @@ export const en: Dictionary = {
     intro:
       "No trend commentary. Each of these came out of a decision we had to make on a real project, usually after getting it wrong once.",
     keepReading: "Keep reading",
-    articleOutro: "This came out of real project work.",
+    articleOutro: "We wrote this because we had to solve it.",
     articleOutroWork: "See what we built",
     articleOutroOr: "or",
-    articleOutroContact: "tell us what you are working on",
+    articleOutroContact: "tell us what you're working on",
   },
   contact: {
     metaTitle: "Start a project",
@@ -341,9 +341,9 @@ export const en: Dictionary = {
     intro:
       "The more concrete the problem, the more useful our first reply. Rough ideas are welcome too — we will tell you what we would need to know.",
     direct: "Direct",
-    pricingTitle: "Every product is different.",
+    pricingTitle: "What moves the number.",
     pricingIntro:
-      "We do not publish a price list, because 'a CRM' can mean six weeks or nine months. These are the factors that actually move the number.",
+      "We price from the shape of the problem, not from a rate card. These are the things that decide where in a range you land.",
     nextTitle: "What happens next",
     next: [
       "We read it properly — a person, not a router.",
@@ -365,7 +365,7 @@ export const en: Dictionary = {
     sending: "Sending…",
     successTitle: "Thank you — that landed.",
     successUrgent: "If it is urgent, email",
-    note: "We reply within one business day. No sequences, no newsletter.",
+    note: "No sequences, no newsletter.",
     errors: {
       name: "Tell us what to call you",
       nameLong: "That name is suspiciously long",
@@ -393,7 +393,7 @@ export const en: Dictionary = {
     yourBrief: "Your brief",
     heard: "Here is what we heard.",
     note:
-      "We are not going to invent a price from four answers. What we will do is come back with a range, the assumptions behind it, and the two or three questions that would narrow it — usually within a day.",
+      "Send it as it stands. We come back within a day with the questions that actually change the answer.",
   },
   builder: {
     pickParts: "Pick the parts",
@@ -413,6 +413,10 @@ export const en: Dictionary = {
   process: {
     scrollHint: "Scroll to advance",
   },
+  testimonials: {
+    eyebrow: "Client reviews",
+    link: "Read all the reviews",
+  },
   philosophy: {
     eyebrow: "Philosophy",
     title: "We don't start with code.",
@@ -426,7 +430,7 @@ export const en: Dictionary = {
     notFoundCode: "404",
     notFoundTitle: "This page does not exist.",
     notFoundBody:
-      "Either it moved, or it never did. Both are our problem, not yours — here is everything that definitely is here.",
+      "Either it moved, or it never existed. Both are our problem, not yours — here is everything that definitely is here.",
     sectionsLabel: "Site sections",
     errorEyebrow: "Error",
     errorTitle: "Something on our side broke.",

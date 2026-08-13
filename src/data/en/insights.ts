@@ -9,7 +9,7 @@ export const insights: Insight[] = [
     category: "Business",
     date: "2026-05-18",
     readingTime: "7 min",
-    author: "Keel",
+    author: "Silka",
     body: [
       {
         paragraphs: [
@@ -53,7 +53,7 @@ export const insights: Insight[] = [
     category: "AI",
     date: "2026-04-02",
     readingTime: "9 min",
-    author: "Keel",
+    author: "Silka",
     body: [
       {
         paragraphs: [
@@ -101,7 +101,7 @@ export const insights: Insight[] = [
     category: "Engineering",
     date: "2026-02-20",
     readingTime: "8 min",
-    author: "Keel",
+    author: "Silka",
     body: [
       {
         paragraphs: [
@@ -144,7 +144,7 @@ export const insights: Insight[] = [
     category: "Product",
     date: "2026-01-14",
     readingTime: "6 min",
-    author: "Keel",
+    author: "Silka",
     body: [
       {
         paragraphs: [
@@ -185,7 +185,7 @@ export const insights: Insight[] = [
     category: "Automation",
     date: "2025-11-27",
     readingTime: "5 min",
-    author: "Keel",
+    author: "Silka",
     body: [
       {
         paragraphs: [
@@ -226,7 +226,7 @@ export const insights: Insight[] = [
     category: "UX",
     date: "2025-10-09",
     readingTime: "7 min",
-    author: "Keel",
+    author: "Silka",
     body: [
       {
         paragraphs: [

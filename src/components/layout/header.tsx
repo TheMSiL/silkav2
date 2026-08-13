@@ -34,9 +34,15 @@ export function Header({ locale, dict }: { locale: Locale; dict: Dictionary }) {
   }, []);
 
   const nav = mainNav(dict);
+  /*
+   * A hashed entry points at a section of another page, not a page of its own.
+   * Matching it on the stripped path lit both "Process" and "About" on /about,
+   * and announced two `aria-current="page"` items on the same route — so an
+   * entry with a hash is a jump target and never the current page.
+   */
   const isActive = (href: string) => {
-    const clean = href.split("#")[0];
-    return clean === "/" ? path === "/" : path.startsWith(clean);
+    if (href.includes("#")) return false;
+    return href === "/" ? path === "/" : path.startsWith(href);
   };
 
   return (
