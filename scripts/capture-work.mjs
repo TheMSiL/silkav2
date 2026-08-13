@@ -23,6 +23,18 @@ const MOBILE = { width: 390, height: 844 };
  *   pages   — separate URLs, for products with no scroll narrative
  */
 const targets = [
+  {
+    slug: "motion",
+    url: "https://motion-app-check.vercel.app/",
+    // The product is a phone canvas held inside a desktop frame — there is no
+    // scroll narrative, so the gallery walks the app's own screens instead.
+    pages: [
+      "https://motion-app-check.vercel.app/",
+      "https://motion-app-check.vercel.app/activity",
+      "https://motion-app-check.vercel.app/explore",
+      "https://motion-app-check.vercel.app/goals",
+    ],
+  },
   { slug: "aera", url: "https://aera-phi.vercel.app/", shots: [0, 1.1, 2.4, 3.6] },
   { slug: "tvorivo", url: "https://tvorivo.vercel.app/", shots: [0, 1.1, 2.2, 3.2] },
   { slug: "ra-agency", url: "https://raagency.tech/en", shots: [0, 1.2, 2.4, 3.6] },

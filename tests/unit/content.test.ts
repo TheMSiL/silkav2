@@ -27,7 +27,7 @@ describe("project filtering", () => {
   });
 
   it("returns an empty list for a service with no published work", () => {
-    expect(filterProjects(projects, "mobile")).toEqual([]);
+    expect(filterProjects(projects, "bots")).toEqual([]);
   });
 
   it("only offers filters that actually match something", () => {

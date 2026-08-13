@@ -34,7 +34,7 @@ export const services: Service[] = [
     ],
     stack: ["React Native", "TypeScript", "Swift", "Kotlin", "SQLite"],
     examples: ["Приложения для выездных команд", "Клиентские приложения", "Внутренние инструменты", "Компаньоны"],
-    proof: [],
+    proof: ["motion"],
     visual: "device",
   },
   {

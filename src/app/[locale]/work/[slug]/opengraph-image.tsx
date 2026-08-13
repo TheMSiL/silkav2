@@ -3,6 +3,7 @@ import { getProject, getProjectSlugs } from "@/data";
 import { site } from "@/lib/site";
 import { locales, type Locale } from "@/lib/i18n/config";
 import { getDictionary } from "@/lib/i18n/dictionaries";
+import { OgFrame, OgLockup, OgPill, ogPalette } from "@/lib/seo/og-card";
 
 export const alt = "Case study";
 export const size = { width: 1200, height: 630 };
@@ -12,7 +13,10 @@ export function generateStaticParams() {
   return locales.flatMap((locale) => getProjectSlugs().map((slug) => ({ locale, slug })));
 }
 
-/** Per-case social card, so every case study shares with its own identity. */
+/**
+ * Per-case social card: the studio frame in dark, tinted with the project's own
+ * accent, so a shared case study carries its identity and the studio's at once.
+ */
 export default async function CaseOgImage({
   params,
 }: {
@@ -21,59 +25,55 @@ export default async function CaseOgImage({
   const { locale, slug } = await params;
   const project = getProject(locale, slug);
   const dict = getDictionary(locale);
+  const palette = ogPalette("dark", project?.accent);
 
   return new ImageResponse(
     (
-      <div
-        style={{
-          width: "100%",
-          height: "100%",
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "space-between",
-          background: "#08090a",
-          color: "#eeece6",
-          padding: 72,
-          fontFamily: "sans-serif",
-        }}
-      >
-        <div style={{ display: "flex", justifyContent: "space-between", fontSize: 22 }}>
-          {/* Satori needs single text children unless display is set explicitly. */}
-          <div style={{ display: "flex", color: "#8b9199", letterSpacing: 2, textTransform: "uppercase" }}>
-            {`${site.name} — ${dict.nav.work}`}
-          </div>
-          <div style={{ display: "flex", color: project?.accent ?? "#2119f0" }}>
-            {project?.industry ?? ""}
-          </div>
+      <OgFrame palette={palette}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+          <OgLockup palette={palette} label={dict.nav.work} size={40} />
+          {project ? (
+            <OgPill palette={palette} color={palette.accent}>
+              {project.industry}
+            </OgPill>
+          ) : null}
         </div>
 
         <div style={{ display: "flex", flexDirection: "column", gap: 22 }}>
-          <div style={{ fontSize: 84, letterSpacing: -3, lineHeight: 1, display: "flex" }}>
+          <div style={{ display: "flex", fontSize: 86, letterSpacing: -3.5, lineHeight: 1.02 }}>
             {project?.name ?? site.name}
           </div>
-          <div style={{ fontSize: 30, color: "#8b9199", maxWidth: 940, lineHeight: 1.3, display: "flex" }}>
+          <div style={{ display: "flex", fontSize: 29, color: palette.muted, maxWidth: 820, lineHeight: 1.3 }}>
             {project?.summary ?? site.description}
           </div>
         </div>
 
-        <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
-          {(project?.scope ?? []).map((item) => (
-            <div
-              key={item}
-              style={{
-                border: "1px solid #262b30",
-                borderRadius: 999,
-                padding: "8px 18px",
-                fontSize: 20,
-                color: "#8b9199",
-                display: "flex",
-              }}
-            >
-              {item}
+        <div style={{ display: "flex", flexDirection: "column", gap: 26 }}>
+          <div style={{ display: "flex", width: 1056, height: 1, background: palette.line }} />
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+            <div style={{ display: "flex", gap: 12 }}>
+              {(project?.scope ?? []).slice(0, 4).map((item) => (
+                <div
+                  key={item}
+                  style={{
+                    display: "flex",
+                    border: `1px solid ${palette.line}`,
+                    borderRadius: 999,
+                    padding: "8px 18px",
+                    fontSize: 19,
+                    color: palette.muted,
+                  }}
+                >
+                  {item}
+                </div>
+              ))}
             </div>
-          ))}
+            <div style={{ display: "flex", fontSize: 20, color: palette.faint }}>
+              {site.url.replace("https://", "")}
+            </div>
+          </div>
         </div>
-      </div>
+      </OgFrame>
     ),
     size,
   );

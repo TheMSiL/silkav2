@@ -3,7 +3,7 @@ import type { Project } from "@/types";
 /**
  * PORTFOLIO
  * ---------
- * Fourteen shipped products, newest first. Every entry links to the live build,
+ * Fifteen shipped products, newest first. Every entry links to the live build,
  * and the screenshots in `public/work/<slug>/` are captured from it
  * (`node scripts/capture-work.mjs`).
  *
@@ -15,6 +15,139 @@ import type { Project } from "@/types";
  * `data/index.ts` against the CMS client. The `Project` type is the contract.
  */
 export const projects: Project[] = [
+  {
+    slug: "motion",
+    name: "MOTION",
+    url: "https://motion-app-check.vercel.app/",
+    summary: "A mobility and activity app for rides, routes and weekly goals",
+    industry: "Mobility & fitness",
+    industryKey: "mobility",
+    year: "2026",
+    scope: ["Mobile app", "Product UI", "Charts", "Design system"],
+    services: ["mobile", "web"],
+    disciplines: ["Strategy", "UX", "UI", "Mobile", "Frontend"],
+    featured: true,
+    accent: "#d4fb3c",
+    strapline:
+      "Five screens on a single 390 × 844 canvas — where the first second answers “how is today going”, and fifty sessions sit one tap underneath.",
+    duration: "6 weeks",
+    team: "1 designer · 1 engineer",
+    platforms: ["Mobile application", "Route explorer", "Goal tracking", "Device-frame web demo"],
+    locales: ["EN"],
+    cover: { src: "/work/motion/cover.jpg", alt: "MOTION home screen in its device frame" },
+    challenge: {
+      heading: "Challenge",
+      body: [
+        "Activity apps fail in one of two directions. Either the number you opened the app for is buried under a dashboard, or it is the only thing there and you cannot do anything with it. MOTION had to answer “how is today going” in the first second and still hold fifty sessions, thirty places and nine goals behind that answer.",
+        "It is also a phone app that lives in a browser. Everything is drawn on one 390 × 844 canvas with no desktop layout to escape into, so every list, sheet and chart has to work at the width of a hand — including the places where a wider column would usually solve the problem.",
+      ],
+      items: [
+        { label: "Canvas", value: "390 × 844, no desktop rewrite" },
+        { label: "Content", value: "50 sessions · 30 places · 9 goals" },
+        { label: "Core difficulty", value: "One glance first, depth underneath" },
+      ],
+    },
+    solution: {
+      heading: "Solution",
+      body: [
+        "The home screen answers and then stops: today's distance, the share of the daily goal it covers, and the change against last week. The four tiles, the week chart and the last three sessions are all deliberately read second.",
+        "Depth is one tap away across the other four screens, and detail opens as a bottom sheet rather than a new page — so opening a route or a session never costs you your position in the list you were reading.",
+        "Every figure comes from one local store. The week total on the home chart, the 538 km on Activity and the progress on a weekly goal are the same sessions counted once, which is what stops the app disagreeing with itself while it is offline.",
+      ],
+      items: [
+        { label: "Home", value: "One number, then the rest" },
+        { label: "Depth", value: "Bottom sheets, not new pages" },
+        { label: "Figures", value: "One store, counted once" },
+      ],
+    },
+    architecture: {
+      caption:
+        "A local-first client. Screens read a single store, the store derives every total from the same session log, and the log persists to the device.",
+      nodes: [
+        { id: "shell", label: "Vite + React shell", layer: 0, kind: "client", detail: "390 × 844" },
+        { id: "screens", label: "Five screens", layer: 1, kind: "client", detail: "Home → Profile" },
+        { id: "sheets", label: "Bottom sheets", layer: 1, kind: "client", detail: "Gesture-driven" },
+        { id: "store", label: "App state", layer: 2, kind: "service", detail: "One store" },
+        { id: "derived", label: "Derived totals", layer: 3, kind: "service", detail: "Weeks, streaks, goals" },
+        { id: "sessions", label: "Session log", layer: 4, kind: "data", detail: "50 sessions" },
+        { id: "places", label: "Places & routes", layer: 4, kind: "data", detail: "30 entries" },
+        { id: "goals", label: "Goal model", layer: 4, kind: "data", detail: "9 active" },
+        { id: "local", label: "Device storage", layer: 5, kind: "data", detail: "Offline-first" },
+        { id: "prefs", label: "System preferences", layer: 5, kind: "external", detail: "Theme · reduced motion" },
+      ],
+      edges: [
+        { from: "shell", to: "screens" },
+        { from: "shell", to: "sheets" },
+        { from: "screens", to: "store" },
+        { from: "sheets", to: "store" },
+        { from: "store", to: "derived" },
+        { from: "derived", to: "sessions" },
+        { from: "derived", to: "goals" },
+        { from: "store", to: "places" },
+        { from: "sessions", to: "local", label: "persist" },
+        { from: "goals", to: "local" },
+        { from: "shell", to: "prefs", label: "theme & motion" },
+      ],
+    },
+    ux: {
+      heading: "UX",
+      body: [
+        "Navigation is a five-item bar within thumb reach, and the app opens on the screen people actually come back for. Filters on Activity, Explore and Goals are chips rather than menus, because a menu costs two taps to reveal what a chip states outright.",
+        "The weekly chart is not only a picture. Every bar carries its own sentence — “Thursday: 12.4 kilometres over 3 trips” — so the same information exists for a screen reader and for anyone who cannot judge a bar height at a glance.",
+      ],
+      items: [
+        { label: "Reach", value: "Five-item bar at thumb height" },
+        { label: "Filtering", value: "Chips, not menus" },
+        { label: "Charts", value: "Every bar readable as a sentence" },
+      ],
+    },
+    ui: {
+      heading: "UI",
+      body: [
+        "Near-monochrome with a single acid-lime accent that marks progress and the primary action and nothing else — the goal ring, the active tab, the Start ride button. When the accent means “this is your progress”, it cannot also mean decoration.",
+        "Numbers are the typography: distance is set large with its unit small beside it, so 12.4 KM reads as one measurement rather than a number and a word. Light and dark are designed as a pair, not one inverted into the other.",
+      ],
+    },
+    development: {
+      heading: "Development",
+      body: [
+        "State is local-first. Sessions, saved places and goal progress live in one store that persists to the device, so the app opens with your data already in it rather than waiting for a network to answer.",
+        "Charts are Recharts driven by the app's own tokens instead of the library's defaults, and route lines are drawn with Framer Motion — a route card animates its own path rather than loading a map tile.",
+        "Every animation has a still state. Under prefers-reduced-motion the sheets, the progress ring and the drawn routes resolve instantly to their end position instead of being switched off into blankness.",
+      ],
+    },
+    features: [
+      { title: "Today's activity", description: "Distance against the daily goal with a progress ring and the change on last week." },
+      { title: "Weekly chart", description: "Seven days of distance and trips, each bar also written out as a sentence." },
+      { title: "Session history", description: "Fifty sessions grouped by day and filterable by ride, run or walk, with distance and duration on every row." },
+      { title: "Explore", description: "Thirty routes and places filtered by coffee, parks, restaurants and scenic, each with rating, distance, duration and district." },
+      { title: "Animated routes", description: "Route cards draw their own line instead of fetching a map tile." },
+      { title: "Goals", description: "Nine active goals across daily, weekly and monthly horizons, each with what is left and how long there is to do it." },
+      { title: "Bottom sheets", description: "Detail opens as a draggable sheet, so you never lose your place in the list behind it." },
+      { title: "Profile", description: "Streak, month and all-time totals, units, theme, notifications and a local data reset." },
+    ],
+    integrations: ["Device storage", "System theme", "Reduced-motion preference"],
+    stack: [
+      { group: "Frontend", items: ["React", "TypeScript", "Vite", "Tailwind CSS"] },
+      { group: "Motion & charts", items: ["Framer Motion", "Recharts"] },
+      { group: "State", items: ["Local-first store", "Persisted session log"] },
+    ],
+    results: [
+      { label: "Screens", value: "5", note: "Home · Activity · Explore · Goals · Profile" },
+      { label: "Canvas", value: "390 × 844", note: "No desktop rewrite" },
+      { label: "State", value: "Local-first", note: "Opens with your data, network or not" },
+      { label: "Motion", value: "Fully reducible", note: "Every animation has a still state" },
+    ],
+    outcome:
+      "A phone app that behaves like one inside a browser tab: it opens on the number you came for, and everything else is one tap and one store away.",
+    gallery: [
+      { src: "/work/motion/01.jpg", alt: "MOTION activity history grouped by day", caption: "Session history", device: "desktop" },
+      { src: "/work/motion/02.jpg", alt: "MOTION explore screen with routes and places", caption: "Routes and places", device: "desktop" },
+      { src: "/work/motion/03.jpg", alt: "MOTION goals screen with progress", caption: "Goals", device: "desktop" },
+      { src: "/work/motion/mobile.jpg", alt: "MOTION on mobile", caption: "Mobile", device: "mobile" },
+    ],
+  },
+
   {
     slug: "noir",
     name: "NOIR X1",
@@ -251,7 +384,7 @@ export const projects: Project[] = [
       { title: "Transaction ledger", description: "Search, filters, column control, sorting, server-side pagination and export." },
       { title: "Projects", description: "Delivery status, budget burn and deadlines, as a board or a table, with at-risk projects surfaced." },
       { title: "Goals", description: "Quarterly targets with progress and an honest on-track or behind status." },
-      { title: "Command palette", description: "⌘K navigation and search across every workspace." },
+      { title: "Command palette", description: "K navigation and search across every workspace." },
       { title: "Light and dark themes", description: "Paired token for token, chart series included." },
     ],
     integrations: ["Payment and payroll feeds", "CSV export", "Email notifications", "Analytics"],
@@ -313,11 +446,11 @@ export const projects: Project[] = [
       body: [
         "We built the page as a sequence that walks the product's own pipeline: the signal field where data arrives, the decision engine that resolves it, the living workspace where a person acts, and the timeline that records what happened.",
         "Each stage is an interactive component rather than an illustration, so a visitor reads the argument by using a small version of the product.",
-        "A ⌘K command palette runs across the whole site — the same interaction pattern the product uses, which makes the interface itself part of the pitch.",
+        "A K command palette runs across the whole site — the same interaction pattern the product uses, which makes the interface itself part of the pitch.",
       ],
       items: [
         { label: "Narrative", value: "Six stages mirroring the product pipeline" },
-        { label: "Interaction", value: "⌘K palette shared with the product" },
+        { label: "Interaction", value: "K palette shared with the product" },
         { label: "Rendering", value: "Server components with client islands" },
       ],
     },
@@ -327,7 +460,7 @@ export const projects: Project[] = [
       nodes: [
         { id: "page", label: "Next.js App Router", layer: 0, kind: "client", detail: "RSC shell" },
         { id: "islands", label: "Client islands", layer: 1, kind: "client", detail: "Per-section" },
-        { id: "palette", label: "Command palette", layer: 1, kind: "client", detail: "⌘K, site-wide" },
+        { id: "palette", label: "Command palette", layer: 1, kind: "client", detail: "K, site-wide" },
         { id: "motion", label: "Motion layer", layer: 2, kind: "service", detail: "Scroll-linked" },
         { id: "content", label: "Content model", layer: 2, kind: "data", detail: "Typed objects" },
         { id: "lead", label: "Access request", layer: 3, kind: "service", detail: "Server action" },
@@ -372,7 +505,7 @@ export const projects: Project[] = [
       { title: "Decision engine", description: "Step-through of how a raw signal becomes a recommended action." },
       { title: "Living workspace", description: "A working miniature of the product's adaptive dashboard." },
       { title: "Operational timeline", description: "Decision history rendered as a scrubable sequence." },
-      { title: "Command palette", description: "Site-wide ⌘K navigation using the product's own interaction model." },
+      { title: "Command palette", description: "Site-wide K navigation using the product's own interaction model." },
       { title: "Access request", description: "Short qualified form wired to a server action." },
     ],
     integrations: ["Analytics", "Access-request pipeline", "Email notifications"],
@@ -382,7 +515,7 @@ export const projects: Project[] = [
     ],
     results: [
       { label: "Product story", value: "Six interactive stages", note: "Mechanism shown, not claimed" },
-      { label: "Interaction parity", value: "⌘K", note: "Site uses the product's own pattern" },
+      { label: "Interaction parity", value: "K", note: "Site uses the product's own pattern" },
       { label: "Payload", value: "Islands only", note: "Interactive code loads on view" },
       { label: "Fallback", value: "Fully static", note: "Readable without JavaScript" },
     ],
