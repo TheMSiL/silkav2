@@ -140,23 +140,84 @@ export const en: Dictionary = {
     metaTitle: "Digital product engineering studio",
     metaDescription:
       "Silka is a digital product engineering studio. We design and build web platforms, mobile apps, SaaS, CRM and ERP systems, automation and AI products — from first architecture sketch to running infrastructure.",
-    heroTitleA: "We build digital products",
-    heroTitleB: "businesses run on.",
-    heroAccent: "run on.",
+    heroTitleA: "Complex digital products.",
+    heroTitleB: "Without the chaos around them.",
+    heroAccent: "Without the chaos",
     heroIntro:
-      "From high-performance websites and mobile apps to custom CRM platforms, automation and AI-powered systems. Strategy through to running infrastructure — one team, no handoffs.",
+      "Strategy, design, engineering and infrastructure in one team — from the first sketch to production.",
     ecosystemLabel: "What we build — an interactive map of the studio's capabilities",
     ecosystemIdleTitle: "The system",
     ecosystemIdleBody:
       "Eight things we build, and the connections between them. Most products need more than one — pick any node.",
-    workEyebrow: "Selected work",
-    workTitle: "Products that shipped, and what it took.",
-    workAccent: "shipped,",
-    servicesEyebrow: "What we build",
-    servicesTitle: "Ten disciplines. One team that carries them end to end.",
-    servicesAccent: "One team",
-    servicesIntro:
-      "Most products need three or four of these at once. Choosing a specialist for each is how projects end up with four systems that disagree.",
+    workEyebrow: "Work",
+    workTitle: "Products that are running right now.",
+    workAccent: "right now.",
+    workIntro:
+      "Every case study links to the live build. Every number comes from the product itself, not from a deck.",
+
+    problemEyebrow: "Approach",
+    problemTitle: "Not every product needs to be built.",
+    problemAccent: "needs to be built.",
+    problemLines: [
+      "Sometimes it is a website.",
+      "Sometimes it is an internal system.",
+      "Sometimes it is two days of automation.",
+      "Sometimes nothing needs building at all.",
+    ],
+    problemOutro:
+      "We work out the problem first and decide what to build second. Saying “you don't need this” costs us the project and keeps the relationship.",
+
+    journeyEyebrow: "Idea to production",
+    journeyTitle: "An idea does not become a product in one jump.",
+    journeyAccent: "in one jump.",
+    journeyIntro:
+      "Here is the same product at every stage — from a problem written down to a system that holds under load.",
+    journeyStages: [
+      {
+        label: "Idea",
+        title: "A problem, not a brief",
+        body: "First we write down what has to change in the business. If it does not fit in one sentence, it is too early to build.",
+      },
+      {
+        label: "Structure",
+        title: "Skeleton and boundaries",
+        body: "Flows, screens, data — and what the first version will not have. Deleting a feature is cheapest right here.",
+      },
+      {
+        label: "Interface",
+        title: "A design system, not a folder of screens",
+        body: "Components, states, tokens. Every next screen is assembled from what already exists, which is why the second one costs less than the first.",
+      },
+      {
+        label: "System",
+        title: "What sits under the interface",
+        body: "Data model, services, queues, integrations. Architecture decisions are written down as they are made — with the reason attached.",
+      },
+      {
+        label: "Production",
+        title: "A release, not an event",
+        body: "Deploys, migrations, monitoring and alerts are working before the first real user. The rollback is planned before it is needed.",
+      },
+    ],
+    journeyHint: "Scroll",
+
+    oneTeamEyebrow: "Why Silka",
+    oneTeamTitle: "You don't have to assemble a team of five suppliers.",
+    oneTeamAccent: "of five suppliers.",
+    oneTeamIntro:
+      "Every handoff between suppliers is a place where a decision loses the reason it was made for.",
+    oneTeamSplitLabel: "The usual way",
+    oneTeamSplitNote:
+      "Five contracts, five schedules, and nobody who owns the outcome end to end.",
+    oneTeamUnifiedLabel: "Our way",
+    oneTeamUnifiedNote:
+      "One contract. Whoever designed the data model also owns what the interface looks like three months later.",
+    oneTeamVendors: ["Designer", "Frontend", "Backend", "AI contractor", "DevOps"],
+    oneTeamRoles: ["Strategy", "Design", "Engineering", "AI", "Infrastructure", "Launch"],
+    oneTeamHandoff: "handoffs",
+    oneTeamClient: "Client",
+    oneTeamOutro: "One product. One team. One line of accountability.",
+
     complexityEyebrow: "Complexity",
     complexityTitle: "From simple to insanely complex.",
     complexityAccent: "insanely complex.",
@@ -167,18 +228,6 @@ export const en: Dictionary = {
     builderAccent: "Assemble",
     builderIntro:
       "Real systems are made of parts. Pick the ones you think you need — the list on the right is what we would actually have to build.",
-    systemsEyebrow: "Systems in motion",
-    systemsTitle: "Automation you can trust, and AI that knows when to stop.",
-    systemsAccent: "knows when to stop.",
-    systemsIntro:
-      "Two flows we build constantly. Both are shown with the part most demos hide: what happens when something fails or the model is unsure.",
-    automationFlowTitle: "A lead arrives",
-    automationFlowBody:
-      "One pipeline behind every channel. A retry can never duplicate a record, and a failure is never silent.",
-    aiFlowTitle: "A customer asks a question",
-    aiFlowBody:
-      "Retrieval, a confidence gate, and a human who keeps the send button. The system is allowed to say it does not know.",
-    automationLink: "How we build automation",
     processEyebrow: "Process",
     processTitle: "Seven steps, and none of them are a surprise.",
     processAccent: "none of them",
@@ -190,23 +239,17 @@ export const en: Dictionary = {
     industriesIntro:
       "What transfers between an aviation archive and a dental clinic is the engineering, not the domain. We learn the domain anyway.",
     principlesEyebrow: "What we care about",
-    principlesTitle: "Six commitments. No adjectives.",
-    principlesAccent: "Six commitments.",
-    principlesIntro:
-      "The reviews below say we are professional and on time. Pleasant, and not information. These are the specifics you can hold us to instead.",
-    insightsEyebrow: "Insights",
-    insightsTitle: "What we have learned building this stuff.",
-    ctaTitleA: "Have a complex idea?",
-    ctaTitleB: "Let's build it.",
-    ctaAccent: "build",
+    ctaTitleA: "Got a product that should exist by now?",
+    ctaTitleB: "Tell us about it.",
+    ctaAccent: "Tell us about it.",
     ctaIntro:
-      "Tell us what the business needs to do differently. We will tell you what it takes — including when it takes less than you think.",
+      "Describe what has to change in your business. We will work out what that actually takes — including when it takes less than you think.",
   },
   work: {
     metaTitle: "Work",
     metaDescription:
-      "Fourteen shipped products — SaaS platforms, data products, e-commerce, logistics, real estate, mobility and AI automation. Every case study links to the live build.",
-    title: "Fourteen products, and what each one had to solve.",
+      "Fifteen shipped products — SaaS platforms, data products, e-commerce, logistics, real estate, mobility and AI automation. Every case study links to the live build.",
+    title: "Fifteen products, and what each one had to solve.",
     accent: "had to solve.",
     intro:
       "Every case study links to the running build. Where a number appears, it comes from the product itself — not from a marketing deck.",
@@ -423,6 +466,7 @@ export const en: Dictionary = {
     accent: "code.",
     intro:
       "A good product does not begin with a React component. It begins with understanding what the business is trying to change — and everything downstream is a consequence of that.",
+    codeNote: "Code is the seventh link. Everything before it decides whether the product holds.",
     outro:
       "By the time anyone writes code, the hard decisions are already made — and written down. That is why the estimate holds.",
   },

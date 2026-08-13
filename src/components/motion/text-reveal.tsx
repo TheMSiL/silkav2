@@ -42,8 +42,19 @@ export function TextReveal({
   on = "view",
 }: TextRevealProps) {
   const words = text.split(" ");
-  const accentWords = accent ? accent.split(" ") : [];
-  const isAccent = (word: string) => accentWords.includes(word.replace(/[.,]/g, ""));
+  /*
+   * Punctuation is stripped from BOTH sides of the comparison.
+   *
+   * It used to be stripped only from the title's words, which meant an accent
+   * phrase written the way it reads in the heading — "run on.", "можна
+   * перевірити." — silently failed to match its own last word: "перевірити."
+   * became "перевірити" and was compared against a list still holding the full
+   * stop. Every accent that ended a sentence lost its final word, which is the
+   * word the emphasis was for.
+   */
+  const strip = (word: string) => word.replace(/[.,!?;:«»“”"']/g, "");
+  const accentWords = accent ? accent.split(" ").map(strip) : [];
+  const isAccent = (word: string) => accentWords.includes(strip(word));
 
   return (
     <Tag

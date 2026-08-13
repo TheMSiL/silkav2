@@ -5,6 +5,7 @@ import { SectionHeading } from "@/components/ui/section-heading";
 import { PageHero } from "@/components/sections/page-hero";
 import { FinalCta } from "@/components/sections/final-cta";
 import { ServicesExplorer } from "@/features/services/services-explorer";
+import { ComplexitySlider } from "@/features/complexity/complexity-slider";
 import { Estimator } from "@/features/estimator/estimator";
 import { ProductBuilder } from "@/features/builder/product-builder";
 import { Reveal } from "@/components/motion/reveal";
@@ -71,7 +72,22 @@ export default async function ServicesPage({ params }: { params: Promise<{ local
         />
       </Section>
 
-      <Section theme="light" id="builder" label={dict.home.builderEyebrow}>
+      {/*
+        Scale, next to the ten disciplines rather than on the home page: this
+        is a question someone asks once they already believe the studio can
+        build the thing — "is my project too small, or too large".
+      */}
+      <Section theme="light" id="complexity" label={dict.home.complexityEyebrow}>
+        <SectionHeading
+          eyebrow={dict.home.complexityEyebrow}
+          title={dict.home.complexityTitle}
+          accent={dict.home.complexityAccent}
+          intro={dict.home.complexityIntro}
+        />
+        <ComplexitySlider levels={content.complexityLevels} locale={locale} dict={dict} />
+      </Section>
+
+      <Section theme="dark" id="builder" label={dict.home.builderEyebrow}>
         <SectionHeading
           eyebrow={dict.home.builderEyebrow}
           title={dict.services.builderTitle}

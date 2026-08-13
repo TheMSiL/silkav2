@@ -315,6 +315,14 @@ export interface Stat {
   value: string;
   label: string;
   note: string;
+  /**
+   * Where the figure can be checked.
+   *
+   * A number with nowhere to go is a claim. Internal paths are localised at
+   * render time; anything starting with `http` opens in a new tab. Structural,
+   * so it must be identical across locales.
+   */
+  href?: string;
 }
 
 export interface Discipline_ {

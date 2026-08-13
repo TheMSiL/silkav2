@@ -81,7 +81,12 @@ export const industries: Industry[] = [
     key: "mobility",
     label: "Mobility",
     blurb: "A premium object sells on restraint, and restraint is the hardest thing to hold on a page that also has to quote a price.",
-    systems: ["Product configurators", "Specification surfaces", "Long-form product narrative"],
+    systems: [
+      "Product configurators",
+      "Specification surfaces",
+      "Long-form product narrative",
+      "Activity and route tracking",
+    ],
   },
 ];
 
@@ -121,8 +126,8 @@ export const principles: Principle[] = [
  * here is a figure we would have to defend from memory.
  */
 export const stats: Stat[] = [
-  { value: "14", label: "Products shipped", note: "Every one live and linked" },
-  { value: "13", label: "Industries", note: "Aviation data to dentistry" },
-  { value: "8", label: "Disciplines in-house", note: "Strategy through infrastructure" },
-  { value: "34", label: "Client reviews", note: "Public, since 2023" },
+  { value: "15", label: "Products shipped", note: "Every one live and linked", href: "/work" },
+  { value: "13", label: "Industries", note: "Aviation data to dentistry", href: "/work#industries" },
+  { value: "8", label: "Disciplines in-house", note: "Strategy through infrastructure", href: "/about#team" },
+  { value: "34", label: "Client reviews", note: "Public, since 2023", href: "https://freelance.ua/user/msil/opinions/" },
 ];

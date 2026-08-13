@@ -26,7 +26,7 @@ test.describe("Scenario 1 — Home → Work → case study", () => {
 
     await navigate(page, "Work");
     await expect(page).toHaveURL(/\/en\/work$/);
-    await expect(page.getByRole("heading", { level: 1 })).toContainText("Twelve products");
+    await expect(page.getByRole("heading", { level: 1 })).toContainText("Fifteen products");
 
     await page.getByRole("link", { name: /CrashAtlas/ }).first().click();
     await expect(page).toHaveURL(/\/en\/work\/crashatlas$/);
@@ -87,7 +87,7 @@ test.describe("Scenario 3 — Estimator → Contact → Submit", () => {
     await page.getByLabel(/^message/i).fill(
       "We're building a CRM. Existing product, full cycle, starting now. Roughly 40 users.",
     );
-    await page.getByRole("button", { name: /send project inquiry/i }).click();
+    await page.getByRole("button", { name: /send it over/i }).click();
 
     await expect(page.getByRole("heading", { name: /that landed/i })).toBeVisible({ timeout: 15_000 });
   });
@@ -97,7 +97,7 @@ test.describe("Scenario 3 — Estimator → Contact → Submit", () => {
     await page.getByLabel(/^name/i).fill("D");
     await page.getByLabel(/^email/i).fill("not-an-email");
     await page.getByLabel(/^message/i).fill("hi");
-    await page.getByRole("button", { name: /send project inquiry/i }).click();
+    await page.getByRole("button", { name: /send it over/i }).click();
 
     await expect(page.getByRole("alert").first()).toBeVisible();
     await expect(page.getByRole("heading", { name: /that landed/i })).toBeHidden();

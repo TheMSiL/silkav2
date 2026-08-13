@@ -62,7 +62,18 @@ export function FinalCta({ locale, dict }: { locale: Locale; dict: Dictionary })
       ) : null}
 
       <Container className="relative">
-        <h2 className="font-display max-w-4xl text-5xl sm:text-6xl">
+        {/*
+          Sized for a sentence, not for three words.
+
+          This heading used to hold "Є складна ідея? Зберімо її." — 26
+          characters, which is why it could afford `text-6xl` inside a 56rem
+          column. The closing line is now a question and an answer, and at that
+          size in that width it broke into six lines of 120px type: a column of
+          two or three words per line, which reads as a poster rather than as
+          something addressed to the visitor. One step down the scale and a
+          wider measure puts it back at two lines a piece.
+        */}
+        <h2 className="font-display max-w-5xl text-4xl sm:text-5xl">
           <TextReveal as="span" text={dict.home.ctaTitleA} className="block" />
           <TextReveal as="span" text={dict.home.ctaTitleB} className="block" accent={dict.home.ctaAccent} delay={0.1} />
         </h2>

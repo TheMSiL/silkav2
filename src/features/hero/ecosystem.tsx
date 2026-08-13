@@ -1,10 +1,11 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState, type CSSProperties } from "react";
 import Link from "next/link";
 import { cn } from "@/lib/cn";
 import { ArrowRight } from "@/components/ui/icons";
 import { EVENTS, track } from "@/lib/analytics";
+import { revealedByScript } from "@/components/motion/reveal";
 
 export interface EcosystemNode {
   id: string;
@@ -77,7 +78,12 @@ interface HeroEcosystemProps {
   idleBody: string;
   detailLabel: string;
   groupLabel: string;
-  className?: string;
+  /** Placement for the diagram itself, applied by the parent layout. */
+  ringClassName?: string;
+  /** Placement for the detail panel. See the note on the wrapper below. */
+  panelClassName?: string;
+  /** Seconds before the entrance animation plays; omit for no entrance. */
+  revealDelay?: number;
 }
 
 export function HeroEcosystem({
@@ -86,7 +92,9 @@ export function HeroEcosystem({
   idleBody,
   detailLabel,
   groupLabel,
-  className,
+  ringClassName,
+  panelClassName,
+  revealDelay,
 }: HeroEcosystemProps) {
   const wrapRef = useRef<HTMLDivElement>(null);
   const svgRef = useRef<SVGSVGElement>(null);
@@ -334,12 +342,33 @@ export function HeroEcosystem({
   const rest = NODES.map((node) => projectFraction(node));
 
   return (
-    <div className={cn("flex flex-col gap-6", className)}>
+    /*
+     * `display: contents` — the wrapper generates no box, so the ring and the
+     * detail panel become items of whatever grid the parent lays out.
+     *
+     * That is the point. The panel carries a rule along its top edge and so
+     * does the stat strip in the hero's other column; with the two columns
+     * centred independently, those two hairlines landed a couple of dozen
+     * pixels apart, which reads as a mistake because it is one. Handing both
+     * halves to the parent lets it put them in the same grid row, where they
+     * line up by construction rather than by a number someone tuned once.
+     *
+     * The wrapper still exists because the two halves share `active` state.
+     */
+    <div className="contents">
       <div
         ref={wrapRef}
         role="group"
         aria-label={groupLabel}
-        className="relative aspect-square w-full select-none"
+        className={cn("relative aspect-square w-full select-none", ringClassName)}
+        data-reveal={revealDelay === undefined ? undefined : "rise"}
+        data-reveal-on={revealDelay === undefined ? undefined : "load"}
+        style={
+          revealDelay === undefined
+            ? undefined
+            : ({ "--reveal-delay": `${revealDelay}s` } as CSSProperties)
+        }
+        {...revealedByScript}
       >
         <svg
           ref={svgRef}
@@ -466,7 +495,10 @@ export function HeroEcosystem({
       <div
         id="ecosystem-detail"
         aria-live="polite"
-        className="grid border-t border-line pt-5 *:col-start-1 *:row-start-1"
+        className={cn(
+          "grid border-t border-line pt-5 *:col-start-1 *:row-start-1",
+          panelClassName,
+        )}
       >
         <div
           className={cn(

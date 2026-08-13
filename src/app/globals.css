@@ -43,18 +43,25 @@
   --selection: rgb(33 25 240 / 0.32);
   --grid-line: rgb(255 255 255 / 0.045);
 
-  /* ---------- Type scale (fluid, 320 → 1440) ---------- */
-  --step--2: clamp(0.63rem, 0.61rem + 0.09vw, 0.69rem);
-  --step--1: clamp(0.75rem, 0.72rem + 0.14vw, 0.83rem);
-  --step-0: clamp(0.9rem, 0.86rem + 0.2vw, 1rem);
-  --step-1: clamp(1.08rem, 1rem + 0.38vw, 1.33rem);
-  --step-2: clamp(1.3rem, 1.17rem + 0.64vw, 1.78rem);
-  --step-3: clamp(1.56rem, 1.35rem + 1.03vw, 2.37rem);
-  --step-4: clamp(1.87rem, 1.55rem + 1.6vw, 3.16rem);
-  --step-5: clamp(2.24rem, 1.76rem + 2.42vw, 4.21rem);
-  --step-6: clamp(2.69rem, 1.98rem + 3.57vw, 5.61rem);
-  --step-7: clamp(3.23rem, 2.2rem + 5.15vw, 7.48rem);
-  --step-8: clamp(3.88rem, 2.4rem + 7.38vw, 9.98rem);
+  /* ----------
+     Type scale (fluid, 320 → 1440)
+
+     One scale, +10% over the original setting — every size on the site is a
+     step on it, so the ramp is raised here rather than per component. Both ends
+     of each clamp and the vw term are scaled together, which lifts the whole
+     curve instead of flattening it at one breakpoint.
+     ---------- */
+  --step--2: clamp(0.69rem, 0.67rem + 0.1vw, 0.76rem);
+  --step--1: clamp(0.83rem, 0.79rem + 0.15vw, 0.91rem);
+  --step-0: clamp(0.99rem, 0.95rem + 0.22vw, 1.1rem);
+  --step-1: clamp(1.19rem, 1.1rem + 0.42vw, 1.46rem);
+  --step-2: clamp(1.43rem, 1.29rem + 0.7vw, 1.96rem);
+  --step-3: clamp(1.72rem, 1.49rem + 1.13vw, 2.61rem);
+  --step-4: clamp(2.06rem, 1.71rem + 1.76vw, 3.48rem);
+  --step-5: clamp(2.46rem, 1.94rem + 2.66vw, 4.63rem);
+  --step-6: clamp(2.96rem, 2.18rem + 3.93vw, 6.17rem);
+  --step-7: clamp(3.55rem, 2.42rem + 5.67vw, 8.23rem);
+  --step-8: clamp(4.27rem, 2.64rem + 8.12vw, 10.98rem);
 
   /* ---------- Spacing ---------- */
   --space-3xs: 0.25rem;
@@ -116,18 +123,42 @@
   color-scheme: dark;
 }
 
-/* Light surface — applied per-section via data-theme, never a global toggle. */
+/*
+ * Light surface — applied per-section via data-theme, never a global toggle.
+ *
+ * This is not the dark theme with the values flipped, and getting it wrong
+ * that way is what made the light bands read as muddy beige next to the ink.
+ * Three things are deliberate:
+ *
+ *   1. The paper is lighter and less yellow than `--bone-100`, and each step
+ *      down is a real step. On the dark side the surfaces separate by
+ *      luminance alone; on paper they need a touch of warmth as well, or the
+ *      panels look like print artefacts rather than materials.
+ *   2. Ink is close to black but never pure — `#0b0d0f` at 500 weight on paper
+ *      is what large display type wants. Pure black at this size vibrates.
+ *   3. Hairlines run cooler and lighter than the mirror of the dark ones. A
+ *      12% black line on paper is visually twice the weight of a 10% white
+ *      line on ink, which is why the light sections looked ruled and heavy.
+ */
 [data-theme="light"] {
-  --surface: var(--bone-100);
-  --surface-2: var(--bone-200);
-  --surface-3: var(--bone-300);
-  --fg: #101315;
-  --fg-muted: #5a6067;
-  --fg-faint: #8a9098;
-  --line: rgb(16 19 21 / 0.12);
-  --line-strong: rgb(16 19 21 / 0.28);
-  --grid-line: rgb(16 19 21 / 0.05);
+  --surface: #f7f5f0;
+  --surface-2: #f0ede5;
+  --surface-3: #e5e1d6;
+  --fg: #0b0d0f;
+  --fg-muted: #585d64;
+  --fg-faint: #8f949b;
+  --line: rgb(11 13 15 / 0.09);
+  --line-strong: rgb(11 13 15 / 0.22);
+  --grid-line: rgb(11 13 15 / 0.035);
   --accent-fg: #ffffff;
+  --selection: rgb(33 25 240 / 0.18);
+  /*
+   * Shadows have to be rebuilt, not reused. The dark set is heavy black at
+   * high alpha, which on paper reads as dirt rather than as elevation.
+   */
+  --shadow-sm: 0 1px 2px rgb(11 13 15 / 0.06);
+  --shadow-md: 0 8px 24px -8px rgb(11 13 15 / 0.12);
+  --shadow-lg: 0 24px 60px -24px rgb(11 13 15 / 0.18);
   color-scheme: light;
 }
 

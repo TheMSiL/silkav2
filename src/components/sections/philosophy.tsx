@@ -1,13 +1,31 @@
 import { Section } from "@/components/ui/section";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { Reveal } from "@/components/motion/reveal";
+import { cn } from "@/lib/cn";
 import type { Dictionary } from "@/lib/i18n/dictionaries";
 import type { PhilosophyLink } from "@/types";
 
-/** The chain is the argument — nine links, code eighth. */
+/**
+ * Where "Розробка" sits in the chain.
+ *
+ * The chain is structural — the same nine links in the same order in every
+ * locale, with only the labels translated — so the position is a property of
+ * the data rather than of the language. It is called out because it is the
+ * entire argument of the section: eight decisions happen before anyone opens
+ * an editor.
+ */
+const CODE_INDEX = 6;
+
+/**
+ * §06 — the argument, after the evidence rather than before it.
+ *
+ * Nine links, rendered as a chain rather than as nine cards. Cards give every
+ * step the same weight, which is the opposite of the point: the order is what
+ * matters, and a list you read top to bottom carries an order for free.
+ */
 export function Philosophy({ dict, chain }: { dict: Dictionary; chain: PhilosophyLink[] }) {
   return (
-    <Section theme="light" label={dict.philosophy.eyebrow} grid>
+    <Section theme="dark" label={dict.philosophy.eyebrow} grid>
       <SectionHeading
         eyebrow={dict.philosophy.eyebrow}
         title={dict.philosophy.title}
@@ -15,28 +33,48 @@ export function Philosophy({ dict, chain }: { dict: Dictionary; chain: Philosoph
         intro={dict.philosophy.intro}
       />
 
-      <ol className="mt-14 grid gap-px border border-line bg-line sm:grid-cols-2 lg:grid-cols-3">
-        {chain.map((link, i) => (
-          <Reveal as="li" key={link.label} delay={(i % 3) * 0.06} className="bg-surface">
-            <div className="flex h-full flex-col gap-2 p-6">
-              <div className="flex items-baseline justify-between">
-                <span className="font-display text-xl">{link.label}</span>
-                <span className="mono-sm text-faint">{String(i + 1).padStart(2, "0")}</span>
-              </div>
-              <p className="text-base text-muted">{link.note}</p>
-              {i === chain.length - 1 ? null : (
-                <span aria-hidden className="mt-auto pt-4 text-accent">
-                  ↓
+      <div className="mt-14 grid gap-12 lg:grid-cols-12 lg:gap-16">
+        <ol className="border-t border-line lg:col-span-7">
+          {chain.map((link, i) => (
+            <Reveal as="li" key={link.label} delay={Math.min(i, 5) * 0.04}>
+              <div
+                className={cn(
+                  "grid grid-cols-[2.5rem_1fr] items-baseline gap-x-4 gap-y-1 border-b border-line py-4 md:grid-cols-[2.5rem_11rem_1fr]",
+                  i === CODE_INDEX && "bg-surface-2",
+                )}
+              >
+                <span
+                  className={cn("mono-sm", i === CODE_INDEX ? "text-accent" : "text-faint")}
+                >
+                  {String(i + 1).padStart(2, "0")}
                 </span>
-              )}
-            </div>
-          </Reveal>
-        ))}
-      </ol>
+                <span
+                  className={cn(
+                    "text-lg",
+                    i === CODE_INDEX ? "text-accent" : "text-fg",
+                  )}
+                >
+                  {link.label}
+                </span>
+                <span className="col-start-2 text-base text-muted md:col-start-3">{link.note}</span>
+              </div>
+            </Reveal>
+          ))}
+        </ol>
 
-      <Reveal delay={0.1}>
-        <p className="mt-12 max-w-2xl text-xl text-fg">{dict.philosophy.outro}</p>
-      </Reveal>
+        <div className="lg:col-span-5">
+          <div className="lg:sticky lg:top-[calc(var(--header-h)+3rem)]">
+            <Reveal delay={0.1}>
+              <p className="border-l-2 border-accent pl-6 text-xl text-fg md:text-2xl">
+                {dict.philosophy.codeNote}
+              </p>
+            </Reveal>
+            <Reveal delay={0.2}>
+              <p className="mt-8 text-lg text-muted">{dict.philosophy.outro}</p>
+            </Reveal>
+          </div>
+        </div>
+      </div>
     </Section>
   );
 }
