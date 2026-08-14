@@ -173,6 +173,7 @@ export const en: Dictionary = {
     journeyAccent: "in one jump.",
     journeyIntro:
       "Here is the same product at every stage — from a problem written down to a system that holds under load.",
+    journeyBrief: "We need to automate order processing.",
     journeyStages: [
       {
         label: "Idea",
@@ -188,6 +189,11 @@ export const en: Dictionary = {
         label: "Interface",
         title: "A design system, not a folder of screens",
         body: "Components, states, tokens. Every next screen is assembled from what already exists, which is why the second one costs less than the first.",
+      },
+      {
+        label: "Data",
+        title: "A screen someone decides on",
+        body: "A dashboard is not a report. Every number on it is there because somebody has to act on it — the rest is decoration that costs money to keep.",
       },
       {
         label: "System",
@@ -326,7 +332,7 @@ export const en: Dictionary = {
     techTitle: "The stack, with reasons attached.",
     techAccent: "with reasons attached.",
     techIntro:
-      "A logo wall tells you nothing. Every entry below carries why it is on the list — and we will happily argue about any of them.",
+      "The strip above is what we build with. On its own it tells you nothing — so every entry below carries why it is on the list, and we will happily argue about any of them.",
     techTablistLabel: "Technology categories",
     dashboardChrome: "Operations console — illustrative data",
     dashboardTablistLabel: "Dashboard sections",

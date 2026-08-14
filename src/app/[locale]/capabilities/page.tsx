@@ -4,6 +4,7 @@ import Link from "next/link";
 import { Section } from "@/components/ui/section";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { PageHero } from "@/components/sections/page-hero";
+import { TechMarquee } from "@/components/sections/tech-marquee";
 import { FinalCta } from "@/components/sections/final-cta";
 import { Reveal } from "@/components/motion/reveal";
 import { ArrowUpRight } from "@/components/ui/icons";
@@ -125,7 +126,12 @@ export default async function CapabilitiesPage({
         <BulletGrid bullets={backend.bullets} columns={4} />
       </Section>
 
-      {/* Technology */}
+      {/*
+        Technology. The strip is the top edge of this band rather than a band of
+        its own: the marks scroll past, the heading names the argument, the
+        explorer makes it — one block, read top to bottom.
+      */}
+      <TechMarquee surface="contrast" />
       <Section surface="contrast" id="technology" label={dict.capabilities.techEyebrow}>
         <SectionHeading
           eyebrow={dict.capabilities.techEyebrow}

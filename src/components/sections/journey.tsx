@@ -5,28 +5,31 @@ import { useMotionValueEvent, useScroll } from "motion/react";
 import { Container } from "@/components/ui/container";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { Reveal } from "@/components/motion/reveal";
-import { StageArt } from "@/features/journey/stage-art";
+import { ProductBuild } from "@/features/journey/product-build";
 import { cn } from "@/lib/cn";
 import { useMediaQuery } from "@/lib/use-media-query";
 import { useReducedMotionSafe } from "@/lib/use-reduced-motion-safe";
 import type { Dictionary } from "@/lib/i18n/dictionaries";
 
 /**
- * §04 — one product, five states, driven by the scroll.
+ * §04 — one product, assembling itself, driven by the scroll.
  *
- * This is the section the site is trying to be an example of: rather than
- * claiming the studio takes a product from idea to production, it shows the
- * same rectangle becoming a note, a wireframe, an interface, an architecture
- * and a running system without ever moving.
+ * This is the section the site is trying to be an example of. Rather than
+ * claiming the studio takes a product from a sentence to production, it builds
+ * one in front of the visitor: a brief becomes a wireframe, the wireframe
+ * becomes an interface, the interface fills with data, the architecture under
+ * it is exposed, and the whole thing goes live — in the same rectangle, with
+ * nothing ever changing position.
  *
  * Two rendering modes, and the plain one is the default:
  *
  *   - Below `lg`, and whenever motion is unwelcome, every stage is laid out as
  *     an ordinary vertical list. That is also what the server renders and what
  *     a visitor without JavaScript gets, so the argument survives with the
- *     scripting turned off.
- *   - On a wide screen with motion allowed, the same five stages are stacked
- *     in a sticky frame and cross-faded as the page scrolls past.
+ *     scripting turned off — each list item shows the build frozen at its own
+ *     stage, which is a legible strip of six even standing still.
+ *   - On a wide screen with motion allowed, one instance is pinned in a sticky
+ *     frame and walked through the six states as the page scrolls past.
  *
  * Scroll-jacking a phone is not worth the trick, which is why the tall
  * scroll-track only exists on wide screens.
@@ -50,7 +53,16 @@ export function Journey({ dict }: { dict: Dictionary }) {
   });
 
   useMotionValueEvent(scrollYProgress, "change", (progress) => {
-    const next = Math.min(stages.length - 1, Math.max(0, Math.floor(progress * stages.length)));
+    const raw = progress * stages.length;
+    const next = Math.min(stages.length - 1, Math.max(0, Math.floor(raw)));
+
+    /*
+     * The fraction of the way through the current stage, written straight onto
+     * the DOM node instead of into state. The rail below reads it as a CSS
+     * variable, so the active rule fills continuously with the scroll while
+     * React still only renders on the six moments that change what is drawn.
+     */
+    wrapRef.current?.style.setProperty("--stage-progress", String(raw - next));
     setStage(next);
   });
 
@@ -75,11 +87,12 @@ export function Journey({ dict }: { dict: Dictionary }) {
       <div
         ref={wrapRef}
         /*
-         * Four screens of travel for five stages — about 60% of a viewport
-         * each, which is one unhurried flick. Five screens read as a tunnel in
-         * a page this long; three make the stages blur into each other.
+         * Five screens of travel for six stages — about 55% of a viewport each,
+         * which is one unhurried flick per state. More reads as a tunnel in a
+         * page this long; less and the stages blur into each other before the
+         * transitions have finished playing.
          */
-        className={cn("relative", cinematic && "h-[400lvh]")}
+        className={cn("relative", cinematic && "h-[500lvh]")}
         /* The list below is the real content; the sticky frame is a view of it. */
       >
         <div
@@ -109,12 +122,25 @@ export function Journey({ dict }: { dict: Dictionary }) {
                             {String(i + 1).padStart(2, "0")}
                           </span>
                           <span className="mono-sm">{item.label}</span>
+                          {/*
+                            Passed rules are simply full. The one being read
+                            fills with the scroll itself and therefore carries
+                            no transition — a transition would be chasing a
+                            value that changes every frame.
+                          */}
                           <span
                             aria-hidden
                             className={cn(
-                              "ml-auto h-px flex-1 origin-left transition-transform duration-500 ease-[var(--ease-out-expo)]",
-                              i <= stage ? "scale-x-100 bg-accent" : "scale-x-0 bg-line",
+                              "ml-auto h-px flex-1 origin-left",
+                              i < stage && "scale-x-100 bg-accent transition-transform duration-500 ease-[var(--ease-out-expo)]",
+                              i === stage && "bg-accent",
+                              i > stage && "scale-x-0 bg-line transition-transform duration-500 ease-[var(--ease-out-expo)]",
                             )}
+                            style={
+                              i === stage
+                                ? { transform: "scaleX(var(--stage-progress, 0))" }
+                                : undefined
+                            }
                           />
                         </div>
                       </li>
@@ -143,7 +169,7 @@ export function Journey({ dict }: { dict: Dictionary }) {
                 </div>
 
                 <div className="lg:col-span-7">
-                  <StageArt stage={stage} />
+                  <ProductBuild stage={stage} brief={dict.home.journeyBrief} />
                 </div>
               </div>
             ) : (
@@ -152,7 +178,7 @@ export function Journey({ dict }: { dict: Dictionary }) {
                   <Reveal as="li" key={item.label}>
                     <div className="grid gap-8 md:grid-cols-12 md:items-center md:gap-12">
                       <div className="md:col-span-7 md:order-2">
-                        <StageArt stage={i} />
+                        <ProductBuild stage={i} brief={dict.home.journeyBrief} />
                       </div>
                       <div className="md:col-span-5 md:order-1">
                         <p className="mono-sm flex items-center gap-3 text-accent">
