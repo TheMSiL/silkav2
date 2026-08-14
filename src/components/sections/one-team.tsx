@@ -4,24 +4,23 @@ import { Reveal } from "@/components/motion/reveal";
 import type { Dictionary } from "@/lib/i18n/dictionaries";
 
 /**
- * §05 — the commercial argument, drawn rather than asserted.
+ * §05 — the commercial argument as one graphic.
  *
- * Two horizontal paths, stacked so they can be compared by shape alone: the
- * top one is six boxes with a break between every pair, the bottom one is a
- * box and then a single container. The reader does not have to read either to
- * get the point, which is the test a diagram has to pass.
+ * Two bars, same width, same place on the page: the first cut into five
+ * segments with a visible gap at every joint, the second unbroken. That is the
+ * whole point, and it lands before a word is read — which is the test a
+ * diagram has to pass, and the reason this is no longer a set of labelled
+ * boxes with crosses between them. Boxes made the reader parse a flowchart to
+ * reach a conclusion a silhouette can give them.
  *
- * It used to be two panels side by side. That framing made them look like two
- * offers rather than one route and its alternative, and it forced the roles
- * into a tall column of empty surface to match the height of the chain
- * opposite. Running left to right instead means each path is as long as it
- * actually is, and the difference between them is the length.
+ * The gaps are the argument, so they are real gaps in the grid rather than
+ * drawn dividers.
  */
 export function OneTeam({ dict }: { dict: Dictionary }) {
   const home = dict.home;
 
   return (
-    <Section theme="light" label={home.oneTeamEyebrow}>
+    <Section surface="muted" label={home.oneTeamEyebrow}>
       <SectionHeading
         eyebrow={home.oneTeamEyebrow}
         title={home.oneTeamTitle}
@@ -29,55 +28,28 @@ export function OneTeam({ dict }: { dict: Dictionary }) {
         intro={home.oneTeamIntro}
       />
 
-      <div className="mt-16 flex flex-col gap-12">
-        {/* The usual way — a chain, with a seam at every joint. */}
+      <div className="mt-16 flex flex-col gap-12 md:gap-16">
         <Reveal>
-          <div className="border-t border-line pt-8">
-            <p className="mono-sm text-faint">{home.oneTeamSplitLabel}</p>
-
-            <div className="mt-7 flex flex-wrap items-center gap-y-3">
-              <Party label={home.oneTeamClient} />
-              {home.oneTeamVendors.map((vendor) => (
-                <div key={vendor} className="flex items-center">
-                  <Seam label={home.oneTeamHandoff} />
-                  <Party label={vendor} muted />
-                </div>
-              ))}
-            </div>
-
-            <p className="mt-7 max-w-2xl text-base text-muted">{home.oneTeamSplitNote}</p>
-          </div>
+          <Path
+            label={home.oneTeamSplitLabel}
+            from={home.oneTeamClient}
+            note={home.oneTeamSplitNote}
+            steps={home.oneTeamVendors}
+            broken
+          />
         </Reveal>
 
-        {/* Ours — one joint, then one container. */}
-        <Reveal delay={0.1}>
-          <div className="border-t border-line pt-8">
-            <p className="mono-sm text-accent">{home.oneTeamUnifiedLabel}</p>
-
-            <div className="mt-7 flex flex-col items-stretch gap-3 md:flex-row md:items-center md:gap-0">
-              <div className="flex items-center md:shrink-0">
-                <Party label={home.oneTeamClient} />
-                <span aria-hidden className="hidden h-px w-8 bg-accent md:block" />
-              </div>
-              {/* The vertical joint only exists once the row has stacked. */}
-              <span aria-hidden className="ml-6 block h-6 w-px bg-accent md:hidden" />
-
-              <ul className="flex flex-1 flex-wrap items-center gap-x-8 gap-y-3 border border-accent px-6 py-5">
-                {home.oneTeamRoles.map((role) => (
-                  <li key={role} className="flex items-center gap-2.5 text-base text-fg">
-                    <span aria-hidden className="size-1.5 shrink-0 rounded-full bg-accent" />
-                    {role}
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            <p className="mt-7 max-w-2xl text-base text-muted">{home.oneTeamUnifiedNote}</p>
-          </div>
+        <Reveal delay={0.12}>
+          <Path
+            label={home.oneTeamUnifiedLabel}
+            from={home.oneTeamClient}
+            note={home.oneTeamUnifiedNote}
+            steps={home.oneTeamRoles}
+          />
         </Reveal>
       </div>
 
-      <Reveal delay={0.15}>
+      <Reveal delay={0.2}>
         <p className="font-display mt-16 max-w-3xl text-balance text-2xl md:text-3xl">
           {home.oneTeamOutro}
         </p>
@@ -86,28 +58,70 @@ export function OneTeam({ dict }: { dict: Dictionary }) {
   );
 }
 
-function Party({ label, muted = false }: { label: string; muted?: boolean }) {
+function Path({
+  label,
+  from,
+  note,
+  steps,
+  broken = false,
+}: {
+  label: string;
+  from: string;
+  note: string;
+  steps: string[];
+  broken?: boolean;
+}) {
   return (
-    <span
-      className={
-        muted
-          ? "whitespace-nowrap border border-dashed border-line-strong px-4 py-2.5 text-base text-muted"
-          : "whitespace-nowrap border border-line-strong bg-surface-2 px-4 py-2.5 text-base text-fg"
-      }
-    >
-      {label}
-    </span>
-  );
-}
+    <div className="border-t border-line pt-8">
+      <div className="flex flex-wrap items-baseline justify-between gap-x-8 gap-y-2">
+        {/*
+          Not the accent for the second label. At mono-sm the brand blue over
+          the middle surface is barely legible, and the bar underneath already
+          says which path this is.
+        */}
+        <p className={broken ? "mono-sm text-faint" : "mono-sm text-fg"}>{label}</p>
+        <p className="mono-sm text-faint">{from}</p>
+      </div>
 
-/** The joint between two suppliers. Every one is a place work is dropped. */
-function Seam({ label }: { label: string }) {
-  return (
-    <span className="flex items-center gap-1.5 px-2 text-faint">
-      <span aria-hidden className="block h-px w-3 border-t border-dashed border-line-strong" />
-      <span aria-hidden className="text-xs leading-none">✕</span>
-      <span aria-hidden className="block h-px w-3 border-t border-dashed border-line-strong" />
-      <span className="sr-only">{label}</span>
-    </span>
+      {/*
+        One grid drives both the bar and the labels under it, so a name is
+        always directly beneath its own segment at every width. The columns are
+        even, which is a claim the diagram is entitled to make: the point is how
+        many there are, not how long each one takes.
+      */}
+      <ul
+        className="mt-7 grid gap-x-2"
+        style={{ gridTemplateColumns: `repeat(${steps.length}, minmax(0, 1fr))` }}
+      >
+        {steps.map((step, i) => (
+          <li key={step} className="min-w-0">
+            {/*
+              The unbroken path closes the column gap by bleeding half of it
+              into each side, so the segments meet and read as one bar without
+              the labels below losing their gutter.
+            */}
+            <span
+              aria-hidden
+              className={
+                broken
+                  ? "block h-2.5 border border-dashed border-line-strong"
+                  : "block h-2.5 bg-accent"
+              }
+              style={
+                broken
+                  ? undefined
+                  : {
+                      marginLeft: i === 0 ? 0 : "-0.5rem",
+                      marginRight: i === steps.length - 1 ? 0 : "-0.5rem",
+                    }
+              }
+            />
+            <span className="mono-sm mt-3 block leading-tight text-muted">{step}</span>
+          </li>
+        ))}
+      </ul>
+
+      <p className="mt-8 max-w-2xl text-base text-muted">{note}</p>
+    </div>
   );
 }

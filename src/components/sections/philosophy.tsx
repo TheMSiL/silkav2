@@ -25,7 +25,7 @@ const CODE_INDEX = 6;
  */
 export function Philosophy({ dict, chain }: { dict: Dictionary; chain: PhilosophyLink[] }) {
   return (
-    <Section theme="dark" label={dict.philosophy.eyebrow} grid>
+    <Section surface="base" label={dict.philosophy.eyebrow} grid>
       <SectionHeading
         eyebrow={dict.philosophy.eyebrow}
         title={dict.philosophy.title}

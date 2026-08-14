@@ -31,8 +31,10 @@ enum ProjectType {
 }
 
 enum BudgetRange {
-  UNDER_5K
-  FROM_5K_TO_15K
+  FROM_300_TO_1K
+  FROM_1K_TO_3K
+  FROM_3K_TO_8K
+  FROM_8K_TO_15K
   FROM_15K_TO_30K
   FROM_30K_TO_50K
   OVER_50K

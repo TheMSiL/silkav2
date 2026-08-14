@@ -98,7 +98,7 @@ export default async function InsightPage({
       </PageHero>
 
       <article>
-        <Section theme="light" size="narrow">
+        <Section surface="contrast" size="narrow">
           <div className="flex flex-col gap-10">
             {insight.body.map((block, i) => (
               <Reveal key={block.heading ?? i} delay={0.04}>
@@ -146,7 +146,7 @@ export default async function InsightPage({
       </article>
 
       {related.length > 0 ? (
-        <Section theme="dark" label={dict.insights.keepReading}>
+        <Section surface="base" label={dict.insights.keepReading}>
           <h2 className="mono-sm text-faint">{dict.insights.keepReading}</h2>
           <ul className="mt-8 grid gap-px border border-line bg-line md:grid-cols-2">
             {related.map((item, i) => (

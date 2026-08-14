@@ -59,7 +59,7 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
         intro={dict.about.intro}
       />
 
-      <Section theme="dark" className="pt-0">
+      <Section surface="base" className="pt-0">
         <div className="grid gap-12 lg:grid-cols-[1fr_1fr] lg:gap-20">
           <div className="max-w-xl space-y-6 text-lg text-fg">
             <p>{dict.about.story1}</p>
@@ -91,7 +91,7 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
       </Section>
 
       {/* Disciplines in place of a fabricated team page. */}
-      <Section theme="light" label={dict.about.teamEyebrow}>
+      <Section surface="contrast" label={dict.about.teamEyebrow}>
         <SectionHeading
           eyebrow={dict.about.teamEyebrow}
           title={dict.about.teamTitle}
@@ -119,7 +119,7 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
         </Reveal>
       </Section>
 
-      <Section theme="dark" id="process" label={dict.home.processEyebrow}>
+      <Section surface="base" id="process" label={dict.home.processEyebrow}>
         <SectionHeading
           eyebrow={dict.home.processEyebrow}
           title={dict.home.processTitle}
@@ -131,7 +131,7 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
 
       <Philosophy dict={dict} chain={content.philosophyChain} />
 
-      <Section theme="dark" label={dict.home.principlesEyebrow}>
+      <Section surface="base" label={dict.home.principlesEyebrow}>
         <SectionHeading
           eyebrow={dict.home.principlesEyebrow}
           title={dict.about.principlesTitle}

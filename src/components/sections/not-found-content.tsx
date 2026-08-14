@@ -19,7 +19,7 @@ export function NotFoundContent({ locale, dict }: { locale: Locale; dict: Dictio
 
   return (
     <section
-      data-theme="dark"
+      data-surface="base"
       className="noise relative isolate flex min-h-[100svh] items-center overflow-hidden bg-surface"
     >
       <div

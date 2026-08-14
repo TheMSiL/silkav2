@@ -21,6 +21,24 @@
   --bone-300: #ded9ca;
   --bone-400: #c3bdac;
 
+  /*
+   * Slate — the middle material.
+   *
+   * Neither the near-black the page is built on nor the paper of a contrast
+   * band. It exists because two sections needed to stop glaring: set on paper
+   * they were the brightest thing on a dark page, and set on ink they
+   * disappeared into it. Read as poured concrete: clearly a separate material,
+   * clearly not a light switched on.
+   */
+  --slate-900: #2c3036;
+  --slate-800: #343941;
+  --slate-700: #3d434b;
+
+  /* Stone — the same idea on the light side of the site. */
+  --stone-200: #e7e3d9;
+  --stone-300: #ddd8cb;
+  --stone-400: #cec8b8;
+
   --volt-500: #2119f0;
   --volt-400: #5a52ff;
   --volt-600: #170fbd;
@@ -29,19 +47,7 @@
   --signal-green: #46d39a;
   --signal-amber: #ffb020;
 
-  /* ---------- Semantic (dark is the default surface) ---------- */
-  --surface: var(--ink-900);
-  --surface-2: var(--ink-800);
-  --surface-3: var(--ink-700);
-  --fg: #eeece6;
-  --fg-muted: #8b9199;
-  --fg-faint: #565d64;
-  --line: rgb(255 255 255 / 0.10);
-  --line-strong: rgb(255 255 255 / 0.20);
   --accent: var(--volt-500);
-  --accent-fg: #ffffff;
-  --selection: rgb(33 25 240 / 0.32);
-  --grid-line: rgb(255 255 255 / 0.045);
 
   /* ----------
      Type scale (fluid, 320 → 1440)
@@ -120,49 +126,38 @@
   --z-menu: 60;
   --z-cursor: 90;
 
-  color-scheme: dark;
 }
 
-/*
- * Light surface — applied per-section via data-theme, never a global toggle.
- *
- * This is not the dark theme with the values flipped, and getting it wrong
- * that way is what made the light bands read as muddy beige next to the ink.
- * Three things are deliberate:
- *
- *   1. The paper is lighter and less yellow than `--bone-100`, and each step
- *      down is a real step. On the dark side the surfaces separate by
- *      luminance alone; on paper they need a touch of warmth as well, or the
- *      panels look like print artefacts rather than materials.
- *   2. Ink is close to black but never pure — `#0b0d0f` at 500 weight on paper
- *      is what large display type wants. Pure black at this size vibrates.
- *   3. Hairlines run cooler and lighter than the mirror of the dark ones. A
- *      12% black line on paper is visually twice the weight of a 10% white
- *      line on ink, which is why the light sections looked ruled and heavy.
- */
-[data-theme="light"] {
-  --surface: #f7f5f0;
-  --surface-2: #f0ede5;
-  --surface-3: #e5e1d6;
-  --fg: #0b0d0f;
-  --fg-muted: #585d64;
-  --fg-faint: #8f949b;
-  --line: rgb(11 13 15 / 0.09);
-  --line-strong: rgb(11 13 15 / 0.22);
-  --grid-line: rgb(11 13 15 / 0.035);
+/* ============================================================
+   Surfaces
+
+   A section does not declare a colour, it declares a ROLE:
+
+     base       the page's own material — most of the site
+     contrast   the band that breaks the run of base
+     muted      the middle material, for bands that should recede
+
+   What each role is made of depends on the site mode, which lives on <html>
+   as `data-mode` and is chosen by the visitor (or by their system). In dark
+   mode base is ink and contrast is paper; in light mode they swap. Sections
+   therefore never need to know which mode they are in, and adding the light
+   theme did not touch a single component's markup.
+
+   The set on bare `:root` is what `body` paints with, so the page has a
+   background before any section has rendered.
+   ============================================================ */
+
+[data-surface="base"],
+[data-surface="contrast"],
+[data-surface="muted"] {
+  /* Every surface keeps white on the accent; only the surround differs. */
   --accent-fg: #ffffff;
-  --selection: rgb(33 25 240 / 0.18);
-  /*
-   * Shadows have to be rebuilt, not reused. The dark set is heavy black at
-   * high alpha, which on paper reads as dirt rather than as elevation.
-   */
-  --shadow-sm: 0 1px 2px rgb(11 13 15 / 0.06);
-  --shadow-md: 0 8px 24px -8px rgb(11 13 15 / 0.12);
-  --shadow-lg: 0 24px 60px -24px rgb(11 13 15 / 0.18);
-  color-scheme: light;
 }
 
-[data-theme="dark"] {
+/* Ink */
+:root,
+[data-surface="base"] {
+  --surface-veil: rgb(8 9 10 / 0.72);
   --surface: var(--ink-900);
   --surface-2: var(--ink-800);
   --surface-3: var(--ink-700);
@@ -172,12 +167,123 @@
   --line: rgb(255 255 255 / 0.10);
   --line-strong: rgb(255 255 255 / 0.20);
   --grid-line: rgb(255 255 255 / 0.045);
+  --selection: rgb(33 25 240 / 0.32);
+  --shadow-sm: 0 1px 2px rgb(0 0 0 / 0.3);
+  --shadow-md: 0 8px 30px rgb(0 0 0 / 0.35);
+  --shadow-lg: 0 30px 80px -20px rgb(0 0 0 / 0.55);
   color-scheme: dark;
+}
+
+/*
+ * Paper.
+ *
+ * Not the dark theme with the values flipped — getting that wrong is what
+ * made the light bands read as muddy beige next to the ink. Three deliberate
+ * choices: the paper is lighter and less yellow than `--bone-100`; ink is
+ * close to black but never pure, because pure black vibrates at display size;
+ * and hairlines run *lighter* than their dark mirrors, since 12% black on
+ * paper carries twice the weight of 10% white on ink.
+ *
+ * Shadows are rebuilt too. The dark set is heavy black at high alpha, which
+ * on paper reads as dirt rather than as elevation.
+ */
+[data-surface="contrast"] {
+  --surface-veil: rgb(247 245 240 / 0.78);
+  --surface: #f7f5f0;
+  --surface-2: #f0ede5;
+  --surface-3: #e5e1d6;
+  --fg: #0b0d0f;
+  --fg-muted: #585d64;
+  --fg-faint: #8f949b;
+  --line: rgb(11 13 15 / 0.09);
+  --line-strong: rgb(11 13 15 / 0.22);
+  --grid-line: rgb(11 13 15 / 0.035);
+  --selection: rgb(33 25 240 / 0.18);
+  --shadow-sm: 0 1px 2px rgb(11 13 15 / 0.06);
+  --shadow-md: 0 8px 24px -8px rgb(11 13 15 / 0.12);
+  --shadow-lg: 0 24px 60px -24px rgb(11 13 15 / 0.18);
+  color-scheme: light;
+}
+
+/* Slate — the middle material on a dark page. */
+[data-surface="muted"] {
+  --surface-veil: rgb(44 48 54 / 0.78);
+  --surface: var(--slate-900);
+  --surface-2: var(--slate-800);
+  --surface-3: var(--slate-700);
+  --fg: #eceae4;
+  --fg-muted: #a2a8b0;
+  --fg-faint: #767d86;
+  --line: rgb(255 255 255 / 0.11);
+  --line-strong: rgb(255 255 255 / 0.24);
+  --grid-line: rgb(255 255 255 / 0.05);
+  --selection: rgb(33 25 240 / 0.32);
+  --shadow-sm: 0 1px 2px rgb(0 0 0 / 0.25);
+  --shadow-md: 0 8px 30px rgb(0 0 0 / 0.3);
+  --shadow-lg: 0 30px 80px -20px rgb(0 0 0 / 0.45);
+  color-scheme: dark;
+}
+
+/* ---- Light mode: base and contrast trade places, muted becomes stone ---- */
+html[data-mode="light"],
+html[data-mode="light"] [data-surface="base"] {
+  --surface-veil: rgb(247 245 240 / 0.78);
+  --surface: #f7f5f0;
+  --surface-2: #f0ede5;
+  --surface-3: #e5e1d6;
+  --fg: #0b0d0f;
+  --fg-muted: #585d64;
+  --fg-faint: #8f949b;
+  --line: rgb(11 13 15 / 0.09);
+  --line-strong: rgb(11 13 15 / 0.22);
+  --grid-line: rgb(11 13 15 / 0.035);
+  --selection: rgb(33 25 240 / 0.18);
+  --shadow-sm: 0 1px 2px rgb(11 13 15 / 0.06);
+  --shadow-md: 0 8px 24px -8px rgb(11 13 15 / 0.12);
+  --shadow-lg: 0 24px 60px -24px rgb(11 13 15 / 0.18);
+  color-scheme: light;
+}
+
+html[data-mode="light"] [data-surface="contrast"] {
+  --surface-veil: rgb(8 9 10 / 0.72);
+  --surface: var(--ink-900);
+  --surface-2: var(--ink-800);
+  --surface-3: var(--ink-700);
+  --fg: #eeece6;
+  --fg-muted: #8b9199;
+  --fg-faint: #565d64;
+  --line: rgb(255 255 255 / 0.10);
+  --line-strong: rgb(255 255 255 / 0.20);
+  --grid-line: rgb(255 255 255 / 0.045);
+  --selection: rgb(33 25 240 / 0.32);
+  --shadow-sm: 0 1px 2px rgb(0 0 0 / 0.3);
+  --shadow-md: 0 8px 30px rgb(0 0 0 / 0.35);
+  --shadow-lg: 0 30px 80px -20px rgb(0 0 0 / 0.55);
+  color-scheme: dark;
+}
+
+html[data-mode="light"] [data-surface="muted"] {
+  --surface-veil: rgb(231 227 217 / 0.8);
+  --surface: var(--stone-200);
+  --surface-2: var(--stone-300);
+  --surface-3: var(--stone-400);
+  --fg: #0b0d0f;
+  --fg-muted: #555a61;
+  --fg-faint: #868b92;
+  --line: rgb(11 13 15 / 0.10);
+  --line-strong: rgb(11 13 15 / 0.24);
+  --grid-line: rgb(11 13 15 / 0.04);
+  --selection: rgb(33 25 240 / 0.18);
+  --shadow-sm: 0 1px 2px rgb(11 13 15 / 0.06);
+  --shadow-md: 0 8px 24px -8px rgb(11 13 15 / 0.12);
+  --shadow-lg: 0 24px 60px -24px rgb(11 13 15 / 0.18);
+  color-scheme: light;
 }
 
 /* ---------- Tailwind theme bridge ---------- */
 @theme inline {
   --color-surface: var(--surface);
+  --color-surface-veil: var(--surface-veil);
   --color-surface-2: var(--surface-2);
   --color-surface-3: var(--surface-3);
   --color-fg: var(--fg);

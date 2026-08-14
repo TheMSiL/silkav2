@@ -26,7 +26,7 @@ export default function Error({
 
   return (
     <section
-      data-theme="dark"
+      data-surface="base"
       className="noise relative isolate flex min-h-[100svh] items-center overflow-hidden bg-surface pt-[var(--header-h)]"
     >
       <div aria-hidden className="dot-bg pointer-events-none absolute inset-0 opacity-60" />

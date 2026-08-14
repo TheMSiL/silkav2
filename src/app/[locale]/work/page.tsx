@@ -72,7 +72,7 @@ export default async function WorkPage({ params }: { params: Promise<{ locale: L
         intro={dict.work.intro}
       />
 
-      <Section theme="dark" className="pt-0">
+      <Section surface="base" className="pt-0">
         <ProjectGrid projects={projects} filters={filters} locale={locale} dict={dict} />
       </Section>
 
@@ -83,7 +83,7 @@ export default async function WorkPage({ params }: { params: Promise<{ locale: L
         noise to someone who has not seen a single case study yet. The home
         page's "13 industries" figure links straight to this anchor.
       */}
-      <Section theme="light" id="industries" label={dict.home.industriesEyebrow}>
+      <Section surface="contrast" id="industries" label={dict.home.industriesEyebrow}>
         <SectionHeading
           eyebrow={dict.home.industriesEyebrow}
           title={dict.home.industriesTitle}

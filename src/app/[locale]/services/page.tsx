@@ -63,7 +63,7 @@ export default async function ServicesPage({ params }: { params: Promise<{ local
         intro={dict.services.intro}
       />
 
-      <Section theme="dark" className="pt-0" label={dict.services.tablistLabel}>
+      <Section surface="base" className="pt-0" label={dict.services.tablistLabel}>
         <ServicesExplorer
           services={content.services}
           projectsBySlug={projectsBySlug}
@@ -77,7 +77,7 @@ export default async function ServicesPage({ params }: { params: Promise<{ local
         is a question someone asks once they already believe the studio can
         build the thing — "is my project too small, or too large".
       */}
-      <Section theme="light" id="complexity" label={dict.home.complexityEyebrow}>
+      <Section surface="contrast" id="complexity" label={dict.home.complexityEyebrow}>
         <SectionHeading
           eyebrow={dict.home.complexityEyebrow}
           title={dict.home.complexityTitle}
@@ -87,7 +87,7 @@ export default async function ServicesPage({ params }: { params: Promise<{ local
         <ComplexitySlider levels={content.complexityLevels} locale={locale} dict={dict} />
       </Section>
 
-      <Section theme="dark" id="builder" label={dict.home.builderEyebrow}>
+      <Section surface="base" id="builder" label={dict.home.builderEyebrow}>
         <SectionHeading
           eyebrow={dict.home.builderEyebrow}
           title={dict.services.builderTitle}
@@ -97,7 +97,7 @@ export default async function ServicesPage({ params }: { params: Promise<{ local
         <ProductBuilder modules={content.builderModules} locale={locale} dict={dict} />
       </Section>
 
-      <Section theme="dark" id="estimator" label={dict.services.estimatorEyebrow}>
+      <Section surface="base" id="estimator" label={dict.services.estimatorEyebrow}>
         <SectionHeading
           eyebrow={dict.services.estimatorEyebrow}
           title={dict.services.estimatorTitle}
@@ -107,7 +107,7 @@ export default async function ServicesPage({ params }: { params: Promise<{ local
         <Estimator steps={content.estimatorSteps} locale={locale} dict={dict} />
       </Section>
 
-      <Section theme="dark" id="pricing" className="pt-0" label={dict.services.pricingEyebrow}>
+      <Section surface="base" id="pricing" className="pt-0" label={dict.services.pricingEyebrow}>
         <SectionHeading
           eyebrow={dict.services.pricingEyebrow}
           title={dict.services.pricingTitle}

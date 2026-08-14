@@ -7,53 +7,63 @@ import type { Dictionary } from "@/lib/i18n/dictionaries";
 /**
  * §03 — the character section.
  *
- * Laid out as a verdict list rather than as a two-column editorial block. The
- * four lines are four possible answers to "what do you actually need", and the
- * argument is in their order: the reader watches the scope narrow, and the
- * last answer is the one no supplier gives. Full-width rows make that
- * sequence legible at a glance — a column of prose beside a headline made it
- * read as four equal options.
+ * Four possible answers to "what do you actually need", set side by side as a
+ * plaque rather than stacked as a list. Reading across instead of down is the
+ * point: these are alternatives, not steps, and a vertical list kept implying
+ * an order that does not exist. Only the last one is filled — the answer no
+ * supplier volunteers, and the reason this section exists at all.
  *
- * The last row is the only one that is filled, indexed in the accent and set
- * in the foreground weight. Everything above it is deliberately quieter, so
- * the crescendo happens without a second colour competing with the heading.
+ * It sits on the middle surface, so it reads as a separate material rather
+ * than as a light switched on halfway down a dark page.
  */
 export function Problem({ dict }: { dict: Dictionary }) {
   const lines = dict.home.problemLines;
   const last = lines.length - 1;
 
   return (
-    <Section theme="light" label={dict.home.problemEyebrow} grid>
-      <Reveal>
-        <p className="mono-sm mb-6 flex items-center gap-3 text-muted">
-          <span aria-hidden className="inline-block h-px w-8 bg-line-strong" />
-          {dict.home.problemEyebrow}
-        </p>
-      </Reveal>
+    <Section surface="muted" label={dict.home.problemEyebrow}>
+      <div className="flex flex-col gap-10 lg:flex-row lg:items-end lg:justify-between lg:gap-16">
+        <div className="max-w-3xl">
+          <Reveal>
+            <p className="mono-sm mb-6 flex items-center gap-3 text-muted">
+              <span aria-hidden className="inline-block h-px w-8 bg-line-strong" />
+              {dict.home.problemEyebrow}
+            </p>
+          </Reveal>
+          <TextReveal
+            as="h2"
+            text={dict.home.problemTitle}
+            accent={dict.home.problemAccent}
+            className="font-display text-balance text-3xl md:text-4xl"
+          />
+        </div>
 
-      <TextReveal
-        as="h2"
-        text={dict.home.problemTitle}
-        accent={dict.home.problemAccent}
-        className="font-display max-w-5xl text-balance text-3xl md:text-4xl"
-      />
+        <Reveal delay={0.15} className="lg:max-w-sm lg:shrink-0">
+          <p className="text-lg text-muted">{dict.home.problemOutro}</p>
+        </Reveal>
+      </div>
 
-      <ol className="mt-16 border-t border-line">
+      {/*
+        `gap-px` over a line-coloured background draws the dividers, so the
+        four cells butt against each other as one object instead of floating
+        as four separate cards.
+      */}
+      <ol className="mt-16 grid gap-px border border-line bg-line sm:grid-cols-2 lg:grid-cols-4">
         {lines.map((line, i) => (
-          <Reveal as="li" key={line} delay={i * 0.07}>
-            <div
-              className={cn(
-                "grid grid-cols-[2.5rem_1fr] items-baseline gap-x-5 border-b border-line py-7 md:py-9",
-                i === last && "bg-surface-2",
-              )}
-            >
-              <span className={cn("mono-sm", i === last ? "text-accent" : "text-faint")}>
+          <Reveal
+            as="li"
+            key={line}
+            delay={(i % 4) * 0.07}
+            className={i === last ? "bg-accent" : "bg-surface"}
+          >
+            <div className="flex h-full flex-col gap-6 p-7 lg:min-h-56">
+              <span className={cn("mono-sm", i === last ? "text-accent-fg/70" : "text-faint")}>
                 {String(i + 1).padStart(2, "0")}
               </span>
               <p
                 className={cn(
-                  "font-display text-2xl md:text-3xl",
-                  i === last ? "text-fg" : "text-muted",
+                  "font-display mt-auto text-xl md:text-2xl",
+                  i === last ? "text-accent-fg" : "text-fg",
                 )}
               >
                 {line}
@@ -62,16 +72,6 @@ export function Problem({ dict }: { dict: Dictionary }) {
           </Reveal>
         ))}
       </ol>
-
-      {/*
-        Offset to the right, under the lines rather than beside them: a
-        footnote to the list, which is what it is.
-      */}
-      <Reveal delay={0.2}>
-        <p className="mt-12 max-w-xl text-lg text-muted md:ml-[2.5rem] md:pl-5">
-          {dict.home.problemOutro}
-        </p>
-      </Reveal>
     </Section>
   );
 }

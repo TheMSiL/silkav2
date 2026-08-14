@@ -1,18 +1,13 @@
 "use client";
 
 import { useEffect, useId, useMemo, useRef, useState } from "react";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { AnimatePresence, motion } from "motion/react";
 import { useSearchParams } from "next/navigation";
 
-import {
-  createLeadSchema,
-  BUDGET_LABELS,
-  BUDGET_RANGES,
-  PROJECT_TYPES,
-  type LeadInput,
-} from "@/server/validators/lead";
+import { createLeadSchema, PROJECT_TYPES, type LeadInput } from "@/server/validators/lead";
+import { BudgetSlider } from "./budget-slider";
 import { submitLead } from "@/server/actions/submit-lead";
 import { readAttribution } from "@/lib/analytics/utm";
 import { EVENTS, track } from "@/lib/analytics";
@@ -21,6 +16,7 @@ import { ArrowUpRight, Check } from "@/components/ui/icons";
 import { site } from "@/lib/site";
 import type { Locale } from "@/lib/i18n/config";
 import type { Dictionary } from "@/lib/i18n/dictionaries";
+import type { BudgetRange } from "@/types";
 import { useReducedMotionSafe } from "@/lib/use-reduced-motion-safe";
 
 type Status = "idle" | "submitting" | "success" | "error";
@@ -49,6 +45,7 @@ export function LeadForm({
     handleSubmit,
     setError,
     reset,
+    control,
     setValue,
     formState: { errors },
   } = useForm<LeadInput>({
@@ -183,19 +180,31 @@ export function LeadForm({
         </Field>
 
         <Field
+          className="sm:col-span-2"
           id={`${uid}-budget`}
           label={dict.form.budget}
           error={errors.budget?.message}
           hint={dict.form.optional}
         >
-          <select id={`${uid}-budget`} className={inputClass(!!errors.budget)} {...register("budget")}>
-            <option value="">{dict.form.budgetPlaceholder}</option>
-            {BUDGET_RANGES.map((value) => (
-              <option key={value} value={value}>
-                {BUDGET_LABELS[value]}
-              </option>
-            ))}
-          </select>
+          {/*
+            A `Controller`, not a spread `register`: the control is a scale
+            plus a toggle, so there is no single element whose value is the
+            field — and reading it with `watch` would subscribe the whole form
+            to every drag.
+          */}
+          <Controller
+            name="budget"
+            control={control}
+            render={({ field }) => (
+              <BudgetSlider
+                value={field.value as BudgetRange | undefined}
+                onChange={field.onChange}
+                placeholder={dict.form.budgetPlaceholder}
+                unsureLabel={dict.form.budgetUnsure}
+                className="pt-2"
+              />
+            )}
+          />
         </Field>
       </div>
 
@@ -283,6 +292,7 @@ function Field({
   error,
   hint,
   required,
+  className,
   children,
 }: {
   id: string;
@@ -290,10 +300,12 @@ function Field({
   error?: string;
   hint?: string;
   required?: boolean;
+  /** Lets a field claim more than one column of the form grid. */
+  className?: string;
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex flex-col gap-2">
+    <div className={cn("flex flex-col gap-2", className)}>
       <label htmlFor={id} className="mono-sm flex items-baseline justify-between gap-3 text-faint">
         <span>
           {label}

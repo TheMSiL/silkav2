@@ -52,7 +52,7 @@ export default async function ContactPage({ params }: { params: Promise<{ locale
         intro={dict.contact.intro}
       />
 
-      <Section theme="dark" className="pt-0">
+      <Section surface="base" className="pt-0">
         <div className="grid gap-14 lg:grid-cols-[1.15fr_0.85fr] lg:gap-20">
           <div>
             <Suspense fallback={<FormSkeleton />}>

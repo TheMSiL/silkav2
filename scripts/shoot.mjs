@@ -8,6 +8,8 @@ const OUT = process.env.OUT ?? "../../AppData/Local/Temp/claude/shots";
 /* Viewport, so the same call can check 390 and 1440 without editing this. */
 const VW = Number(process.env.VW ?? 1440);
 const VH = Number(process.env.VH ?? 900);
+/* Which theme to shoot. The site follows the OS unless the visitor chose. */
+const SCHEME = process.env.SCHEME ?? "dark";
 
 const shots = process.argv.slice(2);
 const targets = shots.length
@@ -24,6 +26,7 @@ const context = await browser.newContext({
   deviceScaleFactor: 1,
   isMobile: VW < 800,
   hasTouch: VW < 800,
+  colorScheme: SCHEME,
 });
 const page = await context.newPage();
 page.on("console", (m) => {

@@ -193,3 +193,63 @@ export function OgPill({
     </div>
   );
 }
+
+/**
+ * A headline line with the accent phrase coloured — by word, never by offset.
+ *
+ * The previous version assumed the accent was the tail of the line and sliced
+ * it off by character count. That held only for as long as every locale's
+ * accent happened to sit at the end; the moment a headline put it at the
+ * front, the slice cut a word in half and the accent was then appended a
+ * second time, so the card read "Без хаосу нав Без хаосу".
+ *
+ * Matching whole words instead is the same rule `TextReveal` uses on the site,
+ * punctuation stripped from both sides, so the card and the page colour the
+ * same words wherever they fall.
+ *
+ * Satori has no inline layout: every word is its own flex item, and the space
+ * between them is `gap` rather than a text node.
+ */
+export function AccentedLine({
+  text,
+  accent,
+  palette,
+  size,
+}: {
+  text: string;
+  accent?: string;
+  palette: OgPalette;
+  size: number;
+}) {
+  const strip = (word: string) => word.replace(/[.,!?;:«»“”"']/g, "");
+  const accented = new Set(accent ? accent.split(" ").map(strip) : []);
+
+  return (
+    <div
+      style={{
+        display: "flex",
+        flexWrap: "wrap",
+        /*
+         * Explicit, not the `gap` shorthand: Satori does not parse the
+         * two-value form, so `gap: "0 14px"` silently resolves to nothing and
+         * every word in the headline runs into the next one.
+         */
+        columnGap: Math.round(size * 0.23),
+        rowGap: 0,
+        fontSize: size,
+        lineHeight: 1.08,
+        letterSpacing: -3,
+        color: palette.fg,
+      }}
+    >
+      {text.split(" ").map((word, i) => (
+        <div
+          key={`${word}-${i}`}
+          style={{ display: "flex", color: accented.has(strip(word)) ? palette.accent : palette.fg }}
+        >
+          {word}
+        </div>
+      ))}
+    </div>
+  );
+}

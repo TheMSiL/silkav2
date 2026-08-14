@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { Container } from "@/components/ui/container";
-import { Section } from "@/components/ui/section";
+import { Section, type Surface } from "@/components/ui/section";
 import { Reveal } from "@/components/motion/reveal";
 import { TextReveal } from "@/components/motion/text-reveal";
 import { ImageReveal } from "@/components/motion/image-reveal";
@@ -86,7 +86,7 @@ export default async function CaseStudyPage({
 
       {/* 1 — Hero */}
       <section
-        data-theme="dark"
+        data-surface="base"
         className="noise relative isolate overflow-hidden bg-surface pb-(--space-2xl) pt-[calc(var(--header-h)+clamp(3rem,7vw,6rem))]"
       >
         <div
@@ -166,7 +166,7 @@ export default async function CaseStudyPage({
       </section>
 
       {/* 2 — Client / industry facts */}
-      <Section theme="dark" className="pb-0 pt-0">
+      <Section surface="base" className="pb-0 pt-0">
         <dl className="grid gap-x-8 gap-y-6 border-t border-line pt-8 sm:grid-cols-2 lg:grid-cols-4">
           <Fact label={dict.common.industry} value={project.industry} />
           <Fact label={dict.common.engagement} value={project.duration} />
@@ -176,13 +176,13 @@ export default async function CaseStudyPage({
       </Section>
 
       {/* 3 — Challenge */}
-      <CaseBlock section={project.challenge} index="01" theme="dark" />
+      <CaseBlock section={project.challenge} index="01" surface="base" />
 
       {/* 4 — Solution */}
-      <CaseBlock section={project.solution} index="02" theme="light" />
+      <CaseBlock section={project.solution} index="02" surface="contrast" />
 
       {/* 5 — Architecture */}
-      <Section theme="light" className="pt-0">
+      <Section surface="contrast" className="pt-0">
         <div className="grid gap-10 lg:grid-cols-[minmax(0,18rem)_1fr] lg:gap-16">
           <div>
             <p className="mono-sm text-accent">03</p>
@@ -195,14 +195,14 @@ export default async function CaseStudyPage({
       </Section>
 
       {/* 6, 7 — UX and UI */}
-      <CaseBlock section={project.ux} index="04" theme="dark" />
-      <CaseBlock section={project.ui} index="05" theme="dark" className="pt-0" />
+      <CaseBlock section={project.ux} index="04" surface="base" />
+      <CaseBlock section={project.ui} index="05" surface="base" className="pt-0" />
 
       {/* 8 — Development */}
-      <CaseBlock section={project.development} index="06" theme="dark" className="pt-0" />
+      <CaseBlock section={project.development} index="06" surface="base" className="pt-0" />
 
       {/* 9 — Features */}
-      <Section theme="light" label={dict.caseStudy.features}>
+      <Section surface="contrast" label={dict.caseStudy.features}>
         <div className="grid gap-10 lg:grid-cols-[minmax(0,18rem)_1fr] lg:gap-16">
           <div>
             <p className="mono-sm text-accent">07</p>
@@ -222,7 +222,7 @@ export default async function CaseStudyPage({
       </Section>
 
       {/* 10 — Integrations + stack */}
-      <Section theme="light" className="pt-0">
+      <Section surface="contrast" className="pt-0">
         <div className="grid gap-10 lg:grid-cols-[minmax(0,18rem)_1fr] lg:gap-16">
           <div>
             <p className="mono-sm text-accent">08</p>
@@ -262,7 +262,7 @@ export default async function CaseStudyPage({
       </Section>
 
       {/* 11 — Results */}
-      <Section theme="dark" label={dict.caseStudy.results}>
+      <Section surface="base" label={dict.caseStudy.results}>
         <div className="grid gap-10 lg:grid-cols-[minmax(0,18rem)_1fr] lg:gap-16">
           <div>
             <p className="mono-sm text-accent">09</p>
@@ -290,7 +290,7 @@ export default async function CaseStudyPage({
       </Section>
 
       {/* 12 — Gallery */}
-      <Section theme="dark" className="pt-0" label={dict.caseStudy.gallery}>
+      <Section surface="base" className="pt-0" label={dict.caseStudy.gallery}>
         <div className="flex flex-col gap-12">
           {desktopShots.map((shot, i) => (
             <figure key={shot.src}>
@@ -332,7 +332,7 @@ export default async function CaseStudyPage({
       </Section>
 
       {/* 13 — Next project */}
-      <Section theme="dark" className="pt-0">
+      <Section surface="base" className="pt-0">
         <Link
           href={localizeHref(`/work/${next.slug}`, locale)}
           data-cursor="view"
@@ -369,16 +369,16 @@ function Fact({ label, value }: { label: string; value: string }) {
 function CaseBlock({
   section,
   index,
-  theme,
+  surface,
   className,
 }: {
   section: CaseSection;
   index: string;
-  theme: "dark" | "light";
+  surface: Surface;
   className?: string;
 }) {
   return (
-    <Section theme={theme} className={className} label={section.heading}>
+    <Section surface={surface} className={className} label={section.heading}>
       <div className="grid gap-10 lg:grid-cols-[minmax(0,18rem)_1fr] lg:gap-16">
         <div>
           <p className="mono-sm text-accent">{index}</p>

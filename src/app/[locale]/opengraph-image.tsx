@@ -3,7 +3,7 @@ import { site } from "@/lib/site";
 import { getContent } from "@/data";
 import { locales, type Locale } from "@/lib/i18n/config";
 import { getDictionary } from "@/lib/i18n/dictionaries";
-import { OgFrame, OgLockup, OgPill, ogPalette } from "@/lib/seo/og-card";
+import { OgFrame, OgLockup, OgPill, ogPalette, AccentedLine } from "@/lib/seo/og-card";
 
 export const alt = `${site.name} — ${site.descriptor}`;
 export const size = { width: 1200, height: 630 };
@@ -26,9 +26,7 @@ export default async function OpengraphImage({ params }: { params: Promise<{ loc
   const palette = ogPalette("light");
   const stats = getContent(locale).stats.slice(0, 3);
 
-  // heroAccent is always the tail of heroTitleB — the site colours it the same way.
   const { heroTitleA, heroTitleB, heroAccent } = dict.home;
-  const leadIn = heroTitleB.slice(0, heroTitleB.length - heroAccent.length).trim();
 
   /*
    * The headline is a translation, and the Russian one is a third longer than
@@ -48,14 +46,13 @@ export default async function OpengraphImage({ params }: { params: Promise<{ loc
 
         <div style={{ display: "flex", flexDirection: "column", gap: 26 }}>
           <div style={{ display: "flex", flexDirection: "column", maxWidth: 940 }}>
-            <div style={{ display: "flex", fontSize: titleSize, lineHeight: 1.08, letterSpacing: -3 }}>
-              {heroTitleA}
-            </div>
-            <div style={{ display: "flex", fontSize: titleSize, lineHeight: 1.08, letterSpacing: -3 }}>
-              {/* The space is baked into the text: `gap` collapses once the row wraps. */}
-              {leadIn ? <div style={{ display: "flex" }}>{`${leadIn} `}</div> : null}
-              <div style={{ display: "flex", color: palette.accent }}>{heroAccent}</div>
-            </div>
+            <AccentedLine text={heroTitleA} palette={palette} size={titleSize} />
+            <AccentedLine
+              text={heroTitleB}
+              accent={heroAccent}
+              palette={palette}
+              size={titleSize}
+            />
           </div>
           <div style={{ display: "flex", fontSize: 24, color: palette.muted, maxWidth: 760 }}>
             Web · Mobile · SaaS · CRM · ERP · Automation · AI · Backend

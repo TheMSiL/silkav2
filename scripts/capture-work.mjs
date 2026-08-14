@@ -35,6 +35,18 @@ const targets = [
       "https://motion-app-check.vercel.app/goals",
     ],
   },
+  {
+    slug: "nova",
+    url: "https://nova-ai-preview.vercel.app/",
+    // A workspace, not a page: the gallery walks the surfaces a researcher
+    // actually moves between rather than scrolling one of them.
+    pages: [
+      "https://nova-ai-preview.vercel.app/",
+      "https://nova-ai-preview.vercel.app/chat",
+      "https://nova-ai-preview.vercel.app/sources",
+      "https://nova-ai-preview.vercel.app/projects",
+    ],
+  },
   { slug: "aera", url: "https://aera-phi.vercel.app/", shots: [0, 1.1, 2.4, 3.6] },
   { slug: "tvorivo", url: "https://tvorivo.vercel.app/", shots: [0, 1.1, 2.2, 3.2] },
   { slug: "ra-agency", url: "https://raagency.tech/en", shots: [0, 1.2, 2.4, 3.6] },

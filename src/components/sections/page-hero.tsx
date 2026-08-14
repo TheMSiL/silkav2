@@ -31,7 +31,7 @@ export function PageHero({
 }: PageHeroProps) {
   return (
     <section
-      data-theme="dark"
+      data-surface="base"
       className={cn(
         "noise relative isolate overflow-hidden bg-surface pb-[var(--space-2xl)] pt-[calc(var(--header-h)+clamp(3rem,8vw,7rem))]",
         className,

@@ -10,6 +10,7 @@ import { Logomark } from "@/components/ui/icons";
 import { Magnetic } from "@/components/ui/magnetic";
 import { MobileMenu } from "./mobile-menu";
 import { LanguageSwitcher } from "./language-switcher";
+import { ThemeToggle } from "./theme-toggle";
 import { localizeHref, stripLocale, type Locale } from "@/lib/i18n/config";
 import type { Dictionary } from "@/lib/i18n/dictionaries";
 
@@ -55,12 +56,12 @@ export function Header({ locale, dict }: { locale: Locale; dict: Dictionary }) {
       </a>
 
       <header
-        data-theme="dark"
+        data-surface="base"
         className={cn(
           "fixed inset-x-0 top-0 transition-[background-color,backdrop-filter,border-color] duration-(--dur-base) ease-(--ease-out-expo)",
           menuOpen ? "z-[calc(var(--z-menu)+1)]" : "z-(--z-header)",
           scrolled && !menuOpen
-            ? "border-b border-white/10 bg-[rgb(8_9_10/0.72)] backdrop-blur-xl"
+            ? "border-b border-line bg-surface-veil backdrop-blur-xl"
             : "border-b border-transparent bg-transparent",
         )}
       >
@@ -73,10 +74,10 @@ export function Header({ locale, dict }: { locale: Locale; dict: Dictionary }) {
           <Link
             href={localizeHref("/", locale)}
             aria-label={`${site.name} — ${dict.common.home}`}
-            className="group flex items-center gap-2.5 text-white"
+            className="group flex items-center gap-2.5 text-fg"
           >
             <Logomark className={cn("transition-all duration-(--dur-base)", scrolled ? "size-5" : "size-6")} />
-            <span className="font-display text-lg tracking-[-0.02em] text-white">{site.name}</span>
+            <span className="font-display text-lg tracking-[-0.02em] text-fg">{site.name}</span>
           </Link>
 
           <nav aria-label={dict.menu.label} className="hidden items-center gap-1 lg:flex">
@@ -87,7 +88,7 @@ export function Header({ locale, dict }: { locale: Locale; dict: Dictionary }) {
                 aria-current={isActive(item.href) ? "page" : undefined}
                 className={cn(
                   "relative px-3.5 py-2 text-xs tracking-[-0.01em] transition-colors duration-(--dur-fast)",
-                  isActive(item.href) ? "text-white" : "text-white/60 hover:text-white",
+                  isActive(item.href) ? "text-fg" : "text-muted hover:text-fg",
                 )}
               >
                 {item.label}
@@ -103,16 +104,18 @@ export function Header({ locale, dict }: { locale: Locale; dict: Dictionary }) {
           </nav>
 
           <div className="flex items-center gap-2">
+            <ThemeToggle label={dict.common.theme} />
+
             <LanguageSwitcher
               locale={locale}
               label={dict.common.language}
-              className="hidden text-white sm:flex"
+              className="hidden sm:flex"
             />
 
             <Magnetic className="hidden lg:inline-block">
               <Link
                 href={localizeHref("/contact", locale)}
-                className="inline-flex h-10 items-center gap-2 border border-white/25 px-5 text-xs text-white transition-colors duration-(--dur-fast) hover:border-accent hover:bg-accent hover:text-accent-fg"
+                className="inline-flex h-10 items-center gap-2 border border-line-strong px-5 text-xs text-fg transition-colors duration-(--dur-fast) hover:border-accent hover:bg-accent hover:text-accent-fg"
               >
                 {dict.cta.start}
               </Link>
@@ -123,7 +126,7 @@ export function Header({ locale, dict }: { locale: Locale; dict: Dictionary }) {
               onClick={() => setMenuOpen(!menuOpen)}
               aria-expanded={menuOpen}
               aria-controls="mobile-menu"
-              className="relative z-[calc(var(--z-menu)+1)] -mr-2 flex size-11 items-center justify-center text-white lg:hidden"
+              className="relative z-[calc(var(--z-menu)+1)] -mr-2 flex size-11 items-center justify-center text-fg lg:hidden"
             >
               <span className="sr-only">{menuOpen ? dict.menu.close : dict.menu.open}</span>
               {/* Three bars; the middle one fades out as the outer two cross. */}

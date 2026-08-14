@@ -28,7 +28,7 @@ describe("leadSchema", () => {
   });
 
   it("accepts a real budget value", () => {
-    expect(leadSchema.parse({ ...valid, budget: "15-30k" }).budget).toBe("15-30k");
+    expect(leadSchema.parse({ ...valid, budget: "15k-30k" }).budget).toBe("15k-30k");
   });
 
   it("rejects an unknown budget value", () => {

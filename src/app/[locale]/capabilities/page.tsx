@@ -69,26 +69,26 @@ export default async function CapabilitiesPage({
       />
 
       {/* Web */}
-      <Section theme="dark" id="web" className="pt-0" label={web.eyebrow}>
+      <Section surface="base" id="web" className="pt-0" label={web.eyebrow}>
         <CapabilityIntro block={web} />
         <BulletGrid bullets={web.bullets} columns={2} />
       </Section>
 
       {/* Mobile */}
-      <Section theme="light" id="mobile" label={mobile.eyebrow}>
+      <Section surface="contrast" id="mobile" label={mobile.eyebrow}>
         <CapabilityIntro block={mobile} />
         <DeviceShowcase dict={dict} />
       </Section>
 
       {/* CRM / ERP */}
-      <Section theme="dark" id="systems" label={systems.eyebrow}>
+      <Section surface="base" id="systems" label={systems.eyebrow}>
         <CapabilityIntro block={systems} />
         <MockDashboard tabs={content.dashboardTabs} dict={dict} />
         <BulletGrid bullets={systems.bullets} columns={4} />
       </Section>
 
       {/* Automation & AI */}
-      <Section theme="light" id="automation" label={automation.eyebrow}>
+      <Section surface="contrast" id="automation" label={automation.eyebrow}>
         <CapabilityIntro block={automation} />
         <div className="mt-12 grid gap-12 lg:grid-cols-2 lg:gap-16">
           <div className="border border-line bg-surface-2 p-6 md:p-8">
@@ -106,7 +106,7 @@ export default async function CapabilitiesPage({
       </Section>
 
       {/* Backend */}
-      <Section theme="dark" id="backend" label={backend.eyebrow}>
+      <Section surface="base" id="backend" label={backend.eyebrow}>
         <CapabilityIntro block={backend} />
         {referenceArchitecture ? (
           <div className="mt-4 min-w-0">
@@ -126,7 +126,7 @@ export default async function CapabilitiesPage({
       </Section>
 
       {/* Technology */}
-      <Section theme="light" id="technology" label={dict.capabilities.techEyebrow}>
+      <Section surface="contrast" id="technology" label={dict.capabilities.techEyebrow}>
         <SectionHeading
           eyebrow={dict.capabilities.techEyebrow}
           title={dict.capabilities.techTitle}

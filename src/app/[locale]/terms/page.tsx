@@ -37,7 +37,7 @@ export default async function TermsPage({
         title={dict.legal.termsTitle}
         intro={dict.legal.termsIntro}
       />
-      <Section theme="light" size="narrow">
+      <Section surface="contrast" size="narrow">
         <LegalBody
           sections={getContent(locale).terms}
           updated="11.08.2026"

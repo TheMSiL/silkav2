@@ -8,6 +8,7 @@ import { Footer } from "@/components/layout/footer";
 import { Cursor } from "@/components/layout/cursor";
 import { Konami } from "@/components/layout/konami";
 import { RevealBoot } from "@/components/motion/reveal-boot";
+import { ThemeBoot } from "@/components/layout/theme-boot";
 import { JsonLd } from "@/components/seo/json-ld";
 import { site } from "@/lib/site";
 import { titleTemplate } from "@/lib/seo/metadata";
@@ -123,6 +124,7 @@ export default async function LocaleLayout({
       suppressHydrationWarning
     >
       <head>
+        <ThemeBoot />
         <RevealBoot />
       </head>
       <body className="min-h-dvh bg-surface text-fg antialiased">

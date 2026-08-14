@@ -59,7 +59,7 @@ export function Journey({ dict }: { dict: Dictionary }) {
   return (
     <section
       id="journey"
-      data-theme="dark"
+      data-surface="base"
       aria-label={dict.home.journeyEyebrow}
       className="relative isolate bg-surface text-fg"
     >

@@ -40,7 +40,7 @@ export function FinalCta({ locale, dict }: { locale: Locale; dict: Dictionary })
     <section
       ref={ref}
       onPointerMove={onPointerMove}
-      data-theme="dark"
+      data-surface="base"
       aria-label={dict.cta.start}
       className="noise relative isolate overflow-hidden bg-surface py-[clamp(6rem,12vw,11rem)]"
     >

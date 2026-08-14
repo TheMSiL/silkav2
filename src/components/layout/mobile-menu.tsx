@@ -10,6 +10,7 @@ import { track, EVENTS } from "@/lib/analytics";
 import { localizeHref, type Locale } from "@/lib/i18n/config";
 import type { Dictionary } from "@/lib/i18n/dictionaries";
 import { LanguageSwitcher } from "./language-switcher";
+import { ThemeToggle } from "./theme-toggle";
 import { useReducedMotionSafe } from "@/lib/use-reduced-motion-safe";
 
 interface MobileMenuProps {
@@ -81,7 +82,7 @@ export function MobileMenu({ open, onClose, locale, dict }: MobileMenuProps) {
           role="dialog"
           aria-modal="true"
           aria-label={dict.menu.label}
-          data-theme="dark"
+          data-surface="base"
           className="fixed inset-0 z-[var(--z-menu)] flex flex-col bg-surface text-fg"
           initial={reduced ? { opacity: 0 } : { clipPath: "inset(0 0 100% 0)" }}
           animate={reduced ? { opacity: 1 } : { clipPath: "inset(0 0 0% 0)" }}
@@ -143,7 +144,10 @@ export function MobileMenu({ open, onClose, locale, dict }: MobileMenuProps) {
               >
                 {site.email}
               </a>
-              <LanguageSwitcher locale={locale} label={dict.common.language} />
+              <div className="flex items-center gap-1">
+                <LanguageSwitcher locale={locale} label={dict.common.language} />
+                <ThemeToggle label={dict.common.theme} className="-mr-2" />
+              </div>
             </div>
             <ul className="mt-4 flex flex-wrap gap-x-6 gap-y-2">
               {Object.entries(site.social).map(([key, href]) => (

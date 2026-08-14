@@ -34,7 +34,7 @@ export function FeaturedWork({
   total: number;
 }) {
   return (
-    <Section id="work" theme="dark" label={dict.home.workEyebrow}>
+    <Section id="work" surface="base" label={dict.home.workEyebrow}>
       <SectionHeading
         eyebrow={dict.home.workEyebrow}
         title={dict.home.workTitle}

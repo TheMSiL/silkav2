@@ -215,10 +215,12 @@ export type ProjectType =
   | "other";
 
 export type BudgetRange =
-  | "under-5k"
-  | "5-15k"
-  | "15-30k"
-  | "30-50k"
+  | "300-1k"
+  | "1k-3k"
+  | "3k-8k"
+  | "8k-15k"
+  | "15k-30k"
+  | "30k-50k"
   | "50k-plus"
   | "not-sure";
 

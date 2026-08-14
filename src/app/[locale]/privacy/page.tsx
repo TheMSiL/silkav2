@@ -37,7 +37,7 @@ export default async function PrivacyPage({
         title={dict.legal.privacyTitle}
         intro={dict.legal.privacyIntro}
       />
-      <Section theme="light" size="narrow">
+      <Section surface="contrast" size="narrow">
         <LegalBody
           sections={getContent(locale).privacy}
           updated="11.08.2026"

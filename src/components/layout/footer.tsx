@@ -13,7 +13,7 @@ export function Footer({ locale, dict }: { locale: Locale; dict: Dictionary }) {
   const year = new Date().getFullYear();
 
   return (
-    <footer data-theme="dark" className="relative isolate overflow-hidden bg-surface text-fg">
+    <footer data-surface="base" className="relative isolate overflow-hidden bg-surface text-fg">
       <div className="grid-bg pointer-events-none absolute inset-0 opacity-70" aria-hidden />
 
       <div className="relative mx-auto w-full max-w-(--container-max) px-(--container-pad)">

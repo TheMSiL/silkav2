@@ -14,21 +14,36 @@ export const PROJECT_TYPES = [
   "other",
 ] as const;
 
+/*
+ * Ordinal buckets from $300 to $50k+, plus an explicit "no idea".
+ *
+ * The slider in the form steps over the seven ordered values; "not-sure" is a
+ * separate control beside it, because it is not a point on the scale and
+ * putting it at one end of the track would make it look like the cheapest
+ * option.
+ */
 export const BUDGET_RANGES = [
-  "under-5k",
-  "5-15k",
-  "15-30k",
-  "30-50k",
+  "300-1k",
+  "1k-3k",
+  "3k-8k",
+  "8k-15k",
+  "15k-30k",
+  "30k-50k",
   "50k-plus",
   "not-sure",
 ] as const;
 
+/** How many leading entries are points on the slider. */
+export const BUDGET_SCALE_LENGTH = BUDGET_RANGES.length - 1;
+
 /** Budget labels are currency figures, so they read the same in every locale. */
 export const BUDGET_LABELS: Record<(typeof BUDGET_RANGES)[number], string> = {
-  "under-5k": "< $5k",
-  "5-15k": "$5k – $15k",
-  "15-30k": "$15k – $30k",
-  "30-50k": "$30k – $50k",
+  "300-1k": "$300 – $1k",
+  "1k-3k": "$1k – $3k",
+  "3k-8k": "$3k – $8k",
+  "8k-15k": "$8k – $15k",
+  "15k-30k": "$15k – $30k",
+  "30k-50k": "$30k – $50k",
   "50k-plus": "$50k+",
   "not-sure": "?",
 };

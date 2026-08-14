@@ -63,7 +63,7 @@ export default async function InsightsPage({ params }: { params: Promise<{ local
         intro={dict.insights.intro}
       />
 
-      <Section theme="dark" className="pt-0">
+      <Section surface="base" className="pt-0">
         <ul className="border-t border-line">
           {insights.map((insight, i) => (
             <Reveal as="li" key={insight.slug} delay={(i % 4) * 0.05}>

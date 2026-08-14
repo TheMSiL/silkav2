@@ -1,4 +1,5 @@
 import { Hero } from "@/components/sections/hero";
+import { MarqueeStrip } from "@/components/sections/marquee-strip";
 import { FeaturedWork } from "@/components/sections/featured-work";
 import { Problem } from "@/components/sections/problem";
 import { Journey } from "@/components/sections/journey";
@@ -39,6 +40,8 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
   return (
     <>
       <Hero locale={locale} dict={dict} services={content.services} stats={content.stats} />
+
+      <MarqueeStrip services={content.services} />
 
       <FeaturedWork
         locale={locale}
