@@ -13,7 +13,6 @@ import {
 import { processSteps, philosophyChain } from "./process";
 import { techCategories, complexityLevels } from "./technology";
 import { industries, principles, stats } from "./industries";
-import { testimonials } from "./testimonials";
 
 const disciplines = [
   { label: "Продуктова стратегія", note: "Межі, пріоритети та розуміння, чого будувати не треба" },
@@ -126,7 +125,6 @@ export const ukContent: LocaleContent = {
   complexityLevels,
   industries,
   principles,
-  testimonials,
   stats,
   disciplines,
   pricingFactors,

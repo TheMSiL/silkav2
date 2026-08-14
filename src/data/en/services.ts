@@ -52,7 +52,7 @@ export const services: Service[] = [
     ],
     stack: ["Next.js", "NestJS", "PostgreSQL", "Redis", "Stripe"],
     examples: ["Vertical SaaS", "Internal platforms", "Marketplaces", "Data products"],
-    proof: ["aera", "crashatlas"],
+    proof: ["nova", "aera", "crashatlas"],
     visual: "layers",
   },
   {
@@ -106,7 +106,7 @@ export const services: Service[] = [
     ],
     stack: ["LLM APIs", "Embeddings", "Vector search", "RAG", "Evaluation harness"],
     examples: ["Support assistants", "Document extraction", "Semantic search", "Content workflows"],
-    proof: ["axion", "aera"],
+    proof: ["nova", "axion", "aera"],
     visual: "nodes",
   },
   {

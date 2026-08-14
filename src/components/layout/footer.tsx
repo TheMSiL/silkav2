@@ -83,7 +83,12 @@ export function Footer({ locale, dict }: { locale: Locale; dict: Dictionary }) {
 
         {/* Wordmark — the footer's visual anchor. */}
         <div className="relative py-10" aria-hidden>
-          <span className="font-display block w-full select-none text-center text-[clamp(4rem,19vw,17rem)] leading-[0.8] tracking-tighter text-white/6">
+          {/*
+            `text-fg`, not white. On ink these are the same thing, which is why
+            this went unnoticed until the light theme existed and the wordmark
+            became white on paper.
+          */}
+          <span className="font-display block w-full select-none text-center text-[clamp(4rem,19vw,17rem)] leading-[0.8] tracking-tighter text-fg/8">
             {site.name.toUpperCase()}
           </span>
         </div>

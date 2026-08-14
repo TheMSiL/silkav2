@@ -21,20 +21,7 @@
   --bone-300: #ded9ca;
   --bone-400: #c3bdac;
 
-  /*
-   * Slate — the middle material.
-   *
-   * Neither the near-black the page is built on nor the paper of a contrast
-   * band. It exists because two sections needed to stop glaring: set on paper
-   * they were the brightest thing on a dark page, and set on ink they
-   * disappeared into it. Read as poured concrete: clearly a separate material,
-   * clearly not a light switched on.
-   */
-  --slate-900: #2c3036;
-  --slate-800: #343941;
-  --slate-700: #3d434b;
-
-  /* Stone — the same idea on the light side of the site. */
+  /* Stone — one step down from paper, for muted bands on a light page. */
   --stone-200: #e7e3d9;
   --stone-300: #ddd8cb;
   --stone-400: #cec8b8;
@@ -205,23 +192,35 @@
   color-scheme: light;
 }
 
-/* Slate — the middle material on a dark page. */
+/*
+ * Muted — the band that recedes.
+ *
+ * On a dark page it is paper, the same as `contrast`: the slate that used to
+ * sit here read as a third material competing with the other two rather than
+ * as a quieter version of either, so white with black type is what these bands
+ * get. On a light page it is stone, one step down from the paper the page is
+ * already made of — which is where a genuine middle tone earns its place.
+ *
+ * The role is still worth having for exactly that reason: it means "quieter
+ * than the page" in both modes, and only in light mode does that require a
+ * pigment of its own.
+ */
 [data-surface="muted"] {
-  --surface-veil: rgb(44 48 54 / 0.78);
-  --surface: var(--slate-900);
-  --surface-2: var(--slate-800);
-  --surface-3: var(--slate-700);
-  --fg: #eceae4;
-  --fg-muted: #a2a8b0;
-  --fg-faint: #767d86;
-  --line: rgb(255 255 255 / 0.11);
-  --line-strong: rgb(255 255 255 / 0.24);
-  --grid-line: rgb(255 255 255 / 0.05);
-  --selection: rgb(33 25 240 / 0.32);
-  --shadow-sm: 0 1px 2px rgb(0 0 0 / 0.25);
-  --shadow-md: 0 8px 30px rgb(0 0 0 / 0.3);
-  --shadow-lg: 0 30px 80px -20px rgb(0 0 0 / 0.45);
-  color-scheme: dark;
+  --surface-veil: rgb(247 245 240 / 0.78);
+  --surface: #f7f5f0;
+  --surface-2: #f0ede5;
+  --surface-3: #e5e1d6;
+  --fg: #0b0d0f;
+  --fg-muted: #585d64;
+  --fg-faint: #8f949b;
+  --line: rgb(11 13 15 / 0.09);
+  --line-strong: rgb(11 13 15 / 0.22);
+  --grid-line: rgb(11 13 15 / 0.035);
+  --selection: rgb(33 25 240 / 0.18);
+  --shadow-sm: 0 1px 2px rgb(11 13 15 / 0.06);
+  --shadow-md: 0 8px 24px -8px rgb(11 13 15 / 0.12);
+  --shadow-lg: 0 24px 60px -24px rgb(11 13 15 / 0.18);
+  color-scheme: light;
 }
 
 /* ---- Light mode: base and contrast trade places, muted becomes stone ---- */

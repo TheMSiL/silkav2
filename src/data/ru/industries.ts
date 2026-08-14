@@ -120,7 +120,7 @@ export const principles: Principle[] = [
  * пришлось бы выдумать.
  */
 export const stats: Stat[] = [
-  { value: "15", label: "Запущенных продуктов", note: "Каждый живой и со ссылкой", href: "/work" },
+  { value: "16", label: "Запущенных продуктов", note: "Каждый живой и со ссылкой", href: "/work" },
   { value: "13", label: "Отраслей", note: "От авиационных данных до стоматологии", href: "/work#industries" },
   { value: "8", label: "Направлений в команде", note: "От стратегии до инфраструктуры", href: "/about#team" },
   { value: "34", label: "Отзывы клиентов", note: "Публичные, с 2023 года", href: "https://freelance.ua/user/msil/opinions/" },

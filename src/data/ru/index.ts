@@ -13,7 +13,6 @@ import {
 import { processSteps, philosophyChain } from "./process";
 import { techCategories, complexityLevels } from "./technology";
 import { industries, principles, stats } from "./industries";
-import { testimonials } from "./testimonials";
 
 const disciplines = [
   { label: "Продуктовая стратегия", note: "Скоуп, приоритеты и понимание, чего строить не нужно" },
@@ -126,7 +125,6 @@ export const ruContent: LocaleContent = {
   complexityLevels,
   industries,
   principles,
-  testimonials,
   stats,
   disciplines,
   pricingFactors,

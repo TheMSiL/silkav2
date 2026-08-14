@@ -16,6 +16,498 @@ import type { Project } from "@/types";
  */
 export const projects: Project[] = [
   {
+    slug: "ra-agency",
+    name: "RA Agency",
+    url: "https://raagency.tech/en",
+    summary: "A trilingual performance-marketing site built around case evidence",
+    industry: "Performance marketing",
+    industryKey: "marketing",
+    year: "2025",
+    scope: ["Website", "i18n", "Case studies", "SEO"],
+    services: ["web", "automation"],
+    disciplines: ["Strategy", "UX", "UI", "Frontend"],
+    featured: true,
+    accent: "#2119f0",
+    strapline:
+      "Three ad platforms, a large case library and a hard positioning line — \"We don't buy clicks. We take minds.\"",
+    duration: "8 weeks",
+    team: "1 designer · 1 engineer",
+    platforms: ["Marketing site", "Case library", "Blog"],
+    locales: ["EN", "UA", "RU"],
+    cover: { src: "/work/ra-agency/cover.jpg", alt: "RA Agency homepage" },
+    challenge: {
+      heading: "Challenge",
+      body: [
+        "Performance agencies all publish the same page: a hero claim, three service tiles, some logos. The differentiator RA had was evidence — a large body of campaign results across Telegram, Meta and Google — and it was invisible.",
+        "The site needed to make that evidence the structure rather than a section, in two languages, without turning into a case-study archive nobody reads.",
+      ],
+      items: [
+        { label: "Channels", value: "Telegram Ads · Meta Ads · Google Ads" },
+        { label: "Content", value: "Case library, reviews, blog" },
+        { label: "Locales", value: "English and Ukrainian" },
+      ],
+    },
+    solution: {
+      heading: "Solution",
+      body: [
+        "Cases are a first-class content type with structured fields — channel, vertical, spend band, outcome — so they can be surfaced contextually rather than only in an archive.",
+        "Each service page pulls the cases that prove that specific channel, which means the proof appears at the moment a visitor is deciding, not three clicks later.",
+        "Locales are routed segments with independent metadata, so each language ranks on its own terms instead of competing with itself.",
+      ],
+      items: [
+        { label: "Cases", value: "Structured, contextually surfaced" },
+        { label: "Service pages", value: "Proof attached per channel" },
+        { label: "i18n", value: "Routed locales with per-locale metadata" },
+      ],
+    },
+    architecture: {
+      caption: "Content-driven static site with typed content models and per-locale routing.",
+      nodes: [
+        { id: "en", label: "/en", layer: 0, kind: "client" },
+        { id: "ua", label: "/ua", layer: 0, kind: "client" },
+        { id: "router", label: "Locale router", layer: 1, kind: "service" },
+        { id: "content", label: "Content models", layer: 2, kind: "data", detail: "Cases, services, posts" },
+        { id: "pages", label: "Static generation", layer: 3, kind: "service", detail: "Per locale" },
+        { id: "lead", label: "Lead capture", layer: 3, kind: "service" },
+        { id: "crm", label: "CRM / Telegram", layer: 4, kind: "external" },
+        { id: "analytics", label: "Analytics", layer: 4, kind: "external" },
+      ],
+      edges: [
+        { from: "en", to: "router" },
+        { from: "ua", to: "router" },
+        { from: "router", to: "content" },
+        { from: "content", to: "pages" },
+        { from: "pages", to: "lead" },
+        { from: "lead", to: "crm" },
+        { from: "pages", to: "analytics" },
+      ],
+    },
+    ux: {
+      heading: "UX",
+      body: [
+        "The page order follows the buying question: which channel do I need, has this agency done it in my vertical, what happened, who says so.",
+        "Case cards lead with the result and the constraint it was achieved under, because a result without its context is exactly the kind of claim this industry has trained buyers to discount.",
+      ],
+    },
+    ui: {
+      heading: "UI",
+      body: [
+        "Confident and typographic. The positioning line carries the hero rather than a stock image, and numbers are set large enough to be the visual.",
+        "Client and partner logos are treated as a quiet band rather than a wall — presence, not volume.",
+      ],
+    },
+    development: {
+      heading: "Development",
+      body: [
+        "Everything is statically generated per locale with typed content models, so adding a case is a data change and the pages that reference it update on rebuild.",
+        "Lead submissions go through a server action into the CRM with an instant Telegram notification to the responsible manager.",
+      ],
+    },
+    features: [
+      { title: "Channel service pages", description: "Telegram, Meta and Google Ads, each with its own proof set." },
+      { title: "Case library", description: "Structured cases filterable by channel and vertical." },
+      { title: "Metrics band", description: "Headline agency figures presented as data, not decoration." },
+      { title: "Testimonials", description: "Client reviews attributed to named people and companies." },
+      { title: "Blog", description: "Editorial content supporting search visibility per locale." },
+      { title: "Trilingual routing", description: "English, Ukrainian and Russian as independent routed locales." },
+    ],
+    integrations: ["CRM", "Telegram notifications", "Analytics", "Email"],
+    stack: [
+      { group: "Frontend", items: ["Next.js", "TypeScript", "Tailwind CSS", "Motion"] },
+      { group: "Platform", items: ["i18n routing", "Static generation", "Server actions"] },
+    ],
+    results: [
+      { label: "Ad channels", value: "3", note: "Telegram Ads · Meta Ads · Google Ads — each with its own page" },
+      { label: "Locales", value: "EN · UA · RU", note: "Independent metadata per language" },
+      { label: "Content model", value: "Typed", note: "A new case is a data change" },
+      { label: "Lead routing", value: "Instant", note: "CRM plus Telegram to the owner" },
+    ],
+    outcome:
+      "The evidence became the architecture. A visitor decides on a channel and the proof for that channel is already on screen.",
+    gallery: [
+      { src: "/work/ra-agency/01.jpg", alt: "RA Agency services", caption: "Channel services", device: "desktop" },
+      { src: "/work/ra-agency/02.jpg", alt: "RA Agency case studies", caption: "Case library", device: "desktop" },
+      { src: "/work/ra-agency/03.jpg", alt: "RA Agency testimonials", caption: "Client reviews", device: "desktop" },
+      { src: "/work/ra-agency/mobile.jpg", alt: "RA Agency on mobile", caption: "Mobile", device: "mobile" },
+    ],
+  },
+
+  {
+    slug: "crashatlas",
+    name: "CrashAtlas",
+    url: "https://crashatlas.com/",
+    summary: "An aviation accident database and interactive crash map covering a century of flight",
+    industry: "Aviation data",
+    industryKey: "aviation",
+    year: "2026",
+    scope: ["Data platform", "Web App", "Backend", "SEO", "Subscriptions"],
+    services: ["saas", "web", "backend", "api"],
+    disciplines: ["Strategy", "UX", "UI", "Frontend", "Backend", "DevOps"],
+    featured: true,
+    accent: "#2119f0",
+    strapline:
+      "18,243 accidents from 1919 to 2026, placed where they happened — so a century of aviation history can be read geographically instead of as a list.",
+    duration: "Ongoing",
+    team: "1 designer · 2 engineers",
+    platforms: ["Interactive map", "Archive pages", "Premium tier", "Editorial"],
+    locales: ["EN"],
+    cover: { src: "/work/crashatlas/cover.jpg", alt: "CrashAtlas homepage with the aviation accident map" },
+    challenge: {
+      heading: "Challenge",
+      body: [
+        "Aviation accident data exists in public sources, but it is scattered, inconsistently formatted and almost never geocoded. Turning it into something you can explore means solving ingestion and normalisation before you can even think about the interface.",
+        "The map is the product, and a map with eighteen thousand markers is a performance problem, an accessibility problem and an SEO problem at the same time: search engines cannot read a canvas.",
+      ],
+      items: [
+        { label: "Records", value: "18,243 accidents, 1919–2026" },
+        { label: "Fatalities recorded", value: "127,254" },
+        { label: "Coverage", value: "108 years" },
+      ],
+    },
+    solution: {
+      heading: "Solution",
+      body: [
+        "A normalisation pipeline turns heterogeneous public sources into one record shape — date, operator, airframe, location, cause, fatalities — with geocoding and de-duplication as explicit, reviewable steps.",
+        "The map clusters server-side by region and streams only what the current viewport needs, so panning stays smooth at full archive scale.",
+        "Every dimension of the data is also a set of ordinary, crawlable pages: by country, by year, by airline, by aircraft, by cause. The map is the experience; the pages are the index — and they are the fallback when the map cannot load.",
+      ],
+      items: [
+        { label: "Ingestion", value: "Normalise · geocode · de-duplicate" },
+        { label: "Map", value: "Server-side clustering, viewport streaming" },
+        { label: "Discoverability", value: "Five programmatic archive dimensions" },
+      ],
+    },
+    architecture: {
+      caption:
+        "An ingestion pipeline feeds a normalised store; the map reads a clustered tile API, the archive reads statically generated pages.",
+      nodes: [
+        { id: "sources", label: "Public sources", layer: 0, kind: "external", detail: "Heterogeneous" },
+        { id: "ingest", label: "Ingestion", layer: 1, kind: "infra", detail: "Normalise + geocode" },
+        { id: "db", label: "PostgreSQL", layer: 2, kind: "data", detail: "Canonical records" },
+        { id: "tiles", label: "Cluster API", layer: 3, kind: "service", detail: "Viewport queries" },
+        { id: "pages", label: "Archive pages", layer: 3, kind: "service", detail: "ISR by dimension" },
+        { id: "map", label: "Interactive map", layer: 4, kind: "client" },
+        { id: "browse", label: "Browse & search", layer: 4, kind: "client" },
+        { id: "billing", label: "Premium", layer: 4, kind: "external", detail: "Subscriptions" },
+      ],
+      edges: [
+        { from: "sources", to: "ingest" },
+        { from: "ingest", to: "db" },
+        { from: "db", to: "tiles" },
+        { from: "db", to: "pages", label: "generate" },
+        { from: "tiles", to: "map" },
+        { from: "pages", to: "browse" },
+        { from: "browse", to: "billing", label: "gated records" },
+      ],
+    },
+    ux: {
+      heading: "UX",
+      body: [
+        "Two audiences share the site: someone following a specific historical accident, and someone exploring patterns. The map serves the second, the archive pages serve the first, and every marker has a permanent page behind it.",
+        "The map's loading state is not a spinner — it explains what the map does and links straight into the browsable archive, so a slow connection never becomes a dead end.",
+      ],
+      items: [
+        { label: "Entry points", value: "Map for exploration · pages for lookup" },
+        { label: "Degradation", value: "Loading state links to the full archive" },
+      ],
+    },
+    ui: {
+      heading: "UI",
+      body: [
+        "The subject matter sets the tone: factual, restrained, no dramatisation. Records are presented as archive entries with their sources attributable.",
+        "Density is deliberate — the deadliest-accidents list, statistics and browse dimensions are all readable above the fold on a laptop.",
+      ],
+    },
+    development: {
+      heading: "Development",
+      body: [
+        "Archive pages are statically generated per dimension and revalidated on ingestion, so tens of thousands of pages stay fast and current without a rebuild.",
+        "The map library is code-split and loaded only when the viewport reaches it, keeping the initial page weight independent of the heaviest component on the site.",
+        "Premium records sit behind a subscription check enforced on the server, never in the client — the paywall is not a CSS class.",
+      ],
+    },
+    features: [
+      { title: "Interactive crash map", description: "Regional clustering, airport and route overlays, viewport-scoped queries." },
+      { title: "Archive by country", description: "Where accidents cluster geographically, as crawlable pages." },
+      { title: "Archive by year", description: "How the accident record changes decade by decade." },
+      { title: "Archive by airline & aircraft", description: "Operator and airframe records, with the full history behind Premium." },
+      { title: "Archive by cause", description: "Recurring failure patterns across the record." },
+      { title: "Statistics", description: "Countries, aircraft, deadliest years and cumulative totals." },
+      { title: "Premium tier", description: "Subscription access to rankings and complete crash records, enforced server-side." },
+      { title: "Corrections", description: "A structured route for readers to submit a correction to any record." },
+    ],
+    integrations: ["Geocoding", "Subscription billing", "Analytics", "Email", "Status monitoring"],
+    stack: [
+      { group: "Frontend", items: ["Next.js", "React", "TypeScript", "Tailwind CSS", "Map rendering"] },
+      { group: "Backend", items: ["Node.js", "PostgreSQL", "Ingestion pipeline", "ISR"] },
+      { group: "Platform", items: ["Subscriptions", "CDN", "Monitoring"] },
+    ],
+    results: [
+      { label: "Records mapped", value: "18,243", note: "1919 – 2026" },
+      { label: "Archive dimensions", value: "5", note: "Country · year · airline · aircraft · cause" },
+      { label: "Map fallback", value: "Full archive", note: "Site works without the map" },
+      { label: "Paywall", value: "Server-enforced", note: "Premium records never reach the client" },
+    ],
+    outcome:
+      "A reference work rather than a data dump: the same archive is explorable as a map, browsable as pages, and indexable as a century of records.",
+    gallery: [
+      { src: "/work/crashatlas/01.jpg", alt: "CrashAtlas accident map", caption: "The interactive map", device: "desktop" },
+      { src: "/work/crashatlas/02.jpg", alt: "CrashAtlas records listing", caption: "Deadliest accidents on record", device: "desktop" },
+      { src: "/work/crashatlas/03.jpg", alt: "CrashAtlas archive browse", caption: "Browse the archive", device: "desktop" },
+      { src: "/work/crashatlas/mobile.jpg", alt: "CrashAtlas on mobile", caption: "Mobile", device: "mobile" },
+    ],
+  },
+
+  {
+    slug: "glidex",
+    name: "GLIDEX",
+    url: "https://glidex-theta.vercel.app/ua",
+    summary: "A multimodal logistics platform with routing, tracking and instant quoting",
+    industry: "Logistics",
+    industryKey: "logistics",
+    year: "2026",
+    scope: ["Web App", "Calculator", "Tracking", "i18n"],
+    services: ["web", "backend", "automation", "api"],
+    disciplines: ["Strategy", "UX", "UI", "Frontend", "Backend"],
+    featured: true,
+    accent: "#46d39a",
+    strapline:
+      "Sea, air, road, rail and multimodal freight across 74 countries — with a route planner, a live quote and shipment tracking on the public site.",
+    duration: "14 weeks",
+    team: "1 designer · 2 engineers",
+    platforms: ["Public platform", "Route planner", "Pricing calculator", "Tracking"],
+    locales: ["UA", "EN"],
+    cover: { src: "/work/glidex/cover.jpg", alt: "GLIDEX logistics platform homepage" },
+    challenge: {
+      heading: "Challenge",
+      body: [
+        "Freight forwarding sells on certainty, but the industry's websites sell on brochure copy: a form, a phone number, and a quote three days later.",
+        "The brief was to move the first three steps of the sales conversation — is this route possible, how long does it take, what does it cost — onto the site itself, in two languages, without oversimplifying a genuinely complex pricing model.",
+      ],
+      items: [
+        { label: "Coverage", value: "74 countries · 42 terminals" },
+        { label: "Modes", value: "Sea · air · road · rail · multimodal · warehousing" },
+        { label: "Locales", value: "Ukrainian and English" },
+      ],
+    },
+    solution: {
+      heading: "Solution",
+      body: [
+        "An interactive corridor selector lets a visitor pick origin and destination and see the viable modes, transit times and constraints for that lane before any contact happens.",
+        "The pricing calculator produces a transparent breakdown rather than a single figure — freight, handling, customs, surcharges — because in this industry a number without its components is not trusted.",
+        "Tracking exposes shipment status with a real timeline, and compliance requirements surface before booking rather than after, which is where they usually derail a shipment.",
+      ],
+      items: [
+        { label: "Route planner", value: "Corridor → modes → transit time" },
+        { label: "Quoting", value: "Itemised breakdown, not a single number" },
+        { label: "Compliance", value: "Surfaced before booking" },
+      ],
+    },
+    architecture: {
+      caption:
+        "Localised static shell with dynamic route, rate and tracking services behind a single API layer.",
+      nodes: [
+        { id: "site", label: "Localised site", layer: 0, kind: "client", detail: "/ua · /en" },
+        { id: "planner", label: "Route planner", layer: 0, kind: "client" },
+        { id: "calc", label: "Rate calculator", layer: 0, kind: "client" },
+        { id: "api", label: "API layer", layer: 1, kind: "service" },
+        { id: "routes", label: "Route service", layer: 2, kind: "service", detail: "Corridors, transit" },
+        { id: "rates", label: "Rate engine", layer: 2, kind: "service", detail: "Itemised pricing" },
+        { id: "track", label: "Tracking", layer: 2, kind: "service", detail: "Status timeline" },
+        { id: "db", label: "PostgreSQL", layer: 3, kind: "data" },
+        { id: "crm", label: "CRM / enquiries", layer: 4, kind: "external" },
+        { id: "carriers", label: "Carrier data", layer: 4, kind: "external" },
+      ],
+      edges: [
+        { from: "site", to: "api" },
+        { from: "planner", to: "api" },
+        { from: "calc", to: "api" },
+        { from: "api", to: "routes" },
+        { from: "api", to: "rates" },
+        { from: "api", to: "track" },
+        { from: "routes", to: "db" },
+        { from: "rates", to: "db" },
+        { from: "track", to: "carriers" },
+        { from: "api", to: "crm", label: "qualified enquiry" },
+      ],
+    },
+    ux: {
+      heading: "UX",
+      body: [
+        "The site is organised around the question a shipper actually starts with — a lane, not a service. Mode, terminal and vertical content all hang off the corridor they picked.",
+        "Language is a routed segment, not a client-side toggle, so every localised page is independently linkable, cacheable and indexable.",
+      ],
+      items: [
+        { label: "Primary axis", value: "Route first, service second" },
+        { label: "i18n", value: "Routed locales, not a client switch" },
+      ],
+    },
+    ui: {
+      heading: "UI",
+      body: [
+        "Operational rather than glossy: schedules, transit times and cost components are typeset as data, with tabular figures that align down a column.",
+        "Industry verticals — retail, e-commerce, automotive, pharma — each get their own constraints surfaced, because a pharma cold chain and a retail container are not the same sale.",
+      ],
+    },
+    development: {
+      heading: "Development",
+      body: [
+        "Route and rate data are modelled as versioned reference data, so a tariff change is a dated record rather than a deploy.",
+        "The calculator runs its arithmetic server-side and returns the breakdown, which keeps commercially sensitive pricing rules out of the browser bundle.",
+      ],
+    },
+    features: [
+      { title: "Corridor selector", description: "Interactive route planner across 74 countries with transit times." },
+      { title: "Six transport modes", description: "Sea, air, road, rail, multimodal and warehousing, each with its own constraints." },
+      { title: "Pricing calculator", description: "Itemised cost breakdown per shipment rather than a single opaque figure." },
+      { title: "Shipment tracking", description: "Status timeline with detailed updates." },
+      { title: "Compliance checks", description: "Documentation requirements surfaced before booking." },
+      { title: "Industry verticals", description: "Retail, e-commerce, automotive and pharma with cold-chain handling." },
+      { title: "Locations & terminals", description: "Office and terminal network with contact routing." },
+      { title: "Bilingual", description: "Ukrainian and English as routed locales." },
+    ],
+    integrations: ["Carrier data", "CRM", "Tracking feeds", "Email notifications", "Analytics"],
+    stack: [
+      { group: "Frontend", items: ["Next.js", "TypeScript", "Tailwind CSS", "Interactive maps"] },
+      { group: "Backend", items: ["Node.js", "PostgreSQL", "Rate engine", "REST API"] },
+      { group: "Platform", items: ["i18n routing", "ISR", "CDN"] },
+    ],
+    results: [
+      { label: "Sales conversation", value: "Starts on the site", note: "Route, time and cost before contact" },
+      { label: "Quotes", value: "Itemised", note: "Freight, handling, customs, surcharges" },
+      { label: "Locales", value: "UA + EN", note: "Routed, indexable, cacheable" },
+      { label: "Pricing rules", value: "Server-side", note: "Never shipped to the browser" },
+    ],
+    outcome:
+      "A forwarder's website that behaves like the operations platform behind it: a shipper can qualify their own lane before anyone picks up the phone.",
+    gallery: [
+      { src: "/work/glidex/01.jpg", alt: "GLIDEX route planner", caption: "Corridor selector", device: "desktop" },
+      { src: "/work/glidex/02.jpg", alt: "GLIDEX services and modes", caption: "Transport modes", device: "desktop" },
+      { src: "/work/glidex/03.jpg", alt: "GLIDEX tracking and pricing", caption: "Tracking and quoting", device: "desktop" },
+      { src: "/work/glidex/mobile.jpg", alt: "GLIDEX on mobile", caption: "Mobile", device: "mobile" },
+    ],
+  },
+
+  {
+    slug: "nova",
+    name: "NOVA",
+    url: "https://nova-ai-preview.vercel.app/",
+    summary: "An AI research workspace where every answer leads back to the page it came from",
+    industry: "AI & research",
+    industryKey: "ai",
+    year: "2026",
+    scope: ["SaaS","Product UI","AI","Design system"],
+    services: ["saas", "ai"],
+    disciplines: ["Strategy", "UX", "UI", "Frontend", "AI"],
+    featured: true,
+    accent: "#e0703f",
+    strapline:
+      "Seven surfaces in one workspace and 149 citations across 24 sources — no answer you cannot open and check.",
+    duration: "Ongoing",
+    team: "1 designer · 1 engineer",
+    platforms: ["Web app","Chat","Document library","Workspace search"],
+    locales: ["EN"],
+    cover: { src: "/work/nova/cover.jpg", alt: "NOVA home screen with chats, documents and the credit meter" },
+    challenge: {
+      heading: "Challenge",
+      body: [
+        "An assistant that answers confidently without showing where the answer came from is useless for research. You cannot quote it in a report, you cannot check it, and six months later you will not remember whether it was in a document or the model decided it.",
+        "NOVA had to be a place of work rather than a chat with files attached: documents go in, questions get asked, and what comes out stays — as a saved insight, as a project with open questions, as a source carrying a count of how often it has been leaned on.",
+      ],
+      items: [
+        { label: "Corpus", value: "24 documents · 421 pages · 37 MB" },
+        { label: "Surfaces", value: "7" },
+        { label: "Hard part", value: "The answer has to be checkable, not persuasive" },
+      ],
+    },
+    solution: {
+      heading: "Solution",
+      body: [
+        "The citation became the unit of the interface. 149 references across 24 sources get a surface of their own: every source shows how many times it has been cited and in which conversations. “What is this based on” is a screen, not a search through chat history.",
+        "The chat shows what it actually read: “4 in context” sits beside the answer — not a metaphor, the number of documents that went in. The model budget is in plain sight too, in the sidebar: 18,420 of 25,000 credits. A product that spends money per call should not hide the meter.",
+      ],
+    },
+    architecture: {
+      caption: "Everything the chat shows comes out of the same index the library fills — and comes back with a citation.",
+      nodes: [
+        { id: "workspace", label: "Workspace", layer: 0, kind: "client" },
+        { id: "chat", label: "Chat", layer: 1, kind: "service" },
+        { id: "library", label: "Library", layer: 1, kind: "service" },
+        { id: "search", label: "Search", layer: 1, kind: "service" },
+        { id: "context", label: "Context assembly", layer: 2, kind: "service" },
+        { id: "index", label: "Document index", layer: 2, kind: "data" },
+        { id: "citations", label: "Citations", layer: 3, kind: "data" },
+        { id: "model", label: "Model", layer: 3, kind: "external" },
+      ],
+      edges: [
+        { from: "workspace", to: "chat" },
+        { from: "workspace", to: "library" },
+        { from: "workspace", to: "search" },
+        { from: "chat", to: "context" },
+        { from: "library", to: "index" },
+        { from: "search", to: "index" },
+        { from: "context", to: "index" },
+        { from: "context", to: "model" },
+        { from: "model", to: "citations" },
+        { from: "citations", to: "chat" },
+      ],
+    },
+    ux: {
+      heading: "UX",
+      body: [
+        "Research does not fit in one list, so the workspace is split into seven surfaces: a home for what has been happening, chat, library, insights, search, projects and sources. Each answers a different question — what do I already know, what did I ask, what is it standing on.",
+        "A project here is a set of open questions rather than a folder: “2 of 4 research questions answered” sits on the card. That framing is what stops research turning into an archive of conversations with nothing finished.",
+      ],
+      items: [
+        { label: "Search", value: "Ctrl K — documents, chats, insights, projects" },
+        { label: "New chat", value: "Ctrl N" },
+        { label: "Projects", value: "8, four of them active" },
+      ],
+    },
+    ui: {
+      heading: "UI",
+      body: [
+        "A dark surface and one warm accent. Orange marks exactly what starts work — “New chat” and the active section; everything else lives on greys, so an hour inside it does not tire the eye.",
+        "Density is set for reading: document and source rows carry format, size, page count and date on one line, with none of the air a card grid would demand. This is somewhere a shift gets worked, not a showroom.",
+      ],
+    },
+    development: {
+      heading: "Build",
+      body: [
+        "All seven surfaces are assembled from one component library: the list row, the metadata card, the counter, the tag filter and the detail panel repeat everywhere. Adding an eighth surface is assembly, not another screen drawn from scratch.",
+        "The states usually left until last are in from the start: an empty library, pinned conversations, the archive, a document still processing, and the credit budget run out.",
+      ],
+    },
+    features: [
+      { title: "Sources with counts", description: "24 sources, 149 citations: each one shows how often it is cited and where." },
+      { title: "Context in the open", description: "The number of documents that actually went into context sits beside the answer." },
+      { title: "Projects as questions", description: "Research runs as a list of questions with answered/open state, not a folder of files." },
+      { title: "Search across everything", description: "Ctrl K searches documents, conversations, insights and projects at once." },
+      { title: "Saved insights", description: "31 findings with tags — what is left once a conversation is closed." },
+      { title: "A visible budget", description: "Model credit usage is in the sidebar, not buried in billing." },
+    ],
+    integrations: ["PDF","DOCX","CSV","Markdown","Web pages"],
+    stack: [
+      { group: "Frontend", items: ["Next.js", "React", "TypeScript", "Tailwind CSS"] },
+      { group: "AI", items: ["Retrieval", "Citations", "Context assembly"] },
+      { group: "Product", items: ["Design system", "Keyboard shortcuts", "Workspace search"] },
+    ],
+    results: [
+      { label: "Workspace surfaces", value: "7", note: "Home · chat · documents · insights · search · projects · sources" },
+      { label: "Citations across 24 sources", value: "149", note: "Every one opens the page it came from" },
+      { label: "Indexed", value: "421 pages", note: "24 files, 37 MB" },
+      { label: "Model budget", value: "In plain sight", note: "18,420 / 25,000 credits in the sidebar" },
+    ],
+    outcome:
+      "An AI workspace you can argue with: any statement is one click from the page that produced it — which is the whole difference between a research tool and a persuasive chat.",
+    gallery: [
+      { src: "/work/nova/01.jpg", alt: "NOVA conversation list with pinned chats", caption: "Conversations", device: "desktop" },
+      { src: "/work/nova/02.jpg", alt: "NOVA sources with citation counts", caption: "Sources and citations", device: "desktop" },
+      { src: "/work/nova/03.jpg", alt: "NOVA research projects with progress", caption: "Projects", device: "desktop" },
+      { src: "/work/nova/mobile.jpg", alt: "NOVA on mobile", caption: "Mobile", device: "mobile" },
+    ],
+  },
+  {
     slug: "motion",
     name: "MOTION",
     url: "https://motion-app-check.vercel.app/",
@@ -530,262 +1022,6 @@ export const projects: Project[] = [
   },
 
   {
-    slug: "crashatlas",
-    name: "CrashAtlas",
-    url: "https://crashatlas.com/",
-    summary: "An aviation accident database and interactive crash map covering a century of flight",
-    industry: "Aviation data",
-    industryKey: "aviation",
-    year: "2026",
-    scope: ["Data platform", "Web App", "Backend", "SEO", "Subscriptions"],
-    services: ["saas", "web", "backend", "api"],
-    disciplines: ["Strategy", "UX", "UI", "Frontend", "Backend", "DevOps"],
-    featured: true,
-    accent: "#2119f0",
-    strapline:
-      "18,243 accidents from 1919 to 2026, placed where they happened — so a century of aviation history can be read geographically instead of as a list.",
-    duration: "Ongoing",
-    team: "1 designer · 2 engineers",
-    platforms: ["Interactive map", "Archive pages", "Premium tier", "Editorial"],
-    locales: ["EN"],
-    cover: { src: "/work/crashatlas/cover.jpg", alt: "CrashAtlas homepage with the aviation accident map" },
-    challenge: {
-      heading: "Challenge",
-      body: [
-        "Aviation accident data exists in public sources, but it is scattered, inconsistently formatted and almost never geocoded. Turning it into something you can explore means solving ingestion and normalisation before you can even think about the interface.",
-        "The map is the product, and a map with eighteen thousand markers is a performance problem, an accessibility problem and an SEO problem at the same time: search engines cannot read a canvas.",
-      ],
-      items: [
-        { label: "Records", value: "18,243 accidents, 1919–2026" },
-        { label: "Fatalities recorded", value: "127,254" },
-        { label: "Coverage", value: "108 years" },
-      ],
-    },
-    solution: {
-      heading: "Solution",
-      body: [
-        "A normalisation pipeline turns heterogeneous public sources into one record shape — date, operator, airframe, location, cause, fatalities — with geocoding and de-duplication as explicit, reviewable steps.",
-        "The map clusters server-side by region and streams only what the current viewport needs, so panning stays smooth at full archive scale.",
-        "Every dimension of the data is also a set of ordinary, crawlable pages: by country, by year, by airline, by aircraft, by cause. The map is the experience; the pages are the index — and they are the fallback when the map cannot load.",
-      ],
-      items: [
-        { label: "Ingestion", value: "Normalise · geocode · de-duplicate" },
-        { label: "Map", value: "Server-side clustering, viewport streaming" },
-        { label: "Discoverability", value: "Five programmatic archive dimensions" },
-      ],
-    },
-    architecture: {
-      caption:
-        "An ingestion pipeline feeds a normalised store; the map reads a clustered tile API, the archive reads statically generated pages.",
-      nodes: [
-        { id: "sources", label: "Public sources", layer: 0, kind: "external", detail: "Heterogeneous" },
-        { id: "ingest", label: "Ingestion", layer: 1, kind: "infra", detail: "Normalise + geocode" },
-        { id: "db", label: "PostgreSQL", layer: 2, kind: "data", detail: "Canonical records" },
-        { id: "tiles", label: "Cluster API", layer: 3, kind: "service", detail: "Viewport queries" },
-        { id: "pages", label: "Archive pages", layer: 3, kind: "service", detail: "ISR by dimension" },
-        { id: "map", label: "Interactive map", layer: 4, kind: "client" },
-        { id: "browse", label: "Browse & search", layer: 4, kind: "client" },
-        { id: "billing", label: "Premium", layer: 4, kind: "external", detail: "Subscriptions" },
-      ],
-      edges: [
-        { from: "sources", to: "ingest" },
-        { from: "ingest", to: "db" },
-        { from: "db", to: "tiles" },
-        { from: "db", to: "pages", label: "generate" },
-        { from: "tiles", to: "map" },
-        { from: "pages", to: "browse" },
-        { from: "browse", to: "billing", label: "gated records" },
-      ],
-    },
-    ux: {
-      heading: "UX",
-      body: [
-        "Two audiences share the site: someone following a specific historical accident, and someone exploring patterns. The map serves the second, the archive pages serve the first, and every marker has a permanent page behind it.",
-        "The map's loading state is not a spinner — it explains what the map does and links straight into the browsable archive, so a slow connection never becomes a dead end.",
-      ],
-      items: [
-        { label: "Entry points", value: "Map for exploration · pages for lookup" },
-        { label: "Degradation", value: "Loading state links to the full archive" },
-      ],
-    },
-    ui: {
-      heading: "UI",
-      body: [
-        "The subject matter sets the tone: factual, restrained, no dramatisation. Records are presented as archive entries with their sources attributable.",
-        "Density is deliberate — the deadliest-accidents list, statistics and browse dimensions are all readable above the fold on a laptop.",
-      ],
-    },
-    development: {
-      heading: "Development",
-      body: [
-        "Archive pages are statically generated per dimension and revalidated on ingestion, so tens of thousands of pages stay fast and current without a rebuild.",
-        "The map library is code-split and loaded only when the viewport reaches it, keeping the initial page weight independent of the heaviest component on the site.",
-        "Premium records sit behind a subscription check enforced on the server, never in the client — the paywall is not a CSS class.",
-      ],
-    },
-    features: [
-      { title: "Interactive crash map", description: "Regional clustering, airport and route overlays, viewport-scoped queries." },
-      { title: "Archive by country", description: "Where accidents cluster geographically, as crawlable pages." },
-      { title: "Archive by year", description: "How the accident record changes decade by decade." },
-      { title: "Archive by airline & aircraft", description: "Operator and airframe records, with the full history behind Premium." },
-      { title: "Archive by cause", description: "Recurring failure patterns across the record." },
-      { title: "Statistics", description: "Countries, aircraft, deadliest years and cumulative totals." },
-      { title: "Premium tier", description: "Subscription access to rankings and complete crash records, enforced server-side." },
-      { title: "Corrections", description: "A structured route for readers to submit a correction to any record." },
-    ],
-    integrations: ["Geocoding", "Subscription billing", "Analytics", "Email", "Status monitoring"],
-    stack: [
-      { group: "Frontend", items: ["Next.js", "React", "TypeScript", "Tailwind CSS", "Map rendering"] },
-      { group: "Backend", items: ["Node.js", "PostgreSQL", "Ingestion pipeline", "ISR"] },
-      { group: "Platform", items: ["Subscriptions", "CDN", "Monitoring"] },
-    ],
-    results: [
-      { label: "Records mapped", value: "18,243", note: "1919 – 2026" },
-      { label: "Archive dimensions", value: "5", note: "Country · year · airline · aircraft · cause" },
-      { label: "Map fallback", value: "Full archive", note: "Site works without the map" },
-      { label: "Paywall", value: "Server-enforced", note: "Premium records never reach the client" },
-    ],
-    outcome:
-      "A reference work rather than a data dump: the same archive is explorable as a map, browsable as pages, and indexable as a century of records.",
-    gallery: [
-      { src: "/work/crashatlas/01.jpg", alt: "CrashAtlas accident map", caption: "The interactive map", device: "desktop" },
-      { src: "/work/crashatlas/02.jpg", alt: "CrashAtlas records listing", caption: "Deadliest accidents on record", device: "desktop" },
-      { src: "/work/crashatlas/03.jpg", alt: "CrashAtlas archive browse", caption: "Browse the archive", device: "desktop" },
-      { src: "/work/crashatlas/mobile.jpg", alt: "CrashAtlas on mobile", caption: "Mobile", device: "mobile" },
-    ],
-  },
-
-  {
-    slug: "glidex",
-    name: "GLIDEX",
-    url: "https://glidex-theta.vercel.app/ua",
-    summary: "A multimodal logistics platform with routing, tracking and instant quoting",
-    industry: "Logistics",
-    industryKey: "logistics",
-    year: "2026",
-    scope: ["Web App", "Calculator", "Tracking", "i18n"],
-    services: ["web", "backend", "automation", "api"],
-    disciplines: ["Strategy", "UX", "UI", "Frontend", "Backend"],
-    featured: true,
-    accent: "#46d39a",
-    strapline:
-      "Sea, air, road, rail and multimodal freight across 74 countries — with a route planner, a live quote and shipment tracking on the public site.",
-    duration: "14 weeks",
-    team: "1 designer · 2 engineers",
-    platforms: ["Public platform", "Route planner", "Pricing calculator", "Tracking"],
-    locales: ["UA", "EN"],
-    cover: { src: "/work/glidex/cover.jpg", alt: "GLIDEX logistics platform homepage" },
-    challenge: {
-      heading: "Challenge",
-      body: [
-        "Freight forwarding sells on certainty, but the industry's websites sell on brochure copy: a form, a phone number, and a quote three days later.",
-        "The brief was to move the first three steps of the sales conversation — is this route possible, how long does it take, what does it cost — onto the site itself, in two languages, without oversimplifying a genuinely complex pricing model.",
-      ],
-      items: [
-        { label: "Coverage", value: "74 countries · 42 terminals" },
-        { label: "Modes", value: "Sea · air · road · rail · multimodal · warehousing" },
-        { label: "Locales", value: "Ukrainian and English" },
-      ],
-    },
-    solution: {
-      heading: "Solution",
-      body: [
-        "An interactive corridor selector lets a visitor pick origin and destination and see the viable modes, transit times and constraints for that lane before any contact happens.",
-        "The pricing calculator produces a transparent breakdown rather than a single figure — freight, handling, customs, surcharges — because in this industry a number without its components is not trusted.",
-        "Tracking exposes shipment status with a real timeline, and compliance requirements surface before booking rather than after, which is where they usually derail a shipment.",
-      ],
-      items: [
-        { label: "Route planner", value: "Corridor → modes → transit time" },
-        { label: "Quoting", value: "Itemised breakdown, not a single number" },
-        { label: "Compliance", value: "Surfaced before booking" },
-      ],
-    },
-    architecture: {
-      caption:
-        "Localised static shell with dynamic route, rate and tracking services behind a single API layer.",
-      nodes: [
-        { id: "site", label: "Localised site", layer: 0, kind: "client", detail: "/ua · /en" },
-        { id: "planner", label: "Route planner", layer: 0, kind: "client" },
-        { id: "calc", label: "Rate calculator", layer: 0, kind: "client" },
-        { id: "api", label: "API layer", layer: 1, kind: "service" },
-        { id: "routes", label: "Route service", layer: 2, kind: "service", detail: "Corridors, transit" },
-        { id: "rates", label: "Rate engine", layer: 2, kind: "service", detail: "Itemised pricing" },
-        { id: "track", label: "Tracking", layer: 2, kind: "service", detail: "Status timeline" },
-        { id: "db", label: "PostgreSQL", layer: 3, kind: "data" },
-        { id: "crm", label: "CRM / enquiries", layer: 4, kind: "external" },
-        { id: "carriers", label: "Carrier data", layer: 4, kind: "external" },
-      ],
-      edges: [
-        { from: "site", to: "api" },
-        { from: "planner", to: "api" },
-        { from: "calc", to: "api" },
-        { from: "api", to: "routes" },
-        { from: "api", to: "rates" },
-        { from: "api", to: "track" },
-        { from: "routes", to: "db" },
-        { from: "rates", to: "db" },
-        { from: "track", to: "carriers" },
-        { from: "api", to: "crm", label: "qualified enquiry" },
-      ],
-    },
-    ux: {
-      heading: "UX",
-      body: [
-        "The site is organised around the question a shipper actually starts with — a lane, not a service. Mode, terminal and vertical content all hang off the corridor they picked.",
-        "Language is a routed segment, not a client-side toggle, so every localised page is independently linkable, cacheable and indexable.",
-      ],
-      items: [
-        { label: "Primary axis", value: "Route first, service second" },
-        { label: "i18n", value: "Routed locales, not a client switch" },
-      ],
-    },
-    ui: {
-      heading: "UI",
-      body: [
-        "Operational rather than glossy: schedules, transit times and cost components are typeset as data, with tabular figures that align down a column.",
-        "Industry verticals — retail, e-commerce, automotive, pharma — each get their own constraints surfaced, because a pharma cold chain and a retail container are not the same sale.",
-      ],
-    },
-    development: {
-      heading: "Development",
-      body: [
-        "Route and rate data are modelled as versioned reference data, so a tariff change is a dated record rather than a deploy.",
-        "The calculator runs its arithmetic server-side and returns the breakdown, which keeps commercially sensitive pricing rules out of the browser bundle.",
-      ],
-    },
-    features: [
-      { title: "Corridor selector", description: "Interactive route planner across 74 countries with transit times." },
-      { title: "Six transport modes", description: "Sea, air, road, rail, multimodal and warehousing, each with its own constraints." },
-      { title: "Pricing calculator", description: "Itemised cost breakdown per shipment rather than a single opaque figure." },
-      { title: "Shipment tracking", description: "Status timeline with detailed updates." },
-      { title: "Compliance checks", description: "Documentation requirements surfaced before booking." },
-      { title: "Industry verticals", description: "Retail, e-commerce, automotive and pharma with cold-chain handling." },
-      { title: "Locations & terminals", description: "Office and terminal network with contact routing." },
-      { title: "Bilingual", description: "Ukrainian and English as routed locales." },
-    ],
-    integrations: ["Carrier data", "CRM", "Tracking feeds", "Email notifications", "Analytics"],
-    stack: [
-      { group: "Frontend", items: ["Next.js", "TypeScript", "Tailwind CSS", "Interactive maps"] },
-      { group: "Backend", items: ["Node.js", "PostgreSQL", "Rate engine", "REST API"] },
-      { group: "Platform", items: ["i18n routing", "ISR", "CDN"] },
-    ],
-    results: [
-      { label: "Sales conversation", value: "Starts on the site", note: "Route, time and cost before contact" },
-      { label: "Quotes", value: "Itemised", note: "Freight, handling, customs, surcharges" },
-      { label: "Locales", value: "UA + EN", note: "Routed, indexable, cacheable" },
-      { label: "Pricing rules", value: "Server-side", note: "Never shipped to the browser" },
-    ],
-    outcome:
-      "A forwarder's website that behaves like the operations platform behind it: a shipper can qualify their own lane before anyone picks up the phone.",
-    gallery: [
-      { src: "/work/glidex/01.jpg", alt: "GLIDEX route planner", caption: "Corridor selector", device: "desktop" },
-      { src: "/work/glidex/02.jpg", alt: "GLIDEX services and modes", caption: "Transport modes", device: "desktop" },
-      { src: "/work/glidex/03.jpg", alt: "GLIDEX tracking and pricing", caption: "Tracking and quoting", device: "desktop" },
-      { src: "/work/glidex/mobile.jpg", alt: "GLIDEX on mobile", caption: "Mobile", device: "mobile" },
-    ],
-  },
-
-  {
     slug: "oriel",
     name: "ORIEL Development",
     url: "https://oriel-peach.vercel.app/",
@@ -908,123 +1144,6 @@ export const projects: Project[] = [
       { src: "/work/oriel/02.jpg", alt: "ORIEL apartment catalog", caption: "Apartment catalog", device: "desktop" },
       { src: "/work/oriel/03.jpg", alt: "ORIEL construction progress", caption: "Construction progress", device: "desktop" },
       { src: "/work/oriel/mobile.jpg", alt: "ORIEL on mobile", caption: "Mobile", device: "mobile" },
-    ],
-  },
-
-  {
-    slug: "ra-agency",
-    name: "RA Agency",
-    url: "https://raagency.tech/en",
-    summary: "A bilingual performance-marketing site built around case evidence",
-    industry: "Performance marketing",
-    industryKey: "marketing",
-    year: "2025",
-    scope: ["Website", "i18n", "Case studies", "SEO"],
-    services: ["web", "automation"],
-    disciplines: ["Strategy", "UX", "UI", "Frontend"],
-    featured: true,
-    accent: "#2119f0",
-    strapline:
-      "Three ad platforms, a large case library and a hard positioning line — \"We don't buy clicks. We take minds.\"",
-    duration: "8 weeks",
-    team: "1 designer · 1 engineer",
-    platforms: ["Marketing site", "Case library", "Blog"],
-    locales: ["EN", "UA"],
-    cover: { src: "/work/ra-agency/cover.jpg", alt: "RA Agency homepage" },
-    challenge: {
-      heading: "Challenge",
-      body: [
-        "Performance agencies all publish the same page: a hero claim, three service tiles, some logos. The differentiator RA had was evidence — a large body of campaign results across Telegram, Meta and Google — and it was invisible.",
-        "The site needed to make that evidence the structure rather than a section, in two languages, without turning into a case-study archive nobody reads.",
-      ],
-      items: [
-        { label: "Channels", value: "Telegram Ads · Meta Ads · Google Ads" },
-        { label: "Content", value: "Case library, reviews, blog" },
-        { label: "Locales", value: "English and Ukrainian" },
-      ],
-    },
-    solution: {
-      heading: "Solution",
-      body: [
-        "Cases are a first-class content type with structured fields — channel, vertical, spend band, outcome — so they can be surfaced contextually rather than only in an archive.",
-        "Each service page pulls the cases that prove that specific channel, which means the proof appears at the moment a visitor is deciding, not three clicks later.",
-        "Locales are routed segments with independent metadata, so each language ranks on its own terms instead of competing with itself.",
-      ],
-      items: [
-        { label: "Cases", value: "Structured, contextually surfaced" },
-        { label: "Service pages", value: "Proof attached per channel" },
-        { label: "i18n", value: "Routed locales with per-locale metadata" },
-      ],
-    },
-    architecture: {
-      caption: "Content-driven static site with typed content models and per-locale routing.",
-      nodes: [
-        { id: "en", label: "/en", layer: 0, kind: "client" },
-        { id: "ua", label: "/ua", layer: 0, kind: "client" },
-        { id: "router", label: "Locale router", layer: 1, kind: "service" },
-        { id: "content", label: "Content models", layer: 2, kind: "data", detail: "Cases, services, posts" },
-        { id: "pages", label: "Static generation", layer: 3, kind: "service", detail: "Per locale" },
-        { id: "lead", label: "Lead capture", layer: 3, kind: "service" },
-        { id: "crm", label: "CRM / Telegram", layer: 4, kind: "external" },
-        { id: "analytics", label: "Analytics", layer: 4, kind: "external" },
-      ],
-      edges: [
-        { from: "en", to: "router" },
-        { from: "ua", to: "router" },
-        { from: "router", to: "content" },
-        { from: "content", to: "pages" },
-        { from: "pages", to: "lead" },
-        { from: "lead", to: "crm" },
-        { from: "pages", to: "analytics" },
-      ],
-    },
-    ux: {
-      heading: "UX",
-      body: [
-        "The page order follows the buying question: which channel do I need, has this agency done it in my vertical, what happened, who says so.",
-        "Case cards lead with the result and the constraint it was achieved under, because a result without its context is exactly the kind of claim this industry has trained buyers to discount.",
-      ],
-    },
-    ui: {
-      heading: "UI",
-      body: [
-        "Confident and typographic. The positioning line carries the hero rather than a stock image, and numbers are set large enough to be the visual.",
-        "Client and partner logos are treated as a quiet band rather than a wall — presence, not volume.",
-      ],
-    },
-    development: {
-      heading: "Development",
-      body: [
-        "Everything is statically generated per locale with typed content models, so adding a case is a data change and the pages that reference it update on rebuild.",
-        "Lead submissions go through a server action into the CRM with an instant Telegram notification to the responsible manager.",
-      ],
-    },
-    features: [
-      { title: "Channel service pages", description: "Telegram, Meta and Google Ads, each with its own proof set." },
-      { title: "Case library", description: "Structured cases filterable by channel and vertical." },
-      { title: "Metrics band", description: "Headline agency figures presented as data, not decoration." },
-      { title: "Testimonials", description: "Client reviews attributed to named people and companies." },
-      { title: "Blog", description: "Editorial content supporting search visibility per locale." },
-      { title: "Bilingual routing", description: "English and Ukrainian as independent routed locales." },
-    ],
-    integrations: ["CRM", "Telegram notifications", "Analytics", "Email"],
-    stack: [
-      { group: "Frontend", items: ["Next.js", "TypeScript", "Tailwind CSS", "Motion"] },
-      { group: "Platform", items: ["i18n routing", "Static generation", "Server actions"] },
-    ],
-    results: [
-      { label: "Proof placement", value: "At the decision point", note: "Cases attached to each service" },
-      { label: "Locales", value: "EN + UA", note: "Independent metadata per language" },
-      { label: "Content model", value: "Typed", note: "A new case is a data change" },
-      { label: "Lead routing", value: "Instant", note: "CRM plus Telegram to the owner" },
-    ],
-    outcome:
-      "The evidence became the architecture. A visitor decides on a channel and the proof for that channel is already on screen.",
-    gallery: [
-      { src: "/work/ra-agency/01.jpg", alt: "RA Agency services", caption: "Channel services", device: "desktop" },
-      { src: "/work/ra-agency/02.jpg", alt: "RA Agency case studies", caption: "Case library", device: "desktop" },
-      { src: "/work/ra-agency/03.jpg", alt: "RA Agency testimonials", caption: "Client reviews", device: "desktop" },
-      { src: "/work/ra-agency/mobile.jpg", alt: "RA Agency on mobile", caption: "Mobile", device: "mobile" },
     ],
   },
 

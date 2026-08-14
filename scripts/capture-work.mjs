@@ -95,6 +95,7 @@ const queue = only.length ? targets.filter((t) => only.includes(t.slug)) : targe
 /** Consent banners are chrome, not product. Dismiss them before capturing. */
 const CONSENT_LABELS = [
   "Accept all",
+  "Accept",
   "Accept All",
   "Прийняти все",
   "Прийняти всі",

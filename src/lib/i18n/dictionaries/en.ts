@@ -249,8 +249,8 @@ export const en: Dictionary = {
   work: {
     metaTitle: "Work",
     metaDescription:
-      "Fifteen shipped products — SaaS platforms, data products, e-commerce, logistics, real estate, mobility and AI automation. Every case study links to the live build.",
-    title: "Fifteen products, and what each one had to solve.",
+      "Sixteen shipped products — SaaS platforms, data products, e-commerce, logistics, real estate, mobility and AI automation. Every case study links to the live build.",
+    title: "Sixteen products, and what each one had to solve.",
     accent: "had to solve.",
     intro:
       "Every case study links to the running build. Where a number appears, it comes from the product itself — not from a marketing deck.",
@@ -457,10 +457,6 @@ export const en: Dictionary = {
   },
   process: {
     scrollHint: "Scroll to advance",
-  },
-  testimonials: {
-    eyebrow: "Client reviews",
-    link: "Read all the reviews",
   },
   philosophy: {
     eyebrow: "Philosophy",

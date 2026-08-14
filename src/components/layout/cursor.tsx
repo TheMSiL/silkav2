@@ -3,9 +3,28 @@
 import { useEffect, useState } from "react";
 import { motion, useMotionValue, useSpring } from "motion/react";
 
-/** Cursor ink: light on dark bands, near-black on the bone ones. */
+/** Cursor ink: light on dark bands, near-black on the paper ones. */
 const tint = (onLight: boolean, alpha: number) =>
-  onLight ? `rgba(16,19,21,${alpha})` : `rgba(255,255,255,${alpha})`;
+  onLight ? `rgba(11,13,15,${alpha})` : `rgba(255,255,255,${alpha})`;
+
+/**
+ * Is the pointer over a light band right now?
+ *
+ * A band declares a role — `base`, `contrast` or `muted` — and the site mode
+ * decides what that role is made of, so neither answers this on its own.
+ * `contrast` is the band that opposes the page, so it is light exactly when
+ * the page is dark; the other two follow the page.
+ *
+ * This used to read `data-theme="light"`, which the surface roles replaced.
+ * The lookup then matched nothing, `onLight` was permanently false, and the
+ * cursor stayed white — invisible on every paper band, and on the whole site
+ * once the light theme existed.
+ */
+function isOverLightSurface(target: Element): boolean {
+  const role = target.closest("[data-surface]")?.getAttribute("data-surface");
+  const lightMode = document.documentElement.getAttribute("data-mode") === "light";
+  return (role === "contrast") !== lightMode;
+}
 
 /**
  * Desktop-only custom cursor.
@@ -62,9 +81,7 @@ export function Cursor() {
       y.set(event.clientY);
       setVisible(true);
       setHovering(isInteractive(event.target));
-      if (event.target instanceof Element) {
-        setOnLight(event.target.closest("[data-theme]")?.getAttribute("data-theme") === "light");
-      }
+      if (event.target instanceof Element) setOnLight(isOverLightSurface(event.target));
     };
     const onLeave = () => setVisible(false);
     const onDown = () => setPressed(true);

@@ -298,21 +298,6 @@ export interface Principle {
   body: string;
 }
 
-/**
- * A published client review.
- *
- * `id` and `year` are structural and must match across locales — the quote is
- * the only translated field, and the original sits behind `site.reviews.url`
- * for anyone who wants to check the translation.
- */
-export interface Testimonial {
-  id: string;
-  /** As displayed on the source profile. */
-  author: string;
-  year: string;
-  quote: string;
-}
-
 export interface Stat {
   value: string;
   label: string;
@@ -358,7 +343,6 @@ export interface LocaleContent {
   complexityLevels: ComplexityLevel[];
   industries: Industry[];
   principles: Principle[];
-  testimonials: Testimonial[];
   stats: Stat[];
   disciplines: Discipline_[];
   pricingFactors: PricingFactor[];

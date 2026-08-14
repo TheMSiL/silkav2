@@ -26,7 +26,7 @@ test.describe("Scenario 1 — Home → Work → case study", () => {
 
     await navigate(page, "Work");
     await expect(page).toHaveURL(/\/en\/work$/);
-    await expect(page.getByRole("heading", { level: 1 })).toContainText("Fifteen products");
+    await expect(page.getByRole("heading", { level: 1 })).toContainText("Sixteen products");
 
     await page.getByRole("link", { name: /CrashAtlas/ }).first().click();
     await expect(page).toHaveURL(/\/en\/work\/crashatlas$/);

@@ -5,7 +5,6 @@ import { Section } from "@/components/ui/section";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { PageHero } from "@/components/sections/page-hero";
 import { Philosophy } from "@/components/sections/philosophy";
-import { Testimonials } from "@/components/sections/testimonials";
 import { FinalCta } from "@/components/sections/final-cta";
 import { ProcessTimeline } from "@/features/process/process-timeline";
 import { Reveal } from "@/components/motion/reveal";
@@ -159,7 +158,6 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
             <ArrowRight className="transition-transform group-hover:translate-x-1" />
           </Link>
         </Reveal>
-        <Testimonials testimonials={content.testimonials} dict={dict} />
       </Section>
 
       <FinalCta locale={locale} dict={dict} />
