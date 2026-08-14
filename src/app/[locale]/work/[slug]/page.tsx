@@ -184,7 +184,7 @@ export default async function CaseStudyPage({
       {/* 5 — Architecture */}
       <Section surface="contrast" className="pt-0">
         <div className="grid gap-10 lg:grid-cols-[minmax(0,18rem)_1fr] lg:gap-16">
-          <div>
+          <div className="lg:sticky lg:top-[calc(var(--header-h)+3rem)] lg:self-start">
             <p className="mono-sm text-accent">03</p>
             <h2 className="font-display mt-3 text-3xl">{dict.caseStudy.architecture}</h2>
           </div>
@@ -204,11 +204,11 @@ export default async function CaseStudyPage({
       {/* 9 — Features */}
       <Section surface="contrast" label={dict.caseStudy.features}>
         <div className="grid gap-10 lg:grid-cols-[minmax(0,18rem)_1fr] lg:gap-16">
-          <div>
+          <div className="lg:sticky lg:top-[calc(var(--header-h)+3rem)] lg:self-start">
             <p className="mono-sm text-accent">07</p>
             <h2 className="font-display mt-3 text-3xl">{dict.caseStudy.features}</h2>
           </div>
-          <ul className="grid gap-px border border-line bg-line sm:grid-cols-2">
+          <ul className="grid grid-hairlines gap-px sm:grid-cols-2">
             {project.features.map((feature, i) => (
               <Reveal as="li" key={feature.title} delay={(i % 2) * 0.05} className="bg-surface">
                 <div className="flex h-full flex-col gap-2 p-6">
@@ -224,7 +224,7 @@ export default async function CaseStudyPage({
       {/* 10 — Integrations + stack */}
       <Section surface="contrast" className="pt-0">
         <div className="grid gap-10 lg:grid-cols-[minmax(0,18rem)_1fr] lg:gap-16">
-          <div>
+          <div className="lg:sticky lg:top-[calc(var(--header-h)+3rem)] lg:self-start">
             <p className="mono-sm text-accent">08</p>
             <h2 className="font-display mt-3 text-3xl">{dict.caseStudy.integrationsStack}</h2>
           </div>
@@ -264,7 +264,7 @@ export default async function CaseStudyPage({
       {/* 11 — Results */}
       <Section surface="base" label={dict.caseStudy.results}>
         <div className="grid gap-10 lg:grid-cols-[minmax(0,18rem)_1fr] lg:gap-16">
-          <div>
+          <div className="lg:sticky lg:top-[calc(var(--header-h)+3rem)] lg:self-start">
             <p className="mono-sm text-accent">09</p>
             <h2 className="font-display mt-3 text-3xl">{dict.caseStudy.results}</h2>
           </div>
@@ -380,7 +380,7 @@ function CaseBlock({
   return (
     <Section surface={surface} className={className} label={section.heading}>
       <div className="grid gap-10 lg:grid-cols-[minmax(0,18rem)_1fr] lg:gap-16">
-        <div>
+        <div className="lg:sticky lg:top-[calc(var(--header-h)+3rem)] lg:self-start">
           <p className="mono-sm text-accent">{index}</p>
           <h2 className="font-display mt-3 text-3xl">{section.heading}</h2>
         </div>
@@ -393,7 +393,7 @@ function CaseBlock({
             ))}
           </div>
           {section.items ? (
-            <dl className="mt-10 grid gap-px border border-line bg-line sm:grid-cols-2">
+            <dl className="mt-10 grid grid-hairlines gap-px sm:grid-cols-2">
               {section.items.map((item) => (
                 <div key={item.label} className="bg-surface p-5">
                   <dt className="mono-sm text-faint">{item.label}</dt>

@@ -97,7 +97,7 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
           accent={dict.about.teamAccent}
           intro={dict.about.teamIntro}
         />
-        <ul className="mt-12 grid gap-px border border-line bg-line sm:grid-cols-2 lg:grid-cols-4">
+        <ul className="mt-12 grid grid-hairlines gap-px sm:grid-cols-2 lg:grid-cols-4">
           {content.disciplines.map((discipline, i) => (
             <Reveal as="li" key={discipline.label} delay={(i % 4) * 0.05} className="bg-surface">
               <div className="flex h-full flex-col gap-2 p-6">
@@ -137,7 +137,7 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
           accent={dict.about.principlesAccent}
           intro={dict.about.principlesIntro}
         />
-        <ul className="mt-12 grid gap-px border border-line bg-line md:grid-cols-2 lg:grid-cols-3">
+        <ul className="mt-12 grid grid-hairlines gap-px md:grid-cols-2 lg:grid-cols-3">
           {content.principles.map((principle, i) => (
             <Reveal as="li" key={principle.title} delay={(i % 3) * 0.06} className="bg-surface">
               <div className="flex h-full flex-col gap-3 p-7">

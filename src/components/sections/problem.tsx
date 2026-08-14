@@ -44,11 +44,11 @@ export function Problem({ dict }: { dict: Dictionary }) {
       </div>
 
       {/*
-        `gap-px` over a line-coloured background draws the dividers, so the
-        four cells butt against each other as one object instead of floating
-        as four separate cards.
+        `grid-hairlines` draws the dividers from the cells themselves, so the
+        four butt against each other as one object rather than floating as
+        separate cards — and a row that stops early leaves no grey hole.
       */}
-      <ol className="mt-16 grid gap-px border border-line bg-line sm:grid-cols-2 lg:grid-cols-4">
+      <ol className="mt-16 grid grid-hairlines gap-px sm:grid-cols-2 lg:grid-cols-4">
         {lines.map((line, i) => (
           <Reveal
             as="li"

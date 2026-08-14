@@ -78,7 +78,7 @@ export function TechExplorer({
             transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
           >
             <p className="max-w-2xl text-lg text-muted">{active.blurb}</p>
-            <ul className="mt-8 grid gap-px border border-line bg-line sm:grid-cols-2 lg:grid-cols-3">
+            <ul className="mt-8 grid grid-hairlines gap-px sm:grid-cols-2 lg:grid-cols-3">
               {active.items.map((item) => (
                 <li key={item.name} className="bg-surface p-5">
                   <p className="font-display text-xl">{item.name}</p>

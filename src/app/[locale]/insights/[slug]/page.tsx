@@ -148,7 +148,7 @@ export default async function InsightPage({
       {related.length > 0 ? (
         <Section surface="base" label={dict.insights.keepReading}>
           <h2 className="mono-sm text-faint">{dict.insights.keepReading}</h2>
-          <ul className="mt-8 grid gap-px border border-line bg-line md:grid-cols-2">
+          <ul className="mt-8 grid grid-hairlines gap-px md:grid-cols-2">
             {related.map((item, i) => (
               <Reveal as="li" key={item.slug} delay={i * 0.06} className="bg-surface">
                 <Link

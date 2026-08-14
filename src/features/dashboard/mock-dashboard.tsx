@@ -78,7 +78,7 @@ export function MockDashboard({
           >
             <h3 className="font-display text-xl">{active.headline}</h3>
 
-            <dl className="mt-5 grid gap-px border border-line bg-line sm:grid-cols-2 lg:grid-cols-4">
+            <dl className="mt-5 grid grid-hairlines gap-px sm:grid-cols-2 lg:grid-cols-4">
               {active.metrics.map((metric) => (
                 <div key={metric.label} className="bg-surface p-4">
                   <dt className="mono-sm text-faint">{metric.label}</dt>

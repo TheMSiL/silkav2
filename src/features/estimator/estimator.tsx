@@ -124,7 +124,7 @@ export function Estimator({
                 {dict.estimator.heard}
               </h3>
 
-              <dl className="mt-8 grid gap-px border border-line bg-line sm:grid-cols-2">
+              <dl className="mt-8 grid grid-hairlines gap-px sm:grid-cols-2">
                 {estimatorSteps.map((s) => {
                   const option = s.options.find((o) => o.value === answers[s.id]);
                   return (

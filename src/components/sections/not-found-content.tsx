@@ -34,7 +34,7 @@ export function NotFoundContent({ locale, dict }: { locale: Locale; dict: Dictio
         <p className="mt-6 max-w-xl text-lg text-muted">{dict.errors.notFoundBody}</p>
 
         <nav aria-label={dict.errors.sectionsLabel} className="mt-12">
-          <ul className="grid max-w-3xl gap-px border border-line bg-line sm:grid-cols-2 lg:grid-cols-3">
+          <ul className="grid max-w-3xl grid-hairlines gap-px sm:grid-cols-2 lg:grid-cols-3">
             {links.map((item) => (
               <li key={item.href} className="bg-surface">
                 <Link

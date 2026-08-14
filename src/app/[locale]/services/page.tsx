@@ -114,7 +114,7 @@ export default async function ServicesPage({ params }: { params: Promise<{ local
           accent={dict.services.pricingAccent}
           intro={dict.services.pricingIntro}
         />
-        <dl className="mt-12 grid gap-px border border-line bg-line sm:grid-cols-2 lg:grid-cols-4">
+        <dl className="mt-12 grid grid-hairlines gap-px sm:grid-cols-2 lg:grid-cols-4">
           {content.pricingFactors.map((factor, i) => (
             <Reveal key={factor.label} delay={(i % 4) * 0.05} className="bg-surface">
               <div className="flex h-full flex-col gap-2 p-6">

@@ -171,8 +171,8 @@ function BulletGrid({
     <ul
       className={
         columns === 2
-          ? "mt-12 grid gap-px border border-line bg-line md:grid-cols-2"
-          : "mt-12 grid gap-px border border-line bg-line md:grid-cols-2 lg:grid-cols-4"
+          ? "mt-12 grid grid-hairlines gap-px md:grid-cols-2"
+          : "mt-12 grid grid-hairlines gap-px md:grid-cols-2 lg:grid-cols-4"
       }
     >
       {bullets.map((bullet, i) => (

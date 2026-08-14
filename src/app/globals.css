@@ -483,6 +483,29 @@ html[data-mode="light"] [data-surface="muted"] {
   border-top: 1px solid var(--line);
 }
 
+/*
+ * A divider grid that cannot leave holes.
+ *
+ * The old shape painted the container in the line colour and let 1px gaps
+ * between surface-coloured cells reveal it. That works only while the items
+ * fill every row — seven pricing factors in a four-column grid exposed a whole
+ * empty cell of line colour, and three spec rows in a two-column grid exposed
+ * another. They read as broken tiles rather than as gaps, and they were the
+ * "empty moments" showing up all over the site.
+ *
+ * Here the container is the surface and every cell draws its own hairline as
+ * an outline. Outlines sit outside the border box and take no space, so with
+ * `gap-px` the two neighbouring outlines land in the same 1px channel and
+ * resolve to a single rule — while a row that stops early simply stops.
+ */
+.grid-hairlines {
+  background-color: var(--surface);
+}
+
+.grid-hairlines > * {
+  outline: 1px solid var(--line);
+}
+
 .grid-bg {
   background-image:
     linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
